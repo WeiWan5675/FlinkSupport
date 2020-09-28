@@ -24,9 +24,9 @@ public class PropertiesUtil {
      * @Title: 根据指定编码加载属性文件
      * @Description: 适配属性文件定义为gbk, 读取时指定的编码为utf-8
      */
-    public static org.weiwan.argus.common.utils.PropertiesUtil load(String filePath, String charset) {
-        org.weiwan.argus.common.utils.PropertiesUtil.charset = charset;
-        return org.weiwan.argus.common.utils.PropertiesUtil.load(filePath);
+    public static com.weiwan.common.utils.PropertiesUtil load(String filePath, String charset) {
+        com.weiwan.common.utils.PropertiesUtil.charset = charset;
+        return com.weiwan.common.utils.PropertiesUtil.load(filePath);
     }
 
     /**
@@ -37,7 +37,7 @@ public class PropertiesUtil {
      * @Title: load
      * @author wangkang
      */
-    public static org.weiwan.argus.common.utils.PropertiesUtil load(String filePath) {
+    public static com.weiwan.common.utils.PropertiesUtil load(String filePath) {
         if (map.containsKey(filePath)) {
         } else {
             InputStream input = null;
@@ -45,7 +45,7 @@ public class PropertiesUtil {
                 input = Thread.currentThread().getContextClassLoader().getResourceAsStream(filePath);
                 Properties _pros = new Properties();
                 _pros.load(input);
-                map.put(filePath, new org.weiwan.argus.common.utils.PropertiesUtil(_pros));
+                map.put(filePath, new com.weiwan.common.utils.PropertiesUtil(_pros));
             } catch (IOException e) {
             } finally {
                 try {

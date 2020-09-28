@@ -11,6 +11,10 @@
     <modules>
         <module>SupportCore</module>
         <module>SupportCommon</module>
+        <module>SupportLauncher</module>
+        <module>SupportETLFramework</module>
+        <module>SupportTest</module>
+        <module>SupportMonitor</module>
     </modules>
     <properties>
         <package.name>FlinkArgus-1.0.0</package.name>
@@ -40,7 +44,7 @@
         <jackson-databind.version>2.9.10.3</jackson-databind.version>
         <gson.version>2.7</gson.version>
         <jcommander.version>1.78</jcommander.version>
-        <argus_common.version>1.0.0</argus_common.version>
+        <SupportCommon.version>1.0.0</SupportCommon.version>
         <argus_core.version>1.0.0</argus_core.version>
         <argus_plugin_channel.version>1.0.0</argus_plugin_channel.version>
         <argus_plugin_reader.version>1.0.0</argus_plugin_reader.version>
@@ -63,12 +67,12 @@
         <dependencies>
 
             <dependency>
-                <groupId>org.weiwan.argus</groupId>
-                <artifactId>argus_common</artifactId>
-                <version>${argus_common.version}</version>
+                <groupId>com.weiwan</groupId>
+                <artifactId>SupportCommon</artifactId>
+                <version>${SupportCommon.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.weiwan.argus</groupId>
+                <groupId>com.weiwan</groupId>
                 <artifactId>argus_core</artifactId>
                 <version>${argus_core.version}</version>
             </dependency>

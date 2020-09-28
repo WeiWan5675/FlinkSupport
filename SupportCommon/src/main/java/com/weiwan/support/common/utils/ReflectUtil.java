@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/7/15 14:49
- * @Package: org.weiwan.argus.common.utils
+ * @Package: com.weiwan.common.utils
  * @ClassName: RejectUtil
  * @Description:
  **/

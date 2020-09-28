@@ -19,7 +19,7 @@ import java.security.SecureRandom;
  * @author houlei
  */
 public class AESUtil {
-    private static final Logger logger = LoggerFactory.getLogger(org.weiwan.argus.common.utils.AESUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(com.weiwan.common.utils.AESUtil.class);
 
     // AES密码器
 //    private static Cipher cipher;

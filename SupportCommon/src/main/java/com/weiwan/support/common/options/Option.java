@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/7/14 20:05
- * @Package: org.weiwan.argus.common.options
+ * @Package: com.weiwan.common.options
  * @ClassName: Option
  * @Description:
  **/

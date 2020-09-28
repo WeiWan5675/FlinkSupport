@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 public interface Clock {
 
 
-    static final org.weiwan.argus.common.utils.Clock SYSTEM = new org.weiwan.argus.common.utils.Clock() {
+    static final com.weiwan.common.utils.Clock SYSTEM = new com.weiwan.common.utils.Clock() {
         @Override
         public long currentTimeInMillis() {
             return System.currentTimeMillis();
@@ -37,10 +37,10 @@ public interface Clock {
     };
 
     /**
-     * Get the {@link org.weiwan.argus.common.utils.Clock} instance that uses the {@link System} methods.
+     * Get the {@link com.weiwan.common.utils.Clock} instance that uses the {@link System} methods.
      * @return the system clock; never null
      */
-    static org.weiwan.argus.common.utils.Clock system() {
+    static com.weiwan.common.utils.Clock system() {
         return SYSTEM;
     }
 

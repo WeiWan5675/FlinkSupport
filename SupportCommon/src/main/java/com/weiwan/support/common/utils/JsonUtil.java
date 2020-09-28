@@ -20,7 +20,7 @@ public class JsonUtil {
      * @return
      */
     public static JSONObject convertHumpToUnderline(JSONObject jsonObject) {
-        String jsonString = JSON.toJSONString(jsonObject, new org.weiwan.argus.common.utils.SnakeKeyFilter());
+        String jsonString = JSON.toJSONString(jsonObject, new com.weiwan.common.utils.SnakeKeyFilter());
         JSONObject resultJson = JSONObject.parseObject(jsonString);
         return resultJson;
     }

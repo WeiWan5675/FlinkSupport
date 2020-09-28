@@ -44,9 +44,9 @@ public interface Metronome {
      * @param timeSystem the time system that will provide the current time; may not be null
      * @return the new metronome; never null
      */
-    public static org.weiwan.argus.common.utils.Metronome sleeper(Duration period, Clock timeSystem) {
+    public static com.weiwan.common.utils.Metronome sleeper(Duration period, Clock timeSystem) {
         long periodInMillis = period.toMillis();
-        return new org.weiwan.argus.common.utils.Metronome() {
+        return new com.weiwan.common.utils.Metronome() {
             private long next = timeSystem.currentTimeInMillis() + periodInMillis;
 
             @Override
@@ -83,9 +83,9 @@ public interface Metronome {
      * @param timeSystem the time system that will provide the current time; may not be null
      * @return the new metronome; never null
      */
-    public static org.weiwan.argus.common.utils.Metronome parker(Duration period, Clock timeSystem) {
+    public static com.weiwan.common.utils.Metronome parker(Duration period, Clock timeSystem) {
         long periodInNanos = period.toNanos();
-        return new org.weiwan.argus.common.utils.Metronome() {
+        return new com.weiwan.common.utils.Metronome() {
             private long next = timeSystem.currentTimeInNanos() + periodInNanos;
 
             @Override

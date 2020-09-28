@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/7/16 15:43
- * @Package: org.weiwan.argus.common.utils
+ * @Package: com.weiwan.common.utils
  * @ClassName: SystemUtil
  * @Description:
  **/

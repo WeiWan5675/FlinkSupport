@@ -30,7 +30,7 @@ import java.io.StringWriter;
  */
 public class ExceptionUtil {
 
-    private static Logger logger = LoggerFactory.getLogger(org.weiwan.argus.common.utils.ExceptionUtil.class);
+    private static Logger logger = LoggerFactory.getLogger(com.weiwan.common.utils.ExceptionUtil.class);
 
     public static String getErrorMessage(Throwable e) {
         StringWriter stringWriter = null;

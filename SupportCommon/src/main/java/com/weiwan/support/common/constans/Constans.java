@@ -3,7 +3,7 @@ package com.weiwan.support.common.constans;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/7/16 13:52
- * @Package: org.weiwan.argus.common
+ * @Package: com.weiwan.common
  * @ClassName: Constans
  * @Description:
  **/

@@ -1,7 +1,7 @@
 package com.weiwan.support.common.utils;
 
 import org.apache.commons.codec.Charsets;
-import org.weiwan.argus.common.exception.ArgusCommonException;
+import com.weiwan.common.exception.ArgusCommonException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/8/12 17:46
- * @Package: org.weiwan.argus.common.utils.FileUtil
+ * @Package: com.weiwan.common.utils.FileUtil
  * @ClassName: FileUtil
  * @Description:
  **/

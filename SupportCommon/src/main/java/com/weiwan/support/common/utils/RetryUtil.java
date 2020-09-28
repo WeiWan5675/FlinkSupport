@@ -32,7 +32,7 @@ import java.util.concurrent.Callable;
  */
 public final class RetryUtil {
 
-    private static final Logger LOG = LoggerFactory.getLogger(org.weiwan.argus.common.utils.RetryUtil.class);
+    private static final Logger LOG = LoggerFactory.getLogger(com.weiwan.common.utils.RetryUtil.class);
 
     private static final long MAX_SLEEP_MILLISECOND = 256 * 1000;
 

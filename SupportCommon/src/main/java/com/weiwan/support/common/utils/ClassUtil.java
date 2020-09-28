@@ -31,7 +31,7 @@ import java.sql.DriverManager;
  */
 public class ClassUtil {
 
-    private static final Logger LOG = LoggerFactory.getLogger(org.weiwan.argus.common.utils.ClassUtil.class);
+    private static final Logger LOG = LoggerFactory.getLogger(com.weiwan.common.utils.ClassUtil.class);
 
     public final static String LOCK_STR = "jdbc_lock_str";
 
