@@ -7,6 +7,7 @@ import com.weiwan.support.common.utils.CommonUtil;
 import com.weiwan.support.core.api.AppType;
 import com.weiwan.support.core.api.FlinkSupport;
 import com.weiwan.support.core.config.JobConfig;
+import com.weiwan.support.core.constant.SupportConstants;
 import com.weiwan.support.core.start.RunOptions;
 import com.weiwan.support.utils.flink.conf.FlinkEnvConfig;
 import com.weiwan.support.utils.flink.env.FlinkContext;
@@ -59,7 +60,7 @@ public class SupportAppEnter {
             if (AppType.ETL_SUPPORT_APPLICATION == appType) {
                 //动态加载etl框架,如果是etl模式,实际上这个类名是固定的:
                 //com.weiwan.support.etl.framework.app.ETLStreamBaseApp
-                Class<?> aClass = Class.forName(appClassName);
+                Class<?> aClass = Class.forName(SupportConstants.ETL_BASE_APP_CLASSNAME);
                 Constructor<?> constructor = aClass.getConstructor(StreamExecutionEnvironment.class, SupportAppContext.class);
                 flinkSupport = (FlinkSupport) constructor.newInstance(streamEnv, context);
                 flinkSupport.addReader(null);

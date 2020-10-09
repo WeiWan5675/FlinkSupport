@@ -11,7 +11,9 @@ import com.weiwan.support.launcher.options.JobRunOption;
  * @ClassName: ApiApplicationProcessor
  * @Description:
  **/
-public class ApiApplicationProcessor extends ApplicationEnv {
+public class ApiApplicationProcessor
+        extends ApplicationEnv
+{
 
     private ApiRunOption option;
 

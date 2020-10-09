@@ -30,7 +30,7 @@ public class TestApp extends StreamAppSupport<DataRecord<DataRow<DataField<Strin
     }
 
     @Override
-    public DataStream<DataRecord<DataRow<DataField<String>>>> openResource(StreamExecutionEnvironment env, SupportAppContext context) {
+    public DataStream<DataRecord<DataRow<DataField<String>>>> streamOpen(StreamExecutionEnvironment env, SupportAppContext context) {
         DataStreamSource<DataRecord<DataRow<DataField<String>>>> dataRecordDataStreamSource = env.addSource(new RichSourceFunction<DataRecord<DataRow<DataField<String>>>>() {
             @Override
             public void run(SourceContext<DataRecord<DataRow<DataField<String>>>> ctx) throws Exception {

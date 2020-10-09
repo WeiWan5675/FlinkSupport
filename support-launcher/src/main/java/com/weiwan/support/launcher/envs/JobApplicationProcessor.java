@@ -23,7 +23,8 @@ public class JobApplicationProcessor extends ApplicationEnv {
 
     public JobApplicationProcessor(String[] args) {
         super(args);
-        this.option = optionParser.parse(JobRunOption.class);
+        super.genericRunOption = optionParser.parse(JobRunOption.class);
+        this.option = (JobRunOption) super.genericRunOption;
     }
 
     @Override
@@ -32,7 +33,10 @@ public class JobApplicationProcessor extends ApplicationEnv {
         String appName = option.getAppName();
         logger.info("job Name is : {}", appName);
 
-        //判断是
+        //读取配置文件
+        //判断资源是在本地 还是在远程
+        //如果是在本地,就需要去加载用户的依赖程序,如果是在远程,直接组装参数,准备运行
+        //在本地的话,需要上传到HDFS
         //获取工程目录(AppHome)
         //读取配置文件
         //
@@ -42,6 +46,6 @@ public class JobApplicationProcessor extends ApplicationEnv {
 
     @Override
     protected void stop() {
-        System.out.println("job process shutdown is run");
+        logger.info("job process shutdown is run");
     }
 }

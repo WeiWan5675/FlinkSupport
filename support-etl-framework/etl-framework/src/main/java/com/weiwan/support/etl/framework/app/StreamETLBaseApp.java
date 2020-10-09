@@ -22,7 +22,7 @@ public class StreamETLBaseApp extends StreamAppSupport<DataRecord, DataRecord> {
     }
 
     @Override
-    public DataStream<DataRecord> openResource(StreamExecutionEnvironment env, SupportAppContext context) {
+    public DataStream<DataRecord> streamOpen(StreamExecutionEnvironment env, SupportAppContext context) {
         return null;
     }
 

@@ -15,7 +15,7 @@ import java.io.Serializable;
  **/
 public class SupportAppContext implements Serializable {
 
-    private com.weiwan.support.core.config.JobConfig JobConfig;
+    private JobConfig JobConfig;
     private FlinkEnvConfig flinkEnvConfig;
     private RunOptions options;
 

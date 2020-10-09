@@ -1,7 +1,7 @@
 package com.weiwan.support.utils.flink.env;
 
 
-import com.weiwan.support.common.constans.Constans;
+import com.weiwan.support.common.constant.Constans;
 import com.weiwan.support.common.enums.SupportExceptionEnum;
 import com.weiwan.support.common.exception.SupportException;
 import com.weiwan.support.common.utils.CommonUtil;

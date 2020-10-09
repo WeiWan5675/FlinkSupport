@@ -1,7 +1,7 @@
 package com.weiwan.support.core.enums;
 
 
-import com.weiwan.support.common.constans.SupportConstans;
+import com.weiwan.support.common.constant.Constans;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -58,19 +58,19 @@ public enum ColumnType implements Serializable {
             throw new RuntimeException("null ColumnType!");
         }
 
-        if (type.contains(SupportConstans.LEFT_PARENTHESIS_SYMBOL)) {
-            type = type.substring(0, type.indexOf(SupportConstans.LEFT_PARENTHESIS_SYMBOL));
+        if (type.contains(Constans.LEFT_PARENTHESIS_SYMBOL)) {
+            type = type.substring(0, type.indexOf(Constans.LEFT_PARENTHESIS_SYMBOL));
         }
 
         return valueOf(type.toUpperCase());
     }
 
     public static ColumnType getType(String type) {
-        if (type.contains(SupportConstans.LEFT_PARENTHESIS_SYMBOL)) {
-            type = type.substring(0, type.indexOf(SupportConstans.LEFT_PARENTHESIS_SYMBOL));
+        if (type.contains(Constans.LEFT_PARENTHESIS_SYMBOL)) {
+            type = type.substring(0, type.indexOf(Constans.LEFT_PARENTHESIS_SYMBOL));
         }
-        if (type.contains(SupportConstans.POINT_SYMBOL)) {
-            type = type.substring(type.lastIndexOf(SupportConstans.POINT_SYMBOL) + 1, type.length());
+        if (type.contains(Constans.POINT_SYMBOL)) {
+            type = type.substring(type.lastIndexOf(Constans.POINT_SYMBOL) + 1, type.length());
         }
 
         if (type.toLowerCase().contains(ColumnType.TIMESTAMP.name().toLowerCase())) {

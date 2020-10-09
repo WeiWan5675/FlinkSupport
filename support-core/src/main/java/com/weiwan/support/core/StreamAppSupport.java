@@ -12,11 +12,11 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  * @ClassName: FlinkSupportAssembly
  * @Description:
  **/
-public abstract class StreamAppSupport<T, E> implements FlinkSupport<StreamExecutionEnvironment> {
+public abstract class StreamAppSupport<IN, OIN> implements FlinkSupport<StreamExecutionEnvironment> {
 
-    private Processer process;
-    private Reader reader;
-    private Writer writer;
+    private Reader<IN> reader;
+    private Processer<IN,OIN> process;
+    private Writer<OIN> writer;
     private StreamExecutionEnvironment env;
     private SupportAppContext context;
 
@@ -24,7 +24,6 @@ public abstract class StreamAppSupport<T, E> implements FlinkSupport<StreamExecu
         this.env = env;
         this.context = context;
     }
-
 
 
     public void addReader(Reader reader) {
@@ -40,11 +39,11 @@ public abstract class StreamAppSupport<T, E> implements FlinkSupport<StreamExecu
     }
 
 
-    public abstract DataStream<T> openResource(StreamExecutionEnvironment env, SupportAppContext context);
+    public abstract DataStream<IN> streamOpen(StreamExecutionEnvironment env, SupportAppContext context);
 
-    public abstract DataStream<E> streamProcess(DataStream<T> inputStream);
+    public abstract DataStream<OIN> streamProcess(DataStream<IN> inputStream);
 
-    public abstract DataStreamSink streamOutput(DataStream<E> outputStream);
+    public abstract DataStreamSink streamOutput(DataStream<OIN> outputStream);
 
     @Override
     public TaskResult submitFlinkTask(StreamExecutionEnvironment env) {

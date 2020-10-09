@@ -10,7 +10,7 @@ import org.apache.flink.api.java.ExecutionEnvironment;
  * @ClassName: BatchAppSupport
  * @Description:
  **/
-public class BatchAppSupport implements FlinkSupport<ExecutionEnvironment> {
+public class BatchAppSupport<IN, OIN> implements FlinkSupport<ExecutionEnvironment> {
 
 
     private ExecutionEnvironment env;

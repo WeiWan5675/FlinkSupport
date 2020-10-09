@@ -1,0 +1,35 @@
+# etl默认配置文件
+ETL_PLUGIN_DIR: plugins
+ETL_PLUGIN_READER_DIR: plugins/reader
+ETL_PLUGIN_CHANNEL_DIR: plugins/channel
+ETL_PLUGIN_WRITER_DIR: plugins/writer
+
+flink:
+  task:
+    type: etl # etl stream batch sql
+    name: SupportETLApp
+
+
+etl:
+  reader:
+    name: examplereader
+    class:
+    parallelism: 1
+    example:
+      endIndex: 1000
+
+  processer:
+    name: examplechannle
+    class:
+    parallelism: 1
+    example:
+      channelVar: channel_var
+
+  writer:
+    name: examplewriter
+    class:
+    parallelism: 1
+    batchWriteMode: false #写出模式,是批量写出 还是逐条写出
+    batchWriteSize: 100 #批量写出的大小
+    example:
+      writerVar: writer_var

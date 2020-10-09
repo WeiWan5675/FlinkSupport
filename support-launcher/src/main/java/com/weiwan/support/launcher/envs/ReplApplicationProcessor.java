@@ -3,6 +3,8 @@ package com.weiwan.support.launcher.envs;
 import com.weiwan.support.common.options.OptionParser;
 import com.weiwan.support.launcher.options.ApiRunOption;
 import com.weiwan.support.launcher.options.ReplRunOption;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @Author: xiaozhennan
@@ -14,6 +16,8 @@ import com.weiwan.support.launcher.options.ReplRunOption;
 public class ReplApplicationProcessor extends ApplicationEnv {
     private ReplRunOption option;
 
+    private static final Logger logger = LoggerFactory.getLogger(ReplApplicationProcessor.class);
+
     public ReplApplicationProcessor(String[] args) {
         super(args);
         OptionParser optionParser = new OptionParser(args);
@@ -23,11 +27,11 @@ public class ReplApplicationProcessor extends ApplicationEnv {
     @Override
     public boolean process() {
         System.out.println("选择? Y or N");
-        return false;
+        return true;
     }
 
     @Override
     protected void stop() {
-        System.out.println("repl shutdown hook run!");
+        logger.info("repl shutdown hook run!");
     }
 }

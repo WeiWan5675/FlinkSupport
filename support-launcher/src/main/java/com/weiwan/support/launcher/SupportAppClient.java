@@ -30,27 +30,28 @@ public class SupportAppClient {
             OptionParser optionParser = new OptionParser(args);
             GenericRunOption _option = optionParser.parse(GenericRunOption.class);
             if (_option.isVerbose()) {
-                System.out.println("\t Flink Support Version : 1.0 Create By Release-1.0.1");
+                System.out.println("\t Flink Support Version : 1.0 Create By Release-1.0.0");
                 return;
             } else if (_option.isHelp()) {
                 optionParser.usage();
                 return;
             }
+
             logger.info("using client mode is {}", _option.getRunMode());
             String runMode = _option.getRunMode().toUpperCase();
             ApplicationEnv applicationEnv = null;
             switch (RunMode.valueOf(runMode)) {
                 case JOB:
                     applicationEnv = new JobApplicationProcessor(args);
-                    System.out.println("job env mode");
+                    logger.info("running job env mode");
                     break;
-                case API:
-                    applicationEnv = new ApiApplicationProcessor(args);
-                    System.out.println("api env mode");
-                    break;
+//                case API: TODO 这里不考虑API模式,单独提供一个API服务,这里只作为应用启动的入口
+//                    applicationEnv = new ApiApplicationProcessor(args);
+//                    System.out.println("api env mode");
+//                    break;
                 case REPL:
                     applicationEnv = new ReplApplicationProcessor(args);
-                    System.out.println("repl env mode");
+                    logger.info("running repl env mode");
                     break;
                 default:
                     throw new SupportException("unsupported client environment");
