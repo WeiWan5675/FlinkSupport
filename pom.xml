@@ -9,17 +9,18 @@
     <packaging>pom</packaging>
     <version>1.0</version>
     <modules>
-        <module>support-core</module>
         <module>support-common</module>
-        <module>support-launcher</module>
-        <module>support-etl-framework</module>
-        <module>support-test</module>
-        <module>support-monitor</module>
         <module>support-utils</module>
+        <module>support-core</module>
+        <module>support-etl-framework</module>
         <module>support-sql-framework</module>
+        <module>support-launcher</module>
+        <module>support-monitor</module>
+        <module>support-test</module>
+        <module>support-package</module>
     </modules>
     <properties>
-        <package.name>FlinkArgus-1.0.0</package.name>
+        <package.name>FlinkSupport-${project.version}</package.name>
         <profiles.dir>src/main/profiles</profiles.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.targetJdk>1.8</project.build.targetJdk>
@@ -515,32 +516,9 @@
                         <destDir>FlinkSupport-java-docs</destDir>
                     </configuration>
                 </plugin>
-
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-antrun-plugin</artifactId>
-                    <executions>
-                        <execution>
-                            <id>mvn-copy-file</id>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>run</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                    <configuration>
-                        <tasks>
-                            <delete dir="${basedir}/target" />
-                            <mkdir dir="${basedir}/target/${project.name}"/>
-                            <mkdir dir="${basedir}/target/${project.name}/bin"/>
-                            <copy todir="${basedir}/target/${project.name}">
-                                <fileset dir="${basedir}/target/" includes="*.jar"/>
-                            </copy>
-                        </tasks>
-                    </configuration>
-                </plugin>
             </plugins>
         </pluginManagement>
+
+
     </build>
 </project>

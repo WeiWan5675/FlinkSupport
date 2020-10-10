@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>FlinkSupport</artifactId>
+        <groupId>com.weiwan</groupId>
+        <version>1.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>support-package</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.weiwan</groupId>
+            <artifactId>support-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.weiwan</groupId>
+            <artifactId>support-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.weiwan</groupId>
+            <artifactId>etl-framework</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.weiwan</groupId>
+            <artifactId>support-utils</artifactId>
+        </dependency>
+    </dependencies>
+    <build>
+        <finalName>${package.name}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptors>
+                        <descriptor>../package/assembly.xml</descriptor>
+                    </descriptors>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>mvn-copy-file</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <tasks>
+                        <delete dir="${basedir}/../target"/>
+                        <mkdir dir="${basedir}/../target/${package.name}"/>
+                        <copy todir="${basedir}/../target/${package.name}/">
+                            <fileset dir="${basedir}/target/" includes="*.jar"/>
+                            <fileset dir="${basedir}/target/classes/" includes="*.yaml"/>
+                        </copy>
+                        <copy todir="${basedir}/../target/">
+                            <fileset dir="${basedir}/target/" includes="*.tar.gz"/>
+                        </copy>
+                        <untar src="${basedir}/../target/${package.name}.tar.gz" compression="gzip" dest="${basedir}/../target/${package.name}"/>
+                    </tasks>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
