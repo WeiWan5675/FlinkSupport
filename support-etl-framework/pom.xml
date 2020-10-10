@@ -8,18 +8,23 @@
         <version>1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <packaging>pom</packaging>
     <artifactId>support-etl-framework</artifactId>
-
+    <packaging>pom</packaging>
     <modules>
         <module>etl-framework</module>
+        <module>etl-plugins</module>
+        <module>etl-plugins/mysql-plugin</module>
     </modules>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.weiwan</groupId>
-            <artifactId>support-core</artifactId>
-            <scope>compile</scope>
-        </dependency>
-    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.weiwan</groupId>
+                <artifactId>mysql-plugin</artifactId>
+                <version>1.0</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
 </project>

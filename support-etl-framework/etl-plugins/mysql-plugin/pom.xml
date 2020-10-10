@@ -6,19 +6,16 @@
         <artifactId>support-etl-framework</artifactId>
         <groupId>com.weiwan</groupId>
         <version>1.0</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <artifactId>mysql-plugin</artifactId>
 
-    <artifactId>etl-framework</artifactId>
-
-<dependencies>
-    <dependency>
-        <groupId>com.weiwan</groupId>
-        <artifactId>support-core</artifactId>
-        <scope>provided</scope>
-    </dependency>
-</dependencies>
-
-
+    <dependencies>
+        <dependency>
+            <groupId>com.weiwan</groupId>
+            <artifactId>support-core</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

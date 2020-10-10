@@ -1,0 +1,73 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.1.0 http://maven.apache.org/xsd/assembly-2.1.0.xsd">
+    <formats>
+        <format>tar.gz</format>
+    </formats>
+    <id>release</id>
+    <includeBaseDirectory>false</includeBaseDirectory>
+
+    <dependencySets>
+        <dependencySet>
+            <unpack>false</unpack>
+            <useProjectArtifact>false</useProjectArtifact>
+            <scope>runtime</scope>
+            <excludes>
+                <!-- groupId:artifactId:type:classifier -->
+                <exclude>com.weiwan:*plugin*:jar:</exclude>
+            </excludes>
+            <outputDirectory>lib</outputDirectory>
+        </dependencySet>
+        <dependencySet>
+            <unpack>true</unpack>
+            <includes>
+                <include>com.weiwan:*:jar</include>
+            </includes>
+                <unpackOptions>
+                    <includes>
+                        <include>support-core.yaml</include>
+                        <include>support-etl.yaml</include>
+                        <include>support-sql.yaml</include>
+                    </includes>
+                </unpackOptions>
+            <useProjectArtifact>false</useProjectArtifact>
+            <outputDirectory>conf</outputDirectory>
+        </dependencySet>
+        <dependencySet>
+            <unpack>false</unpack>
+            <includes>
+                <include>com.weiwan:*plugin*:jar:</include>
+            </includes>
+            <excludes>
+                <!-- groupId:artifactId:type:classifier -->
+                <exclude>com.weiwan:etl-plugins:jar:</exclude>
+            </excludes>
+            <outputDirectory>plugins</outputDirectory>
+        </dependencySet>
+    </dependencySets>
+    <fileSets>
+
+        <fileSet>
+            <directory>${basedir}/../bin</directory>
+            <outputDirectory>bin</outputDirectory>
+            <fileMode>0775</fileMode>
+        </fileSet>
+        <fileSet>
+            <directory>${basedir}/../doc</directory>
+            <outputDirectory>doc</outputDirectory>
+        </fileSet>
+            <fileSet> <!-- 创建一个空的扩展依赖文件夹 -->
+                <outputDirectory>extlib</outputDirectory>
+                <excludes><exclude>**/*</exclude></excludes>
+            </fileSet>
+    </fileSets>
+    <files>
+        <file>
+            <source>${basedir}/../README.md</source>
+            <outputDirectory>.</outputDirectory>
+        </file>
+        <file>
+            <source>${basedir}/../LICENSE</source>
+            <outputDirectory>.</outputDirectory>
+        </file>
+    </files>
+</assembly>

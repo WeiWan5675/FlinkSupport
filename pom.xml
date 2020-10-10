@@ -34,7 +34,7 @@
         <snappy-java.version>1.1.4</snappy-java.version>
         <org.apache.parquet.version>1.8.3</org.apache.parquet.version>
         <hive.version>1.1.1</hive.version>
-
+        <log4j2.version>1.7.25</log4j2.version>
         <fastjson.version>1.2.62</fastjson.version>
         <logback.version>1.2.3</logback.version>
         <log4j-over-slf4j.version>1.7.25</log4j-over-slf4j.version>
@@ -49,11 +49,12 @@
         <jcommander.version>1.78</jcommander.version>
         <support-common.version>1.0</support-common.version>
         <support-core.version>1.0</support-core.version>
-        <support-etl-framework>1.0</support-etl-framework>
         <support-launcher.version>1.0</support-launcher.version>
         <support-test.version>1.0</support-test.version>
         <support-utils.version>1.0</support-utils.version>
         <support-monitor.version>1.0</support-monitor.version>
+        <support-etl-framework.version>1.0</support-etl-framework.version>
+        <support-sql-framework.version>1.0</support-sql-framework.version>
     </properties>
 
 
@@ -73,6 +74,27 @@
                 <version>${support-core.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.weiwan</groupId>
+                <artifactId>support-etl-framework</artifactId>
+                <version>${support-etl-framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.weiwan</groupId>
+                <artifactId>etl-framework</artifactId>
+                <version>${support-etl-framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.weiwan</groupId>
+                <artifactId>etl-plugins</artifactId>
+                <version>${support-etl-framework.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.weiwan</groupId>
+                <artifactId>support-sql-framework</artifactId>
+                <version>${support-sql-framework.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.weiwan</groupId>

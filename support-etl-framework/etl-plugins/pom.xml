@@ -7,18 +7,14 @@
         <groupId>com.weiwan</groupId>
         <version>1.0</version>
     </parent>
+
     <modelVersion>4.0.0</modelVersion>
+    <artifactId>etl-plugins</artifactId>
 
-    <artifactId>etl-framework</artifactId>
-
-<dependencies>
-    <dependency>
-        <groupId>com.weiwan</groupId>
-        <artifactId>support-core</artifactId>
-        <scope>provided</scope>
-    </dependency>
-</dependencies>
-
-
-
+    <dependencies>
+        <dependency>
+            <groupId>com.weiwan</groupId>
+            <artifactId>mysql-plugin</artifactId>
+        </dependency>
+    </dependencies>
 </project>
