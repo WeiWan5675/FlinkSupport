@@ -3,7 +3,6 @@ package com.weiwan.support.launcher;
 import com.weiwan.support.common.exception.SupportException;
 import com.weiwan.support.common.options.OptionParser;
 import com.weiwan.support.launcher.enums.RunMode;
-import com.weiwan.support.launcher.envs.ApiApplicationProcessor;
 import com.weiwan.support.launcher.envs.ApplicationEnv;
 import com.weiwan.support.launcher.envs.JobApplicationProcessor;
 import com.weiwan.support.launcher.envs.ReplApplicationProcessor;
@@ -43,7 +42,7 @@ public class SupportAppClient {
             switch (RunMode.valueOf(runMode)) {
                 case JOB:
                     applicationEnv = new JobApplicationProcessor(args);
-                    logger.info("running job env mode");
+                    logger.debug("running job env mode");
                     break;
 //                case API: TODO 这里不考虑API模式,单独提供一个API服务,这里只作为应用启动的入口
 //                    applicationEnv = new ApiApplicationProcessor(args);

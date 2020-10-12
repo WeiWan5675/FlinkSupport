@@ -34,10 +34,11 @@
         <snappy-java.version>1.1.4</snappy-java.version>
         <org.apache.parquet.version>1.8.3</org.apache.parquet.version>
         <hive.version>1.1.1</hive.version>
-        <log4j2.version>1.7.25</log4j2.version>
+        <log4j2.version>2.13.3</log4j2.version>
         <fastjson.version>1.2.62</fastjson.version>
         <logback.version>1.2.3</logback.version>
         <log4j-over-slf4j.version>1.7.25</log4j-over-slf4j.version>
+
         <snakeyaml.version>1.24</snakeyaml.version>
         <commons-lang3.version>3.4</commons-lang3.version>
         <commons-codec.version>RELEASE</commons-codec.version>
@@ -56,7 +57,6 @@
         <support-etl-framework.version>1.0</support-etl-framework.version>
         <support-sql-framework.version>1.0</support-sql-framework.version>
     </properties>
-
 
 
     <dependencyManagement>
@@ -267,23 +267,54 @@
             <!-- hadoop-end -->
 
             <!-- 日志 -->
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-core</artifactId>
-                <version>${logback.version}</version>
-            </dependency>
 
             <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-classic</artifactId>
-                <version>${logback.version}</version>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-slf4j-impl</artifactId>
+                <version>${log4j2.version}</version>
             </dependency>
 
+            <!-- 桥接：告诉commons logging使用Log4j2 -->
             <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>log4j-over-slf4j</artifactId>
-                <version>${log4j-over-slf4j.version}</version>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-jcl</artifactId>
+                <version>${log4j2.version}</version>
             </dependency>
+            <!-- 桥接：告诉Java Util Logging使用Log4j2 -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-jul</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
+
+            <!--            <dependency>-->
+            <!--                <groupId>ch.qos.logback</groupId>-->
+            <!--                <artifactId>logback-core</artifactId>-->
+            <!--                <version>${logback.version}</version>-->
+            <!--            </dependency>-->
+
+            <!--            <dependency>-->
+            <!--                <groupId>ch.qos.logback</groupId>-->
+            <!--                <artifactId>logback-classic</artifactId>-->
+            <!--                <version>${logback.version}</version>-->
+            <!--            </dependency>-->
+
+            <!--            <dependency>-->
+            <!--                <groupId>org.slf4j</groupId>-->
+            <!--                <artifactId>log4j-over-slf4j</artifactId>-->
+            <!--                <version>${log4j-over-slf4j.version}</version>-->
+            <!--            </dependency>-->
+
 
             <dependency>
                 <groupId>com.alibaba</groupId>

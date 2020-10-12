@@ -1,9 +1,5 @@
 package com.weiwan.support.common.utils;
 
-import ch.qos.logback.classic.Level;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Map;
@@ -144,18 +140,18 @@ public class CommonUtil {
 
 
     public static String useCommandLogLevel(String logLevel) {
-        ch.qos.logback.classic.LoggerContext loggerContext = (ch.qos.logback.classic.LoggerContext) LoggerFactory.getILoggerFactory();
-        //设置全局日志级别
-        ch.qos.logback.classic.Logger _Log = loggerContext.getLogger("root");
-        Level level = _Log.getLevel();
-        if (StringUtils.isNotEmpty(logLevel) && !level.levelStr.equalsIgnoreCase(logLevel)) {
-            Logger logger = (Logger) _Log;
-            _Log.setLevel(Level.valueOf(logLevel));
-            logger.debug("useing user custom loglevel override log profile setting");
-            return logLevel;
-        } else if (StringUtils.isEmpty(logLevel)) {
-            return level.levelStr;
-        }
+//        ch.qos.logback.classic.LoggerContext loggerContext = (ch.qos.logback.classic.LoggerContext) LoggerFactory.getILoggerFactory();
+//        //设置全局日志级别
+//        ch.qos.logback.classic.Logger _Log = loggerContext.getLogger("root");
+//        Level level = _Log.getLevel();
+//        if (StringUtils.isNotEmpty(logLevel) && !level.levelStr.equalsIgnoreCase(logLevel)) {
+//            Logger logger = (Logger) _Log;
+//            _Log.setLevel(Level.valueOf(logLevel));
+//            logger.debug("useing user custom loglevel override log profile setting");
+//            return logLevel;
+//        } else if (StringUtils.isEmpty(logLevel)) {
+//            return level.levelStr;
+//        }
         return logLevel;
     }
 }
