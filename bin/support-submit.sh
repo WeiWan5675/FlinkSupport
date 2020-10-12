@@ -30,9 +30,9 @@ do
   CLASS_PATH=$CLASS_PATH:$jar
 done
 
+echo $CLASS_PATH
 
-
-CLASS_NAME=
+CLASS_NAME=com.weiwan.support.launcher.SupportAppClient
 
 echo "Flink Argus starting ..."
 $JAVA_RUN -cp $CLASS_PATH $CLASS_NAME $@
