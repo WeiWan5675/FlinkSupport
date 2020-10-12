@@ -1,13 +1,13 @@
 package com.weiwan.support.launcher;
 
-import com.weiwan.support.common.exception.SupportException;
+
 import com.weiwan.support.common.options.OptionParser;
-import com.weiwan.support.launcher.enums.RunMode;
 import com.weiwan.support.launcher.envs.ApplicationEnv;
 import com.weiwan.support.launcher.envs.JobApplicationProcessor;
 import com.weiwan.support.launcher.envs.ReplApplicationProcessor;
 import com.weiwan.support.launcher.hook.ShutdownHook;
 import com.weiwan.support.launcher.options.GenericRunOption;
+import com.weiwan.support.launcher.enums.RunMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -3,7 +3,6 @@ package com.weiwan.support.common.options;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
-import com.weiwan.support.common.utils.ReflectUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
@@ -78,7 +77,7 @@ public class OptionParser {
         Field[] declaredFields = options.getClass().getDeclaredFields();
         Map<String, Object> res = new HashMap();
         for (Field field : declaredFields) {
-            Object fieldValue = ReflectUtil.getObjectValue(options, field);
+            Object fieldValue = com.weiwan.support.common.utils.ReflectUtil.getObjectValue(options, field);
             Parameter optionField = field.getAnnotation(Parameter.class);
             if (optionField != null) {
                 String[] oweKeys = optionField.names();

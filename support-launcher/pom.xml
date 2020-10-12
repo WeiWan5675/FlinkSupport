@@ -18,5 +18,9 @@
             <groupId>com.weiwan</groupId>
             <artifactId>support-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.weiwan</groupId>
+            <artifactId>support-core</artifactId>
+        </dependency>
     </dependencies>
 </project>
