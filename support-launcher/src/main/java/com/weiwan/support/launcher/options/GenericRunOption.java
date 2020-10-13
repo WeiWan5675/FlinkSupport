@@ -1,6 +1,10 @@
 package com.weiwan.support.launcher.options;
 
+import com.beust.jcommander.DynamicParameter;
 import com.beust.jcommander.Parameter;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Author: xiaozhennan
@@ -12,16 +16,16 @@ import com.beust.jcommander.Parameter;
 public class GenericRunOption {
 
 
-    @Parameter(names = "--help", help = true)
+    @Parameter(names = {"--help", "-help", "-h"}, help = true, description = "help info")
     private boolean help;
 
-    @Parameter(names = "--version", description = "support framework client version")
+    @Parameter(names = {"--version", "-version", "-v"}, description = "support framework client version")
     private boolean verbose;
 
     @Parameter(names = {"-m", "-mode"}, description = "support framework client runing env mode")
     private String runMode = "job";
 
-    @Parameter(names = "-n", description = "User program name, default is: Support Application")
+    @Parameter(names = {"-n", "-name"}, description = "User program name, default is: Support Application")
     private String appName = "Support Application";
 
     @Parameter(names = "-logLevel", description = "client log level, default is: INFO")
@@ -44,6 +48,9 @@ public class GenericRunOption {
 
     @Parameter(names = "-userResources", description = "The path of user application resources, supports local or HDFS paths")
     private String userResources;
+
+    @DynamicParameter(names = "-D", description = "Dynamic parameters go here")
+    private Map<String, String> params = new HashMap<>();
 
     public boolean isHelp() {
         return help;

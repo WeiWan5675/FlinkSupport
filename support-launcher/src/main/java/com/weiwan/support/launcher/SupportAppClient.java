@@ -37,7 +37,7 @@ public class SupportAppClient {
                 return;
             }
 
-            logger.info("using client mode is {}", _option.getRunMode());
+            logger.info("using client mode is {}", _option.getRunMode().toUpperCase());
             String runMode = _option.getRunMode().toUpperCase();
             ApplicationEnv applicationEnv = null;
             switch (RunMode.valueOf(runMode)) {
@@ -51,7 +51,7 @@ public class SupportAppClient {
 //                    break;
                 case REPL:
                     applicationEnv = new ReplApplicationProcessor(args);
-                    logger.info("running repl env mode");
+                    logger.debug("running repl env mode");
                     break;
                 default:
                     throw new SupportException("unsupported client environment");
