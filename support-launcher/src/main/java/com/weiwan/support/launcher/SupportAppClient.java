@@ -38,9 +38,9 @@ public class SupportAppClient {
             }
 
             logger.info("using client mode is {}", _option.getRunMode().toUpperCase());
-            String runMode = _option.getRunMode().toUpperCase();
             ApplicationEnv applicationEnv = null;
-            switch (RunMode.valueOf(runMode)) {
+            RunMode runMode = RunMode.valueOf(_option.getRunMode().toUpperCase());
+            switch (runMode) {
                 case JOB:
                     applicationEnv = new JobApplicationProcessor(args);
                     logger.debug("running job env mode");
@@ -58,7 +58,7 @@ public class SupportAppClient {
             }
 
             Runtime.getRuntime().addShutdownHook(new ShutdownHook(applicationEnv, isRuning));
-            while (!applicationEnv.enter() && isRuning) {
+            while (!applicationEnv.enter(runMode) && isRuning) {
                 synchronized (SupportAppClient.class) {
                     System.out.println("\n");
                     try {

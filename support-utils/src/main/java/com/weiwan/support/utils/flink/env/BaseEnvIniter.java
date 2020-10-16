@@ -6,6 +6,7 @@ import com.weiwan.support.common.enums.SupportExceptionEnum;
 import com.weiwan.support.common.exception.SupportException;
 import com.weiwan.support.common.utils.CommonUtil;
 import com.weiwan.support.common.utils.PropertiesUtil;
+import com.weiwan.support.common.utils.VariableCheckTool;
 import com.weiwan.support.common.utils.YamlUtils;
 import com.weiwan.support.utils.flink.conf.*;
 import com.weiwan.support.utils.flink.loging.FlinkLogger;
@@ -40,9 +41,9 @@ public abstract class BaseEnvIniter {
         String backendTypeStr = flinkConfig.getVar(FlinkContains.FLINK_TASK_STATE_BACKEND_TYPE_KEY);
         String backendPathStr = flinkConfig.getVar(FlinkContains.FLINK_TASK_STATE_BACKEND_PATH_KEY);
         String backendAsyncStr = flinkConfig.getVar(FlinkContains.FLINK_TASK_STATE_BACKEND_ASYNC_KEY);
-        String backendType = CommonUtil.getNotNullOrDefault(backendTypeStr, FlinkDefault.BACKEND_TYPE_DEFAULT);
-        String backendPath = CommonUtil.getNotNullOrDefault(backendPathStr, FlinkDefault.BACKEND_PATH_DEFAULT);
-        String backendAsync = CommonUtil.getNotNullOrDefault(backendAsyncStr, FlinkDefault.BACKEND_ASYNC_DEFAULT);
+        String backendType = VariableCheckTool.checkNullOrDefault(backendTypeStr, FlinkDefault.BACKEND_TYPE_DEFAULT);
+        String backendPath = VariableCheckTool.checkNullOrDefault(backendPathStr, FlinkDefault.BACKEND_PATH_DEFAULT);
+        String backendAsync = VariableCheckTool.checkNullOrDefault(backendAsyncStr, FlinkDefault.BACKEND_ASYNC_DEFAULT);
         Boolean async = Boolean.valueOf(backendAsync);
         if (backendType == null) {
             stateBackend = new MemoryStateBackend();
@@ -73,16 +74,16 @@ public abstract class BaseEnvIniter {
 
 
     protected void configureCheckPoint(Map<String, String> conf, CheckpointConfig point) {
-        Long checkPointTimeOut = Long.valueOf(CommonUtil.getNotNullOrDefault(
+        Long checkPointTimeOut = Long.valueOf(VariableCheckTool.checkNullOrDefault(
                 conf.get(FlinkContains.FLINK_TASK_CHECKPOINT_TIMEOUT_KEY),
                 FlinkDefault.CHECKPOINT_TIMEOUT_DEFAULT));
-        Long minPauseBetween = Long.valueOf(CommonUtil.getNotNullOrDefault(
+        Long minPauseBetween = Long.valueOf(VariableCheckTool.checkNullOrDefault(
                 conf.get(FlinkContains.FLINK_TASK_CHECKPOINT_MIN_INTERVAL_KEY),
                 FlinkDefault.CHECKPOINT_MIN_PAUSE_BETWEEN_DEFAULT));
-        Integer maxConcurent = Integer.valueOf(CommonUtil.getNotNullOrDefault(
+        Integer maxConcurent = Integer.valueOf(VariableCheckTool.checkNullOrDefault(
                 conf.get(FlinkContains.FLINK_TASK_CHECKPOINT_MAX_CONCURRENT_KEY),
                 FlinkDefault.CHECKPOINT_MAX_CONCURRENT_DEFAULT));
-        boolean onFail = Boolean.getBoolean(CommonUtil.getNotNullOrDefault(
+        boolean onFail = Boolean.getBoolean(VariableCheckTool.checkNullOrDefault(
                 conf.get(FlinkContains.FLINK_TASK_CHECKPOINT_ON_FAIL_KEY),
                 FlinkDefault.ON_FAIL_DEFAULT));
 
@@ -91,10 +92,10 @@ public abstract class BaseEnvIniter {
         point.setMaxConcurrentCheckpoints(maxConcurent);
         point.setFailOnCheckpointingErrors(onFail);
 
-        String extFlag = CommonUtil.getNotNullOrDefault(
+        String extFlag = VariableCheckTool.checkNullOrDefault(
                 conf.get(FlinkContains.FLINK_TASK_CHECKPOINT_EXTERNALIZED_ENABLE_KEY),
                 FlinkDefault.EXTERNALIZED_ENABLE_DEFAULT);
-        String extType = CommonUtil.getNotNullOrDefault(
+        String extType = VariableCheckTool.checkNullOrDefault(
                 conf.get(FlinkDefault.EXTERNALIZED_CLEANUP_DEFAULT),
                 FlinkEnum.CHECKPOINT_DELETE_ON_CANCELLATION.getCode());
 

@@ -16,7 +16,7 @@ public class SupportConstants {
 
     public static final String SQL_BASE_APP_CLASSNAME = "com.weiwan.support.sql.framework.app.SQLStreamBaseApp";
 
-    public static final String SUPPORT_WORKSPACE = "/flink_support_space";
+    public static final String SUPPORT_WORKSPACE = "hdfs://flink_support_space";
 
     public static final String FLINK_HDFS_HOME_PREFIX = SUPPORT_WORKSPACE + Constans.SIGN_SLASH + "flink";
 
@@ -30,5 +30,8 @@ public class SupportConstants {
 
     public static final String SUPPORT_CONF_DIR = SUPPORT_WORKSPACE + Constans.SIGN_SLASH + "conf";
 
+    public static final String SUPPORT_RESOURCES_DIR = SUPPORT_WORKSPACE + Constans.SIGN_SLASH + "resources";
 
+
+    public static final String KEY_SUPPORT_HOME = "FLINK_SUPPORT_HOME";
 }

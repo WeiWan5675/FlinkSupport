@@ -46,8 +46,8 @@ public class GenericRunOption {
     @Parameter(names = "-myHome", description = "The location of the support framework installed on the disk")
     private String myHome;
 
-    @Parameter(names = "-userResources", description = "The path of user application resources, supports local or HDFS paths")
-    private String userResources;
+    @Parameter(names = "-resources", description = "User resource path, support hdfs and local, default is hdfs://flink_support_space/resources/${appName}/${appConfMD5}")
+    private String resources = "hdfs://flink_support_space/resources/${appName}-${appConfMD5}";
 
     @DynamicParameter(names = "-D", description = "Dynamic parameters go here")
     private Map<String, String> params = new HashMap<>();
@@ -132,11 +132,19 @@ public class GenericRunOption {
         this.myHome = myHome;
     }
 
-    public String getUserResources() {
-        return userResources;
+    public String getResources() {
+        return resources;
     }
 
-    public void setUserResources(String userResources) {
-        this.userResources = userResources;
+    public void setResources(String resources) {
+        this.resources = resources;
+    }
+
+    public Map<String, String> getParams() {
+        return params;
+    }
+
+    public void setParams(Map<String, String> params) {
+        this.params = params;
     }
 }

@@ -38,12 +38,6 @@ public class SupportException extends RuntimeException {
         this.msg = msg;
     }
 
-
-    public static SupportException generateParameterEmptyException(String msg) {
-        return new SupportException(SupportExceptionEnum.PARAMETER_EMPTY, msg);
-    }
-
-
     public String getCode() {
         return code;
     }
@@ -60,10 +54,20 @@ public class SupportException extends RuntimeException {
         this.msg = msg;
     }
 
-    public JSONObject converToJson() {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("code", this.getCode());
-        jsonObject.put("msg", this.getMsg());
-        return jsonObject;
+
+    public static SupportException generateParameterEmptyException(String msg) {
+        return new SupportException(SupportExceptionEnum.PARAMETER_EMPTY, msg);
+    }
+
+    public static SupportException generateUnknownException(String msg) {
+        return new SupportException(SupportExceptionEnum.UNKNOWN, msg);
+    }
+
+    public static SupportException generateParameterIllegalException(String msg) {
+        return new SupportException(SupportExceptionEnum.PARAMETER_EMPTY, msg);
+    }
+
+    public static SupportException generateDataException(String msg) {
+        return new SupportException(SupportExceptionEnum.PARAMETER_EMPTY, msg);
     }
 }

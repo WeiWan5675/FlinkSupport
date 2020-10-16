@@ -22,5 +22,11 @@
             <groupId>com.weiwan</groupId>
             <artifactId>support-core</artifactId>
         </dependency>
+        <!-- test -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>
