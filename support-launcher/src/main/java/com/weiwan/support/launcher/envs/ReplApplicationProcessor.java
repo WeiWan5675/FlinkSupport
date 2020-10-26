@@ -26,6 +26,11 @@ public class ReplApplicationProcessor extends ApplicationEnv {
     }
 
     @Override
+    public void init(GenericRunOption option) {
+
+    }
+
+    @Override
     public boolean process() {
         System.out.println("选择? Y or N");
         return true;
@@ -42,7 +47,8 @@ public class ReplApplicationProcessor extends ApplicationEnv {
     }
 
     @Override
-    protected void stop() {
-        logger.info("repl shutdown hook run!");
+    public void stop() {
+
     }
+
 }

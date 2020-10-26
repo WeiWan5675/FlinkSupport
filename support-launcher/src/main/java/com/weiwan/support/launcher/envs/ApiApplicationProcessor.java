@@ -16,44 +16,22 @@ public class ApiApplicationProcessor
         extends ApplicationEnv
 {
 
-    private ApiRunOption option;
-
     public ApiApplicationProcessor(String[] args) {
         super(args);
-        OptionParser optionParser = new OptionParser(args);
-        option = optionParser.parse(ApiRunOption.class);
+    }
+
+    @Override
+    public void init(GenericRunOption option) {
+
     }
 
     @Override
     public boolean process() {
-        return true;
-    }
-
-    /**
-     * 检查通过返回true
-     *
-     * @param genericRunOption
-     * @return
-     */
-    @Override
-    public boolean emptyParameterCheck(GenericRunOption genericRunOption) {
         return false;
     }
 
-    /**
-     * 检查通过返回true
-     *
-     * @param genericRunOption
-     * @return
-     */
     @Override
-    public boolean illegalParameterCheck(GenericRunOption genericRunOption) {
-        return false;
-    }
+    public void stop() {
 
-
-    @Override
-    protected void stop() {
-        System.out.println("api process shutdown is run");
     }
 }

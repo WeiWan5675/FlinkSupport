@@ -34,4 +34,9 @@ public class SupportConstants {
 
 
     public static final String KEY_SUPPORT_HOME = "FLINK_SUPPORT_HOME";
+    public static final String KEY_FLINK_HOME = "FLINK_HOME";
+    public static final String SUPPORT_CORE_CONF_FILE = "support-core.yaml";
+    public static final String SUPPORT_ETL_CONF_FILE = "support-etl.yaml";
+    public static final String SUPPORT_SQL_CONF_FILE = "support-sql.yaml";
+    public static final String KEY_HADOOP_HOME = "HADOOP_HOME";
 }

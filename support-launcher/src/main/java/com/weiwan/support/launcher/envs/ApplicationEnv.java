@@ -1,12 +1,14 @@
 package com.weiwan.support.launcher.envs;
 
-import com.weiwan.support.common.constant.Constans;
-import com.weiwan.support.common.enums.SupportExceptionEnum;
 import com.weiwan.support.common.exception.SupportException;
 import com.weiwan.support.common.options.OptionParser;
 import com.weiwan.support.common.utils.CommonUtil;
 import com.weiwan.support.common.utils.LogUtil;
 import com.weiwan.support.common.utils.SystemUtil;
+import com.weiwan.support.common.utils.YamlUtils;
+import com.weiwan.support.core.config.SupportCoreConf;
+import com.weiwan.support.core.config.SupportETLConf;
+import com.weiwan.support.core.config.SupportSqlConf;
 import com.weiwan.support.core.constant.SupportConstants;
 import com.weiwan.support.launcher.SupportAppClient;
 import com.weiwan.support.launcher.enums.ResourceMode;
@@ -17,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.Map;
 
 /**
  * @Author: xiaozhennan
@@ -25,15 +28,21 @@ import java.io.File;
  * @ClassName: ApplicationEnv
  * @Description:
  **/
-public abstract class ApplicationEnv {
+public abstract class ApplicationEnv implements EnvProcess {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationEnv.class);
     private String[] args;
     protected OptionParser optionParser;
     protected GenericRunOption genericRunOption;
 
+    protected SupportCoreConf supportCoreConf;
+    protected SupportETLConf supportETLConf;
+    protected SupportSqlConf supportSqlConf;
+
     protected ResourceMode resourceMode;
     protected RunMode runMode;
+
+    private boolean inited;
 
     public ApplicationEnv(String[] args) {
         this.args = args;
@@ -41,28 +50,41 @@ public abstract class ApplicationEnv {
     }
 
 
-    public abstract boolean process();
-
     public boolean enter(RunMode runMode) {
         this.runMode = runMode;
-        //在处理之前,可以在这里进行一些基本操作
+        if (inited) {
+            //设置客户端日志级别
+            LogUtil.useCommandLogLevel(genericRunOption.getLogLevel());
+
+            //参数校验,子类重写两个方法
+            try {
+                if (!emptyParameterCheck(genericRunOption)) {
+                    LOGGER.error("dry run parameter verification failed");
+                    throw SupportException.generateParameterEmptyException("Flink support operating parameters are empty");
+                }
+                if (!illegalParameterCheck(genericRunOption)) {
+                    LOGGER.error("illegal parameter verification failed");
+                    throw SupportException.generateParameterIllegalException("Illegal operating parameters of flink support");
+                }
+            } catch (SupportException exception) {
+                LOGGER.error("Parameter verification failed, please check the parameter settings");
+                throw exception;
+            }
+
+            //SupportHome
+            setSupportHomePath(genericRunOption);
+
+            findSupportDefault(genericRunOption);
+            //设置组件Home
+            setEnvironmentVariables(genericRunOption);
 
 
-        if (!emptyParameterCheck(genericRunOption)) {
-            throw SupportException.generateParameterEmptyException("Flink support operating parameters are empty");
+            this.init(genericRunOption);
+
+
+            inited = true;
         }
-        if (!illegalParameterCheck(genericRunOption)) {
-            throw SupportException.generateParameterIllegalException("Illegal operating parameters of flink support");
-        }
 
-        //处理日志
-        LogUtil.useCommandLogLevel(genericRunOption.getLogLevel());
-        //设置组件Home
-        findSupportHomePath();
-//        findFlinkHomePath();
-//        findHadoopHomePath();
-//        readDefaultConfigFile();
-        //
 
         if (!process()) {
             //处理失败
@@ -72,31 +94,69 @@ public abstract class ApplicationEnv {
         return true;
     }
 
-    /**
-     * 检查通过返回true
-     *
-     * @param genericRunOption
-     * @return
-     */
-    public abstract boolean emptyParameterCheck(GenericRunOption genericRunOption);
+    private void findSupportDefault(GenericRunOption option) {
+        String myHome = option.getMyHome();
+        String coreConfFile = myHome + File.separator + SupportConstants.SUPPORT_CONF_DIR + SupportConstants.SUPPORT_CORE_CONF_FILE;
+        String etlConfFile = myHome + File.separator + SupportConstants.SUPPORT_CONF_DIR + SupportConstants.SUPPORT_ETL_CONF_FILE;
+        String sqlConfFile = myHome + File.separator + SupportConstants.SUPPORT_CONF_DIR + SupportConstants.SUPPORT_SQL_CONF_FILE;
+        supportCoreConf = new SupportCoreConf(YamlUtils.getYamlByFileName(coreConfFile));
+        supportETLConf = new SupportETLConf(YamlUtils.getYamlByFileName(etlConfFile));
+        supportSqlConf = new SupportSqlConf(YamlUtils.getYamlByFileName(sqlConfFile));
+    }
 
-    /**
-     * 检查通过返回true
-     *
-     * @param genericRunOption
-     * @return
-     */
-    public abstract boolean illegalParameterCheck(GenericRunOption genericRunOption);
+    private void setEnvironmentVariables(GenericRunOption option) {
+        //FlinkHome
+        setFlinkHomePath(option);
+        //HadoopHome
+        setHadoopHomePath(option);
+
+        //
+    }
+
+    private void setHadoopHomePath(GenericRunOption option) {
+        String hadoopHome = option.getHadoopHome();
+        if (StringUtils.isEmpty(hadoopHome)) {
+            //读取系统环境变量
+            hadoopHome = SystemUtil.getSystemVar(SupportConstants.KEY_HADOOP_HOME);
+        }
+        if (StringUtils.isEmpty(hadoopHome)) {
+            //从默认配置文件中读取
+            hadoopHome = supportCoreConf.getStringVal(SupportConstants.KEY_HADOOP_HOME);
+        } else {
+            if (StringUtils.isEmpty(supportCoreConf.getStringVal(SupportConstants.KEY_HADOOP_HOME))) {
+                supportCoreConf.setStringVal(SupportConstants.KEY_HADOOP_HOME, hadoopHome);
+            }
+        }
+        option.setHadoopHome(hadoopHome);
+        LOGGER.info("FLINK_HOME path is : {}", hadoopHome);
+    }
+
+    private void setFlinkHomePath(GenericRunOption option) {
+        String flinkHome = option.getFlinkHome();
+        if (StringUtils.isEmpty(flinkHome)) {
+            //读取系统环境变量
+            flinkHome = SystemUtil.getSystemVar(SupportConstants.KEY_FLINK_HOME);
+        }
+        if (StringUtils.isEmpty(flinkHome)) {
+            //从默认配置文件中读取
+            flinkHome = supportCoreConf.getStringVal(SupportConstants.KEY_FLINK_HOME);
+        } else {
+            if (StringUtils.isEmpty(supportCoreConf.getStringVal(SupportConstants.KEY_FLINK_HOME))) {
+                supportCoreConf.setStringVal(SupportConstants.KEY_FLINK_HOME, flinkHome);
+            }
+        }
+        option.setFlinkHome(flinkHome);
+        LOGGER.info("FLINK_HOME path is : {}", flinkHome);
+    }
+
 
     public void shutdown() {
         stop();
     }
 
-    protected abstract void stop();
 
-
-    public void findSupportHomePath() {
-        String myHome = genericRunOption.getMyHome();
+    public void setSupportHomePath(GenericRunOption option) {
+        String myHome = option.getMyHome();
         if (StringUtils.isEmpty(myHome)) {
             myHome = SystemUtil.getSystemVar(SupportConstants.KEY_SUPPORT_HOME);
         }
@@ -108,7 +168,7 @@ public abstract class ApplicationEnv {
             File file = new File(appPath);
             myHome = file.getParent();
         }
-        genericRunOption.setMyHome(myHome);
+        option.setMyHome(myHome);
         LOGGER.info(String.format("FLINK_SUPPORT_HOME is [%s]", myHome));
     }
 }

@@ -26,7 +26,13 @@ public class JobApplicationProcessor extends ApplicationEnv {
     public JobApplicationProcessor(String[] args) {
         super(args);
         super.genericRunOption = optionParser.parse(JobRunOption.class);
-        this.option = (JobRunOption) super.genericRunOption;
+    }
+
+
+    @Override
+    public void init(GenericRunOption option) {
+        this.option = (JobRunOption) option;
+        //
     }
 
     @Override
@@ -76,6 +82,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
         return true;
     }
 
+
     /**
      * 检查通过返回true
      *
@@ -84,7 +91,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
      */
     @Override
     public boolean emptyParameterCheck(GenericRunOption genericRunOption) {
-        return true;
+        return false;
     }
 
     /**
@@ -95,12 +102,12 @@ public class JobApplicationProcessor extends ApplicationEnv {
      */
     @Override
     public boolean illegalParameterCheck(GenericRunOption genericRunOption) {
-        return true;
+        return false;
     }
-
 
     @Override
-    protected void stop() {
-        logger.info("job process shutdown is run");
+    public void stop() {
+
     }
+
 }
