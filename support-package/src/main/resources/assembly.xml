@@ -24,9 +24,9 @@
             </includes>
                 <unpackOptions>
                     <includes>
-                        <include>support-core.yaml</include>
-                        <include>support-etl.yaml</include>
-                        <include>support-sql.yaml</include>
+                        <include>*.yaml</include>
+                        <include>*.yml</include>
+                        <include>*.properties</include>
                         <include>*.xml</include>
                     </includes>
                 </unpackOptions>
