@@ -27,6 +27,7 @@
                         <include>support-core.yaml</include>
                         <include>support-etl.yaml</include>
                         <include>support-sql.yaml</include>
+                        <include>*.xml</include>
                     </includes>
                 </unpackOptions>
             <useProjectArtifact>false</useProjectArtifact>

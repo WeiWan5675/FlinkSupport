@@ -73,7 +73,11 @@
                 <artifactId>support-core</artifactId>
                 <version>${support-core.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.weiwan</groupId>
+                <artifactId>support-launcher</artifactId>
+                <version>${support-launcher.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.weiwan</groupId>
                 <artifactId>support-etl-framework</artifactId>

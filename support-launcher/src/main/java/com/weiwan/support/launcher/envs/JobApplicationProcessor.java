@@ -84,7 +84,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
      */
     @Override
     public boolean emptyParameterCheck(GenericRunOption genericRunOption) {
-        return false;
+        return true;
     }
 
     /**
@@ -95,7 +95,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
      */
     @Override
     public boolean illegalParameterCheck(GenericRunOption genericRunOption) {
-        return false;
+        return true;
     }
 
 

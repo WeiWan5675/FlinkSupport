@@ -25,7 +25,10 @@
             <artifactId>etl-framework</artifactId>
             <version>${support-etl-framework.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.weiwan</groupId>
+            <artifactId>support-launcher</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.weiwan</groupId>
             <artifactId>etl-plugins</artifactId>
