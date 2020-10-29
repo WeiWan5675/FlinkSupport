@@ -19,7 +19,7 @@ HADOOP_USER_NAME: easylife
 flink:
   task:
     type: stream
-    name: flinkArgusJob
+    name: flink_app
     common:
       parallelism: 1 #并行度
       restartMode: none #fixed-delay | failure-rate | none  默认fixed-delay

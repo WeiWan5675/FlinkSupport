@@ -199,9 +199,19 @@ public abstract class AbstractConfig implements Serializable {
     }
 
     public void addAll(Map conf) {
-        if(conf != null && conf.size() > 0){
-            for (Object key : conf.keySet()) {
-                internalMap.put((String) key, conf.get(key));
+        if (internalMap != null) {
+            if (conf != null && conf.size() > 0) {
+                for (Object key : conf.keySet()) {
+                    if (conf.get(key) != null) {
+                        internalMap.put((String) key, conf.get(key));
+                    }
+                }
+            }
+        } else {
+            if (conf != null) {
+                internalMap = conf;
+            } else {
+                internalMap = new HashMap<>();
             }
         }
     }

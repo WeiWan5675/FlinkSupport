@@ -1,5 +1,7 @@
 package com.weiwan.support.common.utils;
 
+import java.util.Arrays;
+
 /**
  * @Author: xiaozhennan
  * @Date: 2020/2/28 17:54
@@ -49,5 +51,15 @@ public class StringUtil {
             }
         }
         return true;
+    }
+
+
+    public static String sortStrByDict(String str) {
+        if (str != null && str.length() > 0) {
+            char[] chars = str.toCharArray();
+            Arrays.sort(chars);
+            return String.valueOf(chars);
+        }
+        return null;
     }
 }

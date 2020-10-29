@@ -55,6 +55,7 @@ public class SupportConstants {
     public static final String FLINK_LOG_CONF_FILE = "log4j.properties";
 
     //HADOOP
+    public static final String HADOOP_USER_NAME= "HADOOP_USER_NAME";
     public static final String HADOOP_CONF_DIR = "etc/hadoop";
     public static final String HADOOP_CONF_CORE_SITE = "core-site.xml";
     public static final String HADOOP_CONF_HDFS_SITE = "hdfs-site.xml";
@@ -69,4 +70,8 @@ public class SupportConstants {
     public static final String KEY_HADOOP_CONFIGURATION = "hadoopConfiguration";
 
 
+    //JOB
+    public static final String JOB_NAME_PLACEHOLDER = "${jobName}";
+    public static final String JOB_RESOURCES_MD5_KEY_PLACEHOLDER = "${jobResourcesMD5}";
+    public static final String JOB_RESOURCES_DIR = "hdfs://flink_support_space/resources/support_${jobName}_${jobResourcesMD5}_job";
 }

@@ -94,9 +94,9 @@ public abstract class ApplicationEnv implements EnvProcess {
 
     private void setSupportDefault(GenericRunOption option) {
         String myHome = option.getMyHome();
-        String coreConfFile = myHome + File.separator + "conf" +  File.separator + SupportConstants.SUPPORT_CORE_CONF_FILE;
-        String etlConfFile = myHome + File.separator + "conf" +  File.separator + SupportConstants.SUPPORT_ETL_CONF_FILE;
-        String sqlConfFile = myHome + File.separator + "conf" +  File.separator + SupportConstants.SUPPORT_SQL_CONF_FILE;
+        String coreConfFile = myHome + File.separator + "conf" + File.separator + SupportConstants.SUPPORT_CORE_CONF_FILE;
+        String etlConfFile = myHome + File.separator + "conf" + File.separator + SupportConstants.SUPPORT_ETL_CONF_FILE;
+        String sqlConfFile = myHome + File.separator + "conf" + File.separator + SupportConstants.SUPPORT_SQL_CONF_FILE;
         supportCoreConf = new SupportCoreConf(YamlUtils.getYamlByFileName(coreConfFile));
         supportETLConf = new SupportETLConf(YamlUtils.getYamlByFileName(etlConfFile));
         supportSqlConf = new SupportSqlConf(YamlUtils.getYamlByFileName(sqlConfFile));
@@ -107,6 +107,15 @@ public abstract class ApplicationEnv implements EnvProcess {
         setFlinkDefault(option);
         //HadoopHome
         setHadoopDefault(option);
+
+        setSystemEnvVariables(option);
+    }
+
+    private void setSystemEnvVariables(GenericRunOption option) {
+        if (VariableCheckTool.checkNullOrEmpty(supportCoreConf.getStringVal(SupportConstants.HADOOP_USER_NAME))) {
+            supportCoreConf.setVal(SupportConstants.HADOOP_USER_NAME, System.getProperty("USER"));
+        }
+        System.setProperty(SupportConstants.HADOOP_USER_NAME, supportCoreConf.getStringVal(SupportConstants.HADOOP_USER_NAME));
     }
 
     private void setHadoopDefault(GenericRunOption option) throws IOException {

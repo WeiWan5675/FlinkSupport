@@ -16,4 +16,7 @@ public class SupportCoreConf extends AbstractConfig {
     public SupportCoreConf(Map conf) {
         super(conf);
     }
+
+    public SupportCoreConf() {
+    }
 }
