@@ -3,6 +3,7 @@ package com.weiwan.support.common.utils;
 import org.apache.commons.lang3.StringUtils;
 import org.yaml.snakeyaml.Yaml;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -31,13 +32,19 @@ public class YamlUtils {
 
             System.out.println("加载配置文件:" + fileName);
             Yaml yaml = new Yaml();
+            File file = new File(fileName);
+            if (!file.exists()) {
+                return result;
+            }
             InputStream is = new FileInputStream(fileName);
             Map<String, Object> params = yaml.loadAs(is, Map.class);
             for (Map.Entry<String, Object> entry : params.entrySet()) {
                 if (entry.getValue() instanceof Map) {
                     eachYaml(entry.getKey(), (Map<String, Object>) entry.getValue(), result);
                 } else {
-                    result.put(entry.getKey(), entry.getValue().toString());
+                    if (entry.getValue() != null) {
+                        result.put(entry.getKey(), entry.getValue().toString());
+                    }
                 }
             }
         } catch (Exception e) {
@@ -94,7 +101,7 @@ public class YamlUtils {
             if (entry.getValue() instanceof Map) {
                 eachYaml(entry.getKey(), (Map<String, Object>) entry.getValue(), result);
             } else {
-                if(entry.getValue() != null){
+                if (entry.getValue() != null) {
                     result.put(entry.getKey(), entry.getValue().toString());
                 }
             }

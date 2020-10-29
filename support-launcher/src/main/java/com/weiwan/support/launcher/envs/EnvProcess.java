@@ -2,6 +2,8 @@ package com.weiwan.support.launcher.envs;
 
 import com.weiwan.support.launcher.options.GenericRunOption;
 
+import java.io.IOException;
+
 /**
  * @Author: xiaozhennan
  * @Date: 2020/10/26 14:56
@@ -12,7 +14,7 @@ import com.weiwan.support.launcher.options.GenericRunOption;
 public interface EnvProcess {
 
 
-    void init(GenericRunOption option);
+    void init(GenericRunOption genericRunOption) throws IOException;
 
 
     boolean process();
@@ -24,9 +26,7 @@ public interface EnvProcess {
      * @param genericRunOption
      * @return
      */
-    default boolean emptyParameterCheck(GenericRunOption genericRunOption) {
-        return true;
-    }
+    void emptyParameterCheck(GenericRunOption genericRunOption);
 
     /**
      * 检查通过返回true
@@ -34,9 +34,7 @@ public interface EnvProcess {
      * @param genericRunOption
      * @return
      */
-    default boolean illegalParameterCheck(GenericRunOption genericRunOption) {
-        return true;
-    }
+    void illegalParameterCheck(GenericRunOption genericRunOption);
 
 
     void stop();

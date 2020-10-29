@@ -10,34 +10,52 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>support-utils</artifactId>
-<dependencies>
-    <dependency>
-        <groupId>com.weiwan</groupId>
-        <artifactId>support-common</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.apache.flink</groupId>
-        <artifactId>flink-clients_${scala.binary.version}</artifactId>
-    </dependency>
+    <dependencies>
+        <dependency>
+            <groupId>com.weiwan</groupId>
+            <artifactId>support-common</artifactId>
+        </dependency>
 
-    <dependency>
-        <groupId>org.apache.flink</groupId>
-        <artifactId>flink-java</artifactId>
-        <scope>provided</scope>
-    </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-java</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-streaming-java_${scala.binary.version}</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
-    <dependency>
-        <groupId>org.apache.flink</groupId>
-        <artifactId>flink-streaming-java_${scala.binary.version}</artifactId>
-        <scope>provided</scope>
-    </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-common</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
-    <dependency>
-        <groupId>org.apache.flink</groupId>
-        <artifactId>flink-statebackend-rocksdb_${scala.binary.version}</artifactId>
-        <scope>provided</scope>
-    </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-yarn-common</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
-</dependencies>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-yarn-client</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-statebackend-rocksdb_${scala.binary.version}</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
 
 </project>

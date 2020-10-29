@@ -13,17 +13,27 @@ import org.apache.flink.api.java.ExecutionEnvironment;
 public class BatchAppSupport<IN, OIN> implements FlinkSupport<ExecutionEnvironment> {
 
 
-    private ExecutionEnvironment env;
-    private SupportAppContext context;
+    private ExecutionEnvironment environment;
+    private SupportAppContext appContext;
 
-    public BatchAppSupport(ExecutionEnvironment env, SupportAppContext context) {
-        this.env = env;
-        this.context = context;
+    public BatchAppSupport(ExecutionEnvironment environment, SupportAppContext appContext) {
+        this.environment = environment;
+        this.appContext = appContext;
     }
 
 
     @Override
-    public TaskResult submitFlinkTask(ExecutionEnvironment env) {
+    public ExecutionEnvironment getEnv() {
+        return this.environment;
+    }
+
+    @Override
+    public SupportAppContext getContext() {
+        return this.appContext;
+    }
+
+    @Override
+    public TaskResult submitFlinkTask(ExecutionEnvironment environment) {
         return null;
     }
 }

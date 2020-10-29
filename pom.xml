@@ -111,21 +111,38 @@
                 <groupId>org.apache.flink</groupId>
                 <artifactId>flink-java</artifactId>
                 <version>${flink.version}</version>
-                <!-- <scope>provided</scope>-->
+                <exclusions>
+                    <exclusion>
+                        <groupId>log4j</groupId>
+                        <artifactId>log4j</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-log4j12</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.flink</groupId>
                 <artifactId>flink-streaming-java_${scala.binary.version}</artifactId>
                 <version>${flink.version}</version>
-                <!-- <scope>provided</scope>-->
+                <exclusions>
+                    <exclusion>
+                        <groupId>log4j</groupId>
+                        <artifactId>log4j</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-log4j12</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.flink</groupId>
                 <artifactId>flink-scala_${scala.binary.version}</artifactId>
                 <version>${flink.version}</version>
-                <!-- <scope>provided</scope>-->
             </dependency>
 
             <dependency>
@@ -150,6 +167,16 @@
                 <groupId>org.apache.flink</groupId>
                 <artifactId>flink-statebackend-rocksdb_${scala.binary.version}</artifactId>
                 <version>${flink.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>log4j</groupId>
+                        <artifactId>log4j</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-log4j12</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
 
@@ -240,8 +267,32 @@
                 <artifactId>hadoop-common</artifactId>
                 <version>${hadoop.version}</version>
                 <!--                <scope>provided</scope>-->
+                <exclusions>
+                    <exclusion>
+                        <groupId>log4j</groupId>
+                        <artifactId>log4j</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-log4j12</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
-
+            <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-client</artifactId>
+                <version>${hadoop.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>log4j</groupId>
+                        <artifactId>log4j</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-log4j12</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
             <dependency>
                 <groupId>org.apache.hadoop</groupId>
                 <artifactId>hadoop-yarn-common</artifactId>
@@ -288,37 +339,11 @@
                 <version>${log4j2.version}</version>
             </dependency>
 
-            <!-- 桥接：告诉commons logging使用Log4j2 -->
             <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-jcl</artifactId>
-                <version>${log4j2.version}</version>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.25</version>
             </dependency>
-            <!-- 桥接：告诉Java Util Logging使用Log4j2 -->
-            <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-jul</artifactId>
-                <version>${log4j2.version}</version>
-            </dependency>
-
-            <!--            <dependency>-->
-            <!--                <groupId>ch.qos.logback</groupId>-->
-            <!--                <artifactId>logback-core</artifactId>-->
-            <!--                <version>${logback.version}</version>-->
-            <!--            </dependency>-->
-
-            <!--            <dependency>-->
-            <!--                <groupId>ch.qos.logback</groupId>-->
-            <!--                <artifactId>logback-classic</artifactId>-->
-            <!--                <version>${logback.version}</version>-->
-            <!--            </dependency>-->
-
-            <!--            <dependency>-->
-            <!--                <groupId>org.slf4j</groupId>-->
-            <!--                <artifactId>log4j-over-slf4j</artifactId>-->
-            <!--                <version>${log4j-over-slf4j.version}</version>-->
-            <!--            </dependency>-->
-
 
             <dependency>
                 <groupId>com.alibaba</groupId>

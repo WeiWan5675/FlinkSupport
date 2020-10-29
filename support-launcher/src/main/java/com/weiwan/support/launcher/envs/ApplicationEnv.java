@@ -2,10 +2,7 @@ package com.weiwan.support.launcher.envs;
 
 import com.weiwan.support.common.exception.SupportException;
 import com.weiwan.support.common.options.OptionParser;
-import com.weiwan.support.common.utils.CommonUtil;
-import com.weiwan.support.common.utils.LogUtil;
-import com.weiwan.support.common.utils.SystemUtil;
-import com.weiwan.support.common.utils.YamlUtils;
+import com.weiwan.support.common.utils.*;
 import com.weiwan.support.core.config.SupportCoreConf;
 import com.weiwan.support.core.config.SupportETLConf;
 import com.weiwan.support.core.config.SupportSqlConf;
@@ -14,12 +11,17 @@ import com.weiwan.support.launcher.SupportAppClient;
 import com.weiwan.support.launcher.enums.ResourceMode;
 import com.weiwan.support.launcher.enums.RunMode;
 import com.weiwan.support.launcher.options.GenericRunOption;
+import com.weiwan.support.utils.cluster.ClusterConfigLoader;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.flink.configuration.Configuration;
+import org.apache.flink.configuration.GlobalConfiguration;
+import org.apache.flink.runtime.util.bash.FlinkConfigLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.Map;
+import java.io.IOException;
+import java.util.Set;
 
 /**
  * @Author: xiaozhennan
@@ -39,6 +41,7 @@ public abstract class ApplicationEnv implements EnvProcess {
     protected SupportETLConf supportETLConf;
     protected SupportSqlConf supportSqlConf;
 
+
     protected ResourceMode resourceMode;
     protected RunMode runMode;
 
@@ -52,37 +55,32 @@ public abstract class ApplicationEnv implements EnvProcess {
 
     public boolean enter(RunMode runMode) {
         this.runMode = runMode;
-        if (inited) {
-            //设置客户端日志级别
-            LogUtil.useCommandLogLevel(genericRunOption.getLogLevel());
-
-            //参数校验,子类重写两个方法
+        if (!inited) {
             try {
-                if (!emptyParameterCheck(genericRunOption)) {
-                    LOGGER.error("dry run parameter verification failed");
-                    throw SupportException.generateParameterEmptyException("Flink support operating parameters are empty");
+                //设置客户端日志级别
+                LogUtil.useCommandLogLevel(genericRunOption.getLogLevel());
+
+                //参数校验,子类重写两个方法
+                try {
+                    emptyParameterCheck(genericRunOption);
+                    illegalParameterCheck(genericRunOption);
+                } catch (SupportException exception) {
+                    LOGGER.error("Parameter verification failed, please check the parameter settings", exception);
+                    throw exception;
                 }
-                if (!illegalParameterCheck(genericRunOption)) {
-                    LOGGER.error("illegal parameter verification failed");
-                    throw SupportException.generateParameterIllegalException("Illegal operating parameters of flink support");
-                }
-            } catch (SupportException exception) {
-                LOGGER.error("Parameter verification failed, please check the parameter settings");
-                throw exception;
+
+                //SupportHome
+                setSupportHomePath(genericRunOption);
+                //SupportDefaultVariables
+                setSupportDefault(genericRunOption);
+                //Bigdata Env Variables
+                setEnvironmentVariables(genericRunOption);
+                //用户初始化
+                this.init(genericRunOption);
+                inited = true;
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-            //SupportHome
-            setSupportHomePath(genericRunOption);
-
-            findSupportDefault(genericRunOption);
-            //设置组件Home
-            setEnvironmentVariables(genericRunOption);
-
-
-            this.init(genericRunOption);
-
-
-            inited = true;
         }
 
 
@@ -94,26 +92,24 @@ public abstract class ApplicationEnv implements EnvProcess {
         return true;
     }
 
-    private void findSupportDefault(GenericRunOption option) {
+    private void setSupportDefault(GenericRunOption option) {
         String myHome = option.getMyHome();
-        String coreConfFile = myHome + File.separator + SupportConstants.SUPPORT_CONF_DIR + SupportConstants.SUPPORT_CORE_CONF_FILE;
-        String etlConfFile = myHome + File.separator + SupportConstants.SUPPORT_CONF_DIR + SupportConstants.SUPPORT_ETL_CONF_FILE;
-        String sqlConfFile = myHome + File.separator + SupportConstants.SUPPORT_CONF_DIR + SupportConstants.SUPPORT_SQL_CONF_FILE;
+        String coreConfFile = myHome + File.separator + "conf" +  File.separator + SupportConstants.SUPPORT_CORE_CONF_FILE;
+        String etlConfFile = myHome + File.separator + "conf" +  File.separator + SupportConstants.SUPPORT_ETL_CONF_FILE;
+        String sqlConfFile = myHome + File.separator + "conf" +  File.separator + SupportConstants.SUPPORT_SQL_CONF_FILE;
         supportCoreConf = new SupportCoreConf(YamlUtils.getYamlByFileName(coreConfFile));
         supportETLConf = new SupportETLConf(YamlUtils.getYamlByFileName(etlConfFile));
         supportSqlConf = new SupportSqlConf(YamlUtils.getYamlByFileName(sqlConfFile));
     }
 
-    private void setEnvironmentVariables(GenericRunOption option) {
+    private void setEnvironmentVariables(GenericRunOption option) throws IOException {
         //FlinkHome
-        setFlinkHomePath(option);
+        setFlinkDefault(option);
         //HadoopHome
-        setHadoopHomePath(option);
-
-        //
+        setHadoopDefault(option);
     }
 
-    private void setHadoopHomePath(GenericRunOption option) {
+    private void setHadoopDefault(GenericRunOption option) throws IOException {
         String hadoopHome = option.getHadoopHome();
         if (StringUtils.isEmpty(hadoopHome)) {
             //读取系统环境变量
@@ -128,10 +124,16 @@ public abstract class ApplicationEnv implements EnvProcess {
             }
         }
         option.setHadoopHome(hadoopHome);
-        LOGGER.info("FLINK_HOME path is : {}", hadoopHome);
+        String confDir = hadoopHome + File.separator + SupportConstants.HADOOP_CONF_DIR;
+        String coreSiteFile = hadoopHome + File.separator + SupportConstants.HADOOP_CONF_DIR + File.separator + SupportConstants.HADOOP_CONF_CORE_SITE;
+        String hdfsSiteFile = hadoopHome + File.separator + SupportConstants.HADOOP_CONF_DIR + File.separator + SupportConstants.HADOOP_CONF_HDFS_SITE;
+        supportCoreConf.setStringVal(SupportConstants.KEY_LOCAL_HADOOP_CORE_SITE_CONF, FileUtil.readFileContent(coreSiteFile));
+        supportCoreConf.setStringVal(SupportConstants.KEY_LOCAL_HADOOP_HDFS_SITE_CONF, FileUtil.readFileContent(hdfsSiteFile));
+        supportCoreConf.setVal(SupportConstants.KEY_HADOOP_CONFIGURATION, ClusterConfigLoader.loadHadoopConfig(confDir));
+        LOGGER.info("HADOOP_HOME path is : {}", hadoopHome);
     }
 
-    private void setFlinkHomePath(GenericRunOption option) {
+    private void setFlinkDefault(GenericRunOption option) throws IOException {
         String flinkHome = option.getFlinkHome();
         if (StringUtils.isEmpty(flinkHome)) {
             //读取系统环境变量
@@ -146,6 +148,10 @@ public abstract class ApplicationEnv implements EnvProcess {
             }
         }
         option.setFlinkHome(flinkHome);
+        String confDir = flinkHome + File.separator + SupportConstants.FLINK_CONF_DIR;
+        String confFile = flinkHome + File.separator + SupportConstants.FLINK_CONF_DIR + File.separator + SupportConstants.FLINK_CONF_FILE;
+        supportCoreConf.setStringVal(SupportConstants.KEY_LOCAL_FLINK_CONF, FileUtil.readFileContent(confFile));
+        supportCoreConf.setVal(SupportConstants.KEY_FLINK_CONFIGURATION, GlobalConfiguration.loadConfiguration(confDir));
         LOGGER.info("FLINK_HOME path is : {}", flinkHome);
     }
 

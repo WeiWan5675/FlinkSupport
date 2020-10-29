@@ -1,0 +1,5 @@
+# 定义任务描述
+
+flink:
+  task:
+    name: TestApp

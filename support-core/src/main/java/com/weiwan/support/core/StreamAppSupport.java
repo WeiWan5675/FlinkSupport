@@ -17,12 +17,12 @@ public abstract class StreamAppSupport<IN, OIN> implements FlinkSupport<StreamEx
     private Reader<IN> reader;
     private Processer<IN,OIN> process;
     private Writer<OIN> writer;
-    private StreamExecutionEnvironment env;
-    private SupportAppContext context;
+    private StreamExecutionEnvironment environment;
+    private SupportAppContext appContext;
 
-    public StreamAppSupport(StreamExecutionEnvironment env, SupportAppContext context) {
-        this.env = env;
-        this.context = context;
+    public StreamAppSupport(StreamExecutionEnvironment environment, SupportAppContext appContext) {
+        this.environment = environment;
+        this.appContext = appContext;
     }
 
 
@@ -39,14 +39,25 @@ public abstract class StreamAppSupport<IN, OIN> implements FlinkSupport<StreamEx
     }
 
 
-    public abstract DataStream<IN> streamOpen(StreamExecutionEnvironment env, SupportAppContext context);
+    public abstract DataStream<IN> streamOpen(StreamExecutionEnvironment environment, SupportAppContext appContext);
 
     public abstract DataStream<OIN> streamProcess(DataStream<IN> inputStream);
 
     public abstract DataStreamSink streamOutput(DataStream<OIN> outputStream);
 
+
     @Override
-    public TaskResult submitFlinkTask(StreamExecutionEnvironment env) {
+    public StreamExecutionEnvironment getEnv() {
+        return this.environment;
+    }
+
+    @Override
+    public SupportAppContext getContext() {
+        return this.appContext;
+    }
+
+    @Override
+    public TaskResult submitFlinkTask(StreamExecutionEnvironment environment) {
         return null;
     }
 }

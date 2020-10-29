@@ -11,13 +11,15 @@ import com.beust.jcommander.Parameter;
  **/
 public class JobRunOption extends GenericRunOption {
 
-    @Parameter(names = "-jobType", description = "the type of flink program that the task runs")
-    private String jobType;
 
     @Parameter(names = {"-jc","-jobConf"},description = "Task description file, supports local path and HDFS path, HDFS path defaults to the corresponding application folder under resources")
     private String jobConf;
 
+    public String getJobConf() {
+        return jobConf;
+    }
 
-
-
+    public void setJobConf(String jobConf) {
+        this.jobConf = jobConf;
+    }
 }

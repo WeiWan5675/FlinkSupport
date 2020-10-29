@@ -36,15 +36,28 @@ public class ReplApplicationProcessor extends ApplicationEnv {
         return true;
     }
 
+    /**
+     * 检查通过返回true
+     *
+     * @param genericRunOption
+     * @return
+     */
     @Override
-    public boolean emptyParameterCheck(GenericRunOption genericRunOption) {
-        return false;
+    public void emptyParameterCheck(GenericRunOption genericRunOption) {
+
     }
 
+    /**
+     * 检查通过返回true
+     *
+     * @param genericRunOption
+     * @return
+     */
     @Override
-    public boolean illegalParameterCheck(GenericRunOption genericRunOption) {
-        return false;
+    public void illegalParameterCheck(GenericRunOption genericRunOption) {
+
     }
+
 
     @Override
     public void stop() {

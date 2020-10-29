@@ -26,7 +26,7 @@ public class OptionParser {
 
     public OptionParser(String[] args) {
         jCommander = new JCommander();
-        jCommander.setAcceptUnknownOptions(false);
+        jCommander.setAcceptUnknownOptions(true);
         this.args = args;
     }
 

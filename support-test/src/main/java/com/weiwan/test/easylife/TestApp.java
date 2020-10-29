@@ -25,44 +25,22 @@ import org.apache.flink.streaming.api.functions.source.SourceFunction;
 public class TestApp extends StreamAppSupport<DataRecord<DataRow<DataField<String>>>, String> {
 
 
-    public TestApp(StreamExecutionEnvironment env, SupportAppContext context) {
-        super(env, context);
+    public TestApp(StreamExecutionEnvironment environment, SupportAppContext appContext) {
+        super(environment, appContext);
     }
 
     @Override
-    public DataStream<DataRecord<DataRow<DataField<String>>>> streamOpen(StreamExecutionEnvironment env, SupportAppContext context) {
-        DataStreamSource<DataRecord<DataRow<DataField<String>>>> dataRecordDataStreamSource = env.addSource(new RichSourceFunction<DataRecord<DataRow<DataField<String>>>>() {
-            @Override
-            public void run(SourceContext<DataRecord<DataRow<DataField<String>>>> ctx) throws Exception {
-
-            }
-
-            @Override
-            public void cancel() {
-
-            }
-        });
-        return dataRecordDataStreamSource;
+    public DataStream<DataRecord<DataRow<DataField<String>>>> streamOpen(StreamExecutionEnvironment environment, SupportAppContext appContext) {
+        return null;
     }
 
     @Override
     public DataStream<String> streamProcess(DataStream<DataRecord<DataRow<DataField<String>>>> inputStream) {
-        SingleOutputStreamOperator<String> map = inputStream.map(new MapFunction<DataRecord<DataRow<DataField<String>>>, String>() {
-
-            @Override
-            public String map(DataRecord<DataRow<DataField<String>>> value) throws Exception {
-                return null;
-            }
-        });
-
-        return map;
+        return null;
     }
 
     @Override
     public DataStreamSink streamOutput(DataStream<String> outputStream) {
-        DataStreamSink<String> stringDataStreamSink = outputStream.writeAsCsv("");
-        return stringDataStreamSink;
+        return null;
     }
-
-
 }

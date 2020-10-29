@@ -40,10 +40,21 @@ public class FileUtil {
         return false;
     }
 
-    public static boolean isDir(String path) {
-        File file = new File(path);
-        return file.isDirectory();
+
+
+    public static boolean existsDir(String dirName) {
+        if (dirName != null) {
+            File file = new File(dirName);
+            return file.exists() && file.isDirectory();
+        }
+        return false;
     }
 
-
+    public static boolean existsFile(String fileName) {
+        if (fileName != null) {
+            File file = new File(fileName);
+            return file.exists() && file.isDirectory();
+        }
+        return false;
+    }
 }

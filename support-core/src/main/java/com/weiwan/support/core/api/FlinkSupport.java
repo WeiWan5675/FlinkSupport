@@ -1,5 +1,6 @@
 package com.weiwan.support.core.api;
 
+import com.weiwan.support.core.SupportAppContext;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSink;
 
@@ -17,13 +18,15 @@ public interface FlinkSupport<T> {
     }
 
     default void addProcess(Processer porcesser) {
-
     }
 
     default void addWriter(Writer writer) {
 
     }
 
+    public T getEnv();
+
+    public SupportAppContext getContext();
 
     TaskResult submitFlinkTask(T env);
 
