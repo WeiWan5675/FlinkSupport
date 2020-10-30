@@ -1,9 +1,10 @@
 package com.weiwan.support.launcher.cluster;
 
 import org.apache.flink.client.deployment.ClusterSpecification;
-import org.apache.flink.client.deployment.application.ApplicationConfiguration;
-import org.apache.flink.yarn.configuration.YarnDeploymentTarget;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.yarn.conf.YarnConfiguration;
+
+import java.util.List;
 
 /**
  * @Author: xiaozhennan
@@ -16,20 +17,24 @@ public class JobSubmitInfo {
 
     private Configuration hadoopConfiguration;
     private org.apache.flink.configuration.Configuration flinkConfiguration;
+    private YarnConfiguration yarnConfiguration;
 
     private ClusterSpecification clusterSpecification;
     private String userJarPath;
-    private String userClassPath;
+    private List<String> userClassPath;
     private String flinkDistJar;
     private String flinkLibs;
     private String appName;
     private String appType;
+    private String yarnQueue;
     private String[] appArgs;
     private String appClassName;
+    private String savePointPath;
 
     private JobSubmitInfo(Builder builder) {
         setHadoopConfiguration(builder.hadoopConfiguration);
         setFlinkConfiguration(builder.flinkConfiguration);
+        setYarnConfiguration(builder.yarnConfiguration);
         setClusterSpecification(builder.clusterSpecification);
         setUserJarPath(builder.userJarPath);
         setUserClassPath(builder.userClassPath);
@@ -37,8 +42,10 @@ public class JobSubmitInfo {
         setFlinkLibs(builder.flinkLibs);
         setAppName(builder.appName);
         setAppType(builder.appType);
+        setYarnQueue(builder.yarnQueue);
         setAppArgs(builder.appArgs);
         setAppClassName(builder.appClassName);
+        setSavePointPath(builder.savePointPath);
     }
 
     public static Builder newBuilder() {
@@ -62,6 +69,14 @@ public class JobSubmitInfo {
         this.flinkConfiguration = flinkConfiguration;
     }
 
+    public YarnConfiguration getYarnConfiguration() {
+        return yarnConfiguration;
+    }
+
+    public void setYarnConfiguration(YarnConfiguration yarnConfiguration) {
+        this.yarnConfiguration = yarnConfiguration;
+    }
+
     public ClusterSpecification getClusterSpecification() {
         return clusterSpecification;
     }
@@ -78,11 +93,11 @@ public class JobSubmitInfo {
         this.userJarPath = userJarPath;
     }
 
-    public String getUserClassPath() {
+    public List<String> getUserClassPath() {
         return userClassPath;
     }
 
-    public void setUserClassPath(String userClassPath) {
+    public void setUserClassPath(List<String> userClassPath) {
         this.userClassPath = userClassPath;
     }
 
@@ -118,6 +133,14 @@ public class JobSubmitInfo {
         this.appType = appType;
     }
 
+    public String getYarnQueue() {
+        return yarnQueue;
+    }
+
+    public void setYarnQueue(String yarnQueue) {
+        this.yarnQueue = yarnQueue;
+    }
+
     public String[] getAppArgs() {
         return appArgs;
     }
@@ -134,18 +157,29 @@ public class JobSubmitInfo {
         this.appClassName = appClassName;
     }
 
+    public String getSavePointPath() {
+        return savePointPath;
+    }
+
+    public void setSavePointPath(String savePointPath) {
+        this.savePointPath = savePointPath;
+    }
+
     public static final class Builder {
         private Configuration hadoopConfiguration;
         private org.apache.flink.configuration.Configuration flinkConfiguration;
+        private YarnConfiguration yarnConfiguration;
         private ClusterSpecification clusterSpecification;
         private String userJarPath;
-        private String userClassPath;
+        private List<String> userClassPath;
         private String flinkDistJar;
         private String flinkLibs;
         private String appName;
         private String appType;
+        private String yarnQueue;
         private String[] appArgs;
         private String appClassName;
+        private String savePointPath;
 
         private Builder() {
         }
@@ -160,6 +194,11 @@ public class JobSubmitInfo {
             return this;
         }
 
+        public Builder yarnConfiguration(YarnConfiguration val) {
+            yarnConfiguration = val;
+            return this;
+        }
+
         public Builder clusterSpecification(ClusterSpecification val) {
             clusterSpecification = val;
             return this;
@@ -170,7 +209,7 @@ public class JobSubmitInfo {
             return this;
         }
 
-        public Builder userClassPath(String val) {
+        public Builder userClassPath(List<String> val) {
             userClassPath = val;
             return this;
         }
@@ -195,6 +234,11 @@ public class JobSubmitInfo {
             return this;
         }
 
+        public Builder yarnQueue(String val) {
+            yarnQueue = val;
+            return this;
+        }
+
         public Builder appArgs(String[] val) {
             appArgs = val;
             return this;
@@ -202,6 +246,11 @@ public class JobSubmitInfo {
 
         public Builder appClassName(String val) {
             appClassName = val;
+            return this;
+        }
+
+        public Builder savePointPath(String val) {
+            savePointPath = val;
             return this;
         }
 

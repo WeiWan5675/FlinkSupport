@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
@@ -211,7 +212,6 @@ public class JobApplicationProcessor extends ApplicationEnv {
         String appName = option.getAppName();
         logger.info("job Name is : {}", appName);
 
-        System.exit(1);
         StringBuffer userJars = new StringBuffer();
         StringBuffer userClassPath = new StringBuffer();
 
@@ -237,7 +237,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
                 .flinkDistJar(flinkDistJar)
                 .flinkLibs(flinkLibDir)
                 .userJarPath("")
-                .userClassPath("")
+                .userClassPath(new ArrayList<>())
                 .build();
 
         submiter.submitJob(submitInfo);
