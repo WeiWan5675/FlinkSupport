@@ -28,6 +28,7 @@ public class SupportAppClient {
         logger.info("starting the flink support framework client!");
         try {
             OptionParser optionParser = new OptionParser(args);
+
             GenericRunOption _option = optionParser.parse(GenericRunOption.class);
             if (_option.isVerbose()) {
                 System.out.println("\t Flink Support Version : 1.0 Create By Release-1.0.0");

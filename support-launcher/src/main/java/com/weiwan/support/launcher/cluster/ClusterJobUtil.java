@@ -60,8 +60,7 @@ public class ClusterJobUtil {
 
     public static YarnClient getYarnClient(YarnConfiguration configuration) {
         YarnClient yarnClient = YarnClient.createYarnClient();
-        YarnConfiguration yarnConfiguration = new YarnConfiguration();
-        yarnClient.init(yarnConfiguration);
+        yarnClient.init(configuration);
         yarnClient.start();
         return yarnClient;
     }

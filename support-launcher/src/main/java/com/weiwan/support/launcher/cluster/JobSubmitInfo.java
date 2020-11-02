@@ -20,8 +20,8 @@ public class JobSubmitInfo {
     private YarnConfiguration yarnConfiguration;
 
     private ClusterSpecification clusterSpecification;
-    private String userJarPath;
-    private List<String> userClassPath;
+    private List<String> userJars;
+    private List<String> userClasspath;
     private String flinkDistJar;
     private String flinkLibs;
     private String appName;
@@ -36,8 +36,8 @@ public class JobSubmitInfo {
         setFlinkConfiguration(builder.flinkConfiguration);
         setYarnConfiguration(builder.yarnConfiguration);
         setClusterSpecification(builder.clusterSpecification);
-        setUserJarPath(builder.userJarPath);
-        setUserClassPath(builder.userClassPath);
+        setUserJars(builder.userJars);
+        setUserClasspath(builder.userClasspath);
         setFlinkDistJar(builder.flinkDistJar);
         setFlinkLibs(builder.flinkLibs);
         setAppName(builder.appName);
@@ -85,20 +85,20 @@ public class JobSubmitInfo {
         this.clusterSpecification = clusterSpecification;
     }
 
-    public String getUserJarPath() {
-        return userJarPath;
+    public List<String> getUserJars() {
+        return userJars;
     }
 
-    public void setUserJarPath(String userJarPath) {
-        this.userJarPath = userJarPath;
+    public void setUserJars(List<String> userJars) {
+        this.userJars = userJars;
     }
 
-    public List<String> getUserClassPath() {
-        return userClassPath;
+    public List<String> getUserClasspath() {
+        return userClasspath;
     }
 
-    public void setUserClassPath(List<String> userClassPath) {
-        this.userClassPath = userClassPath;
+    public void setUserClasspath(List<String> userClasspath) {
+        this.userClasspath = userClasspath;
     }
 
     public String getFlinkDistJar() {
@@ -170,8 +170,8 @@ public class JobSubmitInfo {
         private org.apache.flink.configuration.Configuration flinkConfiguration;
         private YarnConfiguration yarnConfiguration;
         private ClusterSpecification clusterSpecification;
-        private String userJarPath;
-        private List<String> userClassPath;
+        private List<String> userJars;
+        private List<String> userClasspath;
         private String flinkDistJar;
         private String flinkLibs;
         private String appName;
@@ -204,13 +204,13 @@ public class JobSubmitInfo {
             return this;
         }
 
-        public Builder userJarPath(String val) {
-            userJarPath = val;
+        public Builder userJars(List<String> val) {
+            userJars = val;
             return this;
         }
 
-        public Builder userClassPath(List<String> val) {
-            userClassPath = val;
+        public Builder userClasspath(List<String> val) {
+            userClasspath = val;
             return this;
         }
 

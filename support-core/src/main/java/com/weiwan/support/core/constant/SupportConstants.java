@@ -74,4 +74,5 @@ public class SupportConstants {
     public static final String JOB_NAME_PLACEHOLDER = "${jobName}";
     public static final String JOB_RESOURCES_MD5_KEY_PLACEHOLDER = "${jobResourcesMD5}";
     public static final String JOB_RESOURCES_DIR = "hdfs://flink_support_space/resources/support_${jobName}_${jobResourcesMD5}_job";
+    public static final String KEY_YARN_CONFIGURATION = "yarnConfiguration";
 }

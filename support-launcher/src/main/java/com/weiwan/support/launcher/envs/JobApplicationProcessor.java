@@ -9,6 +9,7 @@ import com.weiwan.support.core.constant.SupportConstants;
 import com.weiwan.support.launcher.cluster.ClusterJobUtil;
 import com.weiwan.support.launcher.cluster.JobSubmitInfo;
 import com.weiwan.support.launcher.cluster.JobSubmiter;
+import com.weiwan.support.launcher.cluster.JobSubmiterFactory;
 import com.weiwan.support.launcher.enums.ResourceMode;
 import com.weiwan.support.launcher.enums.RunMode;
 import com.weiwan.support.launcher.options.GenericRunOption;
@@ -34,10 +35,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Author: xiaozhennan
@@ -65,6 +63,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
     private AppType appType;
     private Configuration hadoopConfiguration;
     private org.apache.flink.configuration.Configuration flinkConfiguration;
+    private YarnConfiguration yarnConfiguration;
 
 
     public JobApplicationProcessor(String[] args) {
@@ -78,6 +77,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
         this.option = (JobRunOption) genericRunOption;
         this.hadoopConfiguration = (Configuration) supportCoreConf.getVal(SupportConstants.KEY_HADOOP_CONFIGURATION);
         this.flinkConfiguration = (org.apache.flink.configuration.Configuration) supportCoreConf.getVal(SupportConstants.KEY_FLINK_CONFIGURATION);
+        this.yarnConfiguration = (YarnConfiguration) supportCoreConf.getVal(SupportConstants.KEY_YARN_CONFIGURATION);
         this.fileSystem = HadoopUtil.getFileSystem(hadoopConfiguration);
         //解析用户配置文件
         String jobConfPath = option.getJobConf();
@@ -87,7 +87,9 @@ public class JobApplicationProcessor extends ApplicationEnv {
         String flink_version = supportCoreConf.getStringVal(SupportConstants.FLINK_VERSION);
         String scala_version = supportCoreConf.getStringVal(SupportConstants.SCALA_VERSION);
 
-        String flinkHdfsHome = SupportConstants.FLINK_HDFS_HOME.replace(SupportConstants.FLINK_VERSION_PLACEHOLDER, flink_version);
+        String flinkHdfsHome = SupportConstants.FLINK_HDFS_HOME.replace(SupportConstants.FLINK_VERSION_PLACEHOLDER, flink_version)
+                .replace("hdfs:", ((Configuration) supportCoreConf.getVal(SupportConstants.KEY_HADOOP_CONFIGURATION)).get(HadoopUtil.KEY_HA_DEFAULT_FS));
+
         flinkLibDir = flinkHdfsHome + Constans.SIGN_SLASH + SupportConstants.FLINK_LIB_DIR;
         //获取该文件夹下所有的文件,排除dist
         flinkDistJar = flinkLibDir + Constans.SIGN_SLASH + SupportConstants.FLINK_DIST_JAR
@@ -212,8 +214,6 @@ public class JobApplicationProcessor extends ApplicationEnv {
         String appName = option.getAppName();
         logger.info("job Name is : {}", appName);
 
-        StringBuffer userJars = new StringBuffer();
-        StringBuffer userClassPath = new StringBuffer();
 
         //准备提交任务
         /**
@@ -222,22 +222,28 @@ public class JobApplicationProcessor extends ApplicationEnv {
          * 3.
          */
 
-
-        JobSubmiter submiter = JobSubmiter.createSubmiter(ClusterJobUtil.getYarnClient(new YarnConfiguration()));
+        JobSubmiter submiter = JobSubmiterFactory.createYarnSubmiter(ClusterJobUtil.getYarnClient(yarnConfiguration));
 
         String[] args = new String[0];
+        List<String> userClassPaths = new ArrayList<>();
+        userClassPaths.add("hdfs://flink_support_space/resources/support_TestApp_9f164e8e990e60bd2ce7f08fa5fe417f_job/app.yaml");
+        List<String> userJars = new ArrayList<>();
+        userJars.add("hdfs:///flink_support_space/resources/support_TestApp_9f164e8e990e60bd2ce7f08fa5fe417f_job/support-test-1.0.jar");
         //组装了任务信息
         JobSubmitInfo submitInfo = JobSubmitInfo.newBuilder().appArgs(args)
-                .appClassName("className")
-                .appName("appName")
-                .appType("FlinkSupportJob")
+                .appClassName("com.weiwan.test.easylife.TestApp")
+                .appName("test")
+                .appType("Apache Flink")
                 .clusterSpecification(ClusterJobUtil.createClusterSpecification(option.getParams()))
                 .flinkConfiguration(flinkConfiguration)
                 .hadoopConfiguration(hadoopConfiguration)
+                .yarnConfiguration(yarnConfiguration)
+                .yarnQueue("root.users.easylife")
                 .flinkDistJar(flinkDistJar)
                 .flinkLibs(flinkLibDir)
-                .userJarPath("")
-                .userClassPath(new ArrayList<>())
+                .savePointPath(option.getSavePointPath())
+                .userJars(userJars)
+                .userClasspath(userClassPaths)
                 .build();
 
         submiter.submitJob(submitInfo);

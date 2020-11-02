@@ -46,12 +46,6 @@ public class GenericRunOption {
     @Parameter(names = "-myHome", description = "The location of the support framework installed on the disk")
     private String myHome;
 
-    @Parameter(names = "-resources", description = "User resource path, support hdfs and local, default is hdfs://flink_support_space/resources/support_${appName}_${appResourcesMD5}_job")
-    private String resources;
-
-    @Parameter(names = {"-overwrite", "-ow"}, description = "Whether to overwrite the remote resource directory, it will only take effect when the local resource directory is used to start")
-    private boolean overwriteResource;
-
     @DynamicParameter(names = "-D", description = "Dynamic parameters go here")
     private Map<String, String> params = new HashMap<>();
 
@@ -133,22 +127,6 @@ public class GenericRunOption {
 
     public void setMyHome(String myHome) {
         this.myHome = myHome;
-    }
-
-    public String getResources() {
-        return resources;
-    }
-
-    public void setResources(String resources) {
-        this.resources = resources;
-    }
-
-    public boolean isOverwriteResource() {
-        return overwriteResource;
-    }
-
-    public void setOverwriteResource(boolean overwriteResource) {
-        this.overwriteResource = overwriteResource;
     }
 
     public Map<String, String> getParams() {

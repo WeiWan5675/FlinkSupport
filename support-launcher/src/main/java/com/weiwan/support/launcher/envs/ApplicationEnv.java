@@ -139,6 +139,7 @@ public abstract class ApplicationEnv implements EnvProcess {
         supportCoreConf.setStringVal(SupportConstants.KEY_LOCAL_HADOOP_CORE_SITE_CONF, FileUtil.readFileContent(coreSiteFile));
         supportCoreConf.setStringVal(SupportConstants.KEY_LOCAL_HADOOP_HDFS_SITE_CONF, FileUtil.readFileContent(hdfsSiteFile));
         supportCoreConf.setVal(SupportConstants.KEY_HADOOP_CONFIGURATION, ClusterConfigLoader.loadHadoopConfig(confDir));
+        supportCoreConf.setVal(SupportConstants.KEY_YARN_CONFIGURATION,ClusterConfigLoader.loadYarnConfig(confDir));
         LOGGER.info("HADOOP_HOME path is : {}", hadoopHome);
     }
 
