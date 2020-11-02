@@ -53,7 +53,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
 
     private FileSystem fileSystem;
 
-    private String flinkLibDir;
+    private List<String> flinkLibDirs;
     private String flinkDistJar;
     private String userResourceRemoteDir;
     private String applicationName;
@@ -87,12 +87,19 @@ public class JobApplicationProcessor extends ApplicationEnv {
         String flink_version = supportCoreConf.getStringVal(SupportConstants.FLINK_VERSION);
         String scala_version = supportCoreConf.getStringVal(SupportConstants.SCALA_VERSION);
 
-        String flinkHdfsHome = SupportConstants.FLINK_HDFS_HOME.replace(SupportConstants.FLINK_VERSION_PLACEHOLDER, flink_version)
-                .replace("hdfs:", ((Configuration) supportCoreConf.getVal(SupportConstants.KEY_HADOOP_CONFIGURATION)).get(HadoopUtil.KEY_HA_DEFAULT_FS));
+        String flinkHdfsHome = SupportConstants.FLINK_HDFS_HOME.replace(SupportConstants.FLINK_VERSION_PLACEHOLDER, flink_version);
+        StringBuffer _libDir = new StringBuffer();
+        _libDir.append(flinkHdfsHome + Constans.SIGN_SLASH + SupportConstants.FLINK_LIB_DIR)
+                .append(";")
+                .append(SupportConstants.SUPPORT_HDFS_LIB_DIR)
+                .append(";")
+                .append(SupportConstants.SUPPORT_HDFS_PLUGINS_DIR);
 
-        flinkLibDir = flinkHdfsHome + Constans.SIGN_SLASH + SupportConstants.FLINK_LIB_DIR;
+        flinkLibDirs = Arrays.asList(_libDir.toString().split(";"));
+
         //获取该文件夹下所有的文件,排除dist
-        flinkDistJar = flinkLibDir + Constans.SIGN_SLASH + SupportConstants.FLINK_DIST_JAR
+        flinkDistJar = flinkHdfsHome + Constans.SIGN_SLASH + SupportConstants.FLINK_LIB_DIR
+                + Constans.SIGN_SLASH + SupportConstants.FLINK_DIST_JAR
                 .replace(SupportConstants.SCALA_VERSION_PLACEHOLDER, scala_version)
                 .replace(SupportConstants.FLINK_VERSION_PLACEHOLDER, flink_version);
 
@@ -240,7 +247,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
                 .yarnConfiguration(yarnConfiguration)
                 .yarnQueue("root.users.easylife")
                 .flinkDistJar(flinkDistJar)
-                .flinkLibs(flinkLibDir)
+                .flinkLibs(flinkLibDirs)
                 .savePointPath(option.getSavePointPath())
                 .userJars(userJars)
                 .userClasspath(userClassPaths)

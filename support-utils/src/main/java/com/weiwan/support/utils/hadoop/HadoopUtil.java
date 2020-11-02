@@ -25,6 +25,9 @@ public class HadoopUtil {
 
 
     public static FileSystem getFileSystem(Configuration configuration) throws IOException {
+        if(StringUtils.isEmpty(configuration.get(KEY_HA_DEFAULT_FS))){
+            configuration.set(KEY_HA_DEFAULT_FS,"hdfs://nameservice1");
+        }
         FileSystem fileSystem = FileSystem.get(configuration);
         if (isOpenKerberos(configuration)) {
             //开启了kerberos

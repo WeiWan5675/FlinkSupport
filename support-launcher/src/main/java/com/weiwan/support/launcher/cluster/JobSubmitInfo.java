@@ -23,7 +23,7 @@ public class JobSubmitInfo {
     private List<String> userJars;
     private List<String> userClasspath;
     private String flinkDistJar;
-    private String flinkLibs;
+    private List<String> flinkLibs;
     private String appName;
     private String appType;
     private String yarnQueue;
@@ -109,11 +109,11 @@ public class JobSubmitInfo {
         this.flinkDistJar = flinkDistJar;
     }
 
-    public String getFlinkLibs() {
+    public List<String> getFlinkLibs() {
         return flinkLibs;
     }
 
-    public void setFlinkLibs(String flinkLibs) {
+    public void setFlinkLibs(List<String> flinkLibs) {
         this.flinkLibs = flinkLibs;
     }
 
@@ -173,7 +173,7 @@ public class JobSubmitInfo {
         private List<String> userJars;
         private List<String> userClasspath;
         private String flinkDistJar;
-        private String flinkLibs;
+        private List<String> flinkLibs;
         private String appName;
         private String appType;
         private String yarnQueue;
@@ -219,7 +219,7 @@ public class JobSubmitInfo {
             return this;
         }
 
-        public Builder flinkLibs(String val) {
+        public Builder flinkLibs(List<String> val) {
             flinkLibs = val;
             return this;
         }

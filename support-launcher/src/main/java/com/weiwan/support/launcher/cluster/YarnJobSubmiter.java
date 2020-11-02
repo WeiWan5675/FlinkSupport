@@ -27,7 +27,7 @@ import java.util.Collections;
  * @ClassName: YarnJobSubmiter
  * @Description:
  **/
-public class YarnJobSubmiter implements JobSubmiter{
+public class YarnJobSubmiter implements JobSubmiter {
 
     private YarnClient yarnClient;
 
@@ -42,19 +42,26 @@ public class YarnJobSubmiter implements JobSubmiter{
 
         //checkpoint 恢复
         if (StringUtils.isNotEmpty(jobInfo.getSavePointPath())) {
-            flinkConfiguration.set(SavepointConfigOptions.SAVEPOINT_PATH, jobInfo.getSavePointPath());
+            flinkConfiguration.set(
+                    SavepointConfigOptions.SAVEPOINT_PATH,
+                    jobInfo.getSavePointPath());
         }
 
-        flinkConfiguration.set(CheckpointingOptions.INCREMENTAL_CHECKPOINTS, true);
+        flinkConfiguration.set(
+                CheckpointingOptions.INCREMENTAL_CHECKPOINTS,
+                true);
         //核心jar包
-        flinkConfiguration.set(PipelineOptions.JARS, jobInfo.getUserJars());
+        flinkConfiguration.set(
+                PipelineOptions.JARS,
+                jobInfo.getUserJars());
 
-        flinkConfiguration.set(PipelineOptions.CLASSPATHS, jobInfo.getUserClasspath());
+        flinkConfiguration.set(
+                PipelineOptions.CLASSPATHS,
+                jobInfo.getUserClasspath());
 
-        Path remoteLib = new Path(jobInfo.getFlinkLibs());
         flinkConfiguration.set(
                 YarnConfigOptions.PROVIDED_LIB_DIRS,
-                Collections.singletonList(remoteLib.toString()));
+                jobInfo.getFlinkLibs());
 
         flinkConfiguration.set(
                 YarnConfigOptions.FLINK_DIST_JAR,
@@ -64,12 +71,18 @@ public class YarnJobSubmiter implements JobSubmiter{
                 DeploymentOptions.TARGET,
                 YarnDeploymentTarget.APPLICATION.getName());
         //yarn application name
-        flinkConfiguration.set(YarnConfigOptions.APPLICATION_NAME, jobInfo.getAppName());
+        flinkConfiguration.set(
+                YarnConfigOptions.APPLICATION_NAME,
+                jobInfo.getAppName());
 
-        flinkConfiguration.set(YarnConfigOptions.APPLICATION_TYPE, jobInfo.getAppType());
+        flinkConfiguration.set(
+                YarnConfigOptions.APPLICATION_TYPE,
+                jobInfo.getAppType());
 
         if (StringUtils.isNotEmpty(jobInfo.getYarnQueue())) {
-            flinkConfiguration.set(YarnConfigOptions.APPLICATION_QUEUE, jobInfo.getYarnQueue());
+            flinkConfiguration.set(
+                    YarnConfigOptions.APPLICATION_QUEUE,
+                    jobInfo.getYarnQueue());
         }
 
         //		设置用户jar的参数和主类
