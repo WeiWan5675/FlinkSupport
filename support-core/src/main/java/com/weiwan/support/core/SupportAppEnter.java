@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.weiwan.support.common.exception.SupportException;
 import com.weiwan.support.common.options.OptionParser;
 import com.weiwan.support.common.utils.CommonUtil;
+import com.weiwan.support.common.utils.StringCompressUtil;
 import com.weiwan.support.core.api.FlinkSupport;
 import com.weiwan.support.core.config.JobConfig;
 import com.weiwan.support.core.constant.SupportConstants;
@@ -43,7 +44,7 @@ public class SupportAppEnter {
             System.out.println("============================================");
             Map<String, Object> optionToMap = OptionParser.optionToMap(options);
             //读取job描述文件 json
-            String jobContent = options.getJobDescJson();
+            String jobContent = StringCompressUtil.uncompress(options.getJobDescJson());
 //        Map<String, String> jobMap = YamlUtils.loadYamlStr(jobConfContent);
             Map<String, String> jobMap = JSONObject.parseObject(jobContent, Map.class);
 

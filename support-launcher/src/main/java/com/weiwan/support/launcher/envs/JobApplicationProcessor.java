@@ -236,8 +236,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
         }
 
         //JobDescJson
-        runOptions.setJobDescJson(JSONObject.toJSONString(userJobConf.getAll()));
-
+        runOptions.setJobDescJson(StringCompressUtil.compress(JSONObject.toJSONString(mergeConfigToAll())));
         String queueName = option.getQueueName();
         if (StringUtils.isEmpty(queueName)) {
             String userQueue = userJobConf.getStringVal(FlinkContains.FLINK_TASK_COMMON_QUEUE_KEY);
@@ -312,6 +311,14 @@ public class JobApplicationProcessor extends ApplicationEnv {
 
         logger.info("The job handler is processed and the job has been submitted!");
         return true;
+    }
+
+    private Map<String, Object> mergeConfigToAll() {
+        Map<String, Object> all = supportCoreConf.getAll();
+        all.putAll(supportETLConf.getAll());
+        all.putAll(supportSqlConf.getAll());
+        all.putAll(userJobConf.getAll());
+        return all;
     }
 
     private RunOptions convertCmdToRunOption(JobRunOption option) {
