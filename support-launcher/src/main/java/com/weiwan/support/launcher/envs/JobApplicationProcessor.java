@@ -127,7 +127,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
 
             //目录下所有资源的名称拼接后按字母顺序排序后取MD5(就是Job的ID)
             //support_xxxxxxxxxxxxxxxxx_job  资源文件夹下,所有的资源名称排序后md5视作一个整体,如果资源和appName都相同,就相当于是一个应用
-            userResourceRemoteDir = generateJobResourcesDir(resourcesDir).replace("hdfs:", ((Configuration) supportCoreConf.getVal(SupportConstants.KEY_HADOOP_CONFIGURATION)).get(HadoopUtil.KEY_HA_DEFAULT_FS));
+            userResourceRemoteDir = generateJobResourcesDir(resourcesDir);
             ;
             //hdfs://flink_support_space/resources/support_${jobName}_${jobResourcesMD5}_job
             if (!checkRemoteResourceDirExists(userResourceRemoteDir) || checkRemoteResourceDirEmpty(userResourceRemoteDir)) {
@@ -230,16 +230,20 @@ public class JobApplicationProcessor extends ApplicationEnv {
          */
 
         JobSubmiter submiter = JobSubmiterFactory.createYarnSubmiter(ClusterJobUtil.getYarnClient(yarnConfiguration));
-
-        String[] args = new String[0];
+        String[] all_arg = new String[0];
+        try {
+            all_arg = OptionParser.optionToArgs(option);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         List<String> userClassPaths = new ArrayList<>();
         userClassPaths.add("hdfs://flink_support_space/resources/support_TestApp_9f164e8e990e60bd2ce7f08fa5fe417f_job/app.yaml");
         List<String> userJars = new ArrayList<>();
         userJars.add("hdfs:///flink_support_space/resources/support_TestApp_9f164e8e990e60bd2ce7f08fa5fe417f_job/support-test-1.0.jar");
         //组装了任务信息
-        JobSubmitInfo submitInfo = JobSubmitInfo.newBuilder().appArgs(args)
-                .appClassName("com.weiwan.test.easylife.TestApp")
-                .appName("test")
+        JobSubmitInfo submitInfo = JobSubmitInfo.newBuilder().appArgs(all_arg)
+                .appClassName(userJobConf.getStringVal(SupportConstants.SUPPORT_ENTER_CLASSNAME))
+                .appName(appName)
                 .appType("Apache Flink")
                 .clusterSpecification(ClusterJobUtil.createClusterSpecification(option.getParams()))
                 .flinkConfiguration(flinkConfiguration)

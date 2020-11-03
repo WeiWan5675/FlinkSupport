@@ -55,7 +55,7 @@ public class SupportAppEnter {
             FlinkContext<StreamExecutionEnvironment> streamContext = FlinkContextUtil.getStreamContext(context.getFlinkEnvConfig());
             StreamExecutionEnvironment streamEnv = streamContext.getEnv();
             //流模式
-            String appClassName = "com.weiwan.support.test.easylife.TestApp";
+            String appClassName = context.getJobConfig().getStringVal("app.appName");
             //判断是否是etl模式
             if (AppType.ETL_SUPPORT_APPLICATION == appType) {
                 //动态加载etl框架,如果是etl模式,实际上这个类名是固定的:
@@ -70,7 +70,7 @@ public class SupportAppEnter {
 
                 throw new SupportException("features not yet supported stay tuned!");
             } else {
-                Class<?> aClass = Class.forName("com.weiwan.support.test.easylife.TestApp");
+                Class<?> aClass = Class.forName(appClassName);
                 Constructor<?> constructor = aClass.getConstructor(StreamExecutionEnvironment.class, SupportAppContext.class);
                 flinkSupport = (FlinkSupport) constructor.newInstance(streamEnv, context);
 

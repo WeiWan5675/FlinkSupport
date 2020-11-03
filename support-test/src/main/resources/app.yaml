@@ -3,3 +3,13 @@
 flink:
   task:
     name: TestApp
+
+
+
+
+
+
+app:
+  appName: TestApp
+  appClass: com.weiwan.test.easylife.TestApp
+  appType: stream

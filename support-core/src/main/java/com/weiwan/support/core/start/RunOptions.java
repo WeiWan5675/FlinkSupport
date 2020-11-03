@@ -15,7 +15,7 @@ public class RunOptions {
     @Parameter(names = {"-x", "-stream"}, description = "stream mode")
     private boolean isStream;
 
-    @Parameter(names = {"-t","-table"},description = "stream table mode")
+    @Parameter(names = {"-t", "-table"}, description = "stream table mode")
     private boolean isTable;
 
     @Parameter(names = {"-e", "-etl", "-etlMode"}, description = "running etl mode")
@@ -24,7 +24,7 @@ public class RunOptions {
     @Parameter(names = {"-logLevel"}, description = "setting log level")
     private String logLevel;
 
-    @Parameter(names = "-jobConf", description = "job desc json content")
+    @Parameter(names = {"-jobConf", "-jc"}, description = "job desc json content")
     private String jobDescJson;
 
     public boolean isStream() {
