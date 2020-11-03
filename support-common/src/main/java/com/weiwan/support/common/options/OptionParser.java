@@ -60,11 +60,15 @@ public class OptionParser {
                 continue;
             }
             if (StringUtils.isNotEmpty(var)) {
-                argsList.add(key);
-                if ("false".equalsIgnoreCase(var) || "true".equalsIgnoreCase(var)) {
+                if ("true".equalsIgnoreCase(var)) {
+                    argsList.add(key);
                     continue;
+                }else{
+                    if(!"false".equalsIgnoreCase(var)){
+                        argsList.add(key);
+                        argsList.add(var);
+                    }
                 }
-                argsList.add(var);
             }
         }
 

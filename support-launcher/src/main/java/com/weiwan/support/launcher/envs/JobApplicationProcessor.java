@@ -236,7 +236,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
         }
 
         //JobDescJson
-        runOptions.setJobDescJson(StringCompressUtil.compress(JSONObject.toJSONString(mergeConfigToAll())));
+        runOptions.setJobDescJson(Base64Util.encode(JSONObject.toJSONString(mergeConfigToAll())));
         String queueName = option.getQueueName();
         if (StringUtils.isEmpty(queueName)) {
             String userQueue = userJobConf.getStringVal(FlinkContains.FLINK_TASK_COMMON_QUEUE_KEY);

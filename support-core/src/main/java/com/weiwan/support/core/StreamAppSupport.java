@@ -25,6 +25,8 @@ public abstract class StreamAppSupport<IN, OIN> implements FlinkSupport<StreamEx
         this.appContext = appContext;
     }
 
+    public StreamAppSupport() {
+    }
 
     public void addReader(Reader reader) {
         this.reader = reader;

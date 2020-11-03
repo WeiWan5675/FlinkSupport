@@ -2,17 +2,11 @@ package com.weiwan.test.easylife;
 
 import com.weiwan.support.core.StreamAppSupport;
 import com.weiwan.support.core.SupportAppContext;
-import com.weiwan.support.core.pojo.DataField;
 import com.weiwan.support.core.pojo.DataRecord;
-import com.weiwan.support.core.pojo.DataRow;
 import org.apache.flink.api.common.functions.MapFunction;
-import org.apache.flink.streaming.api.checkpoint.CheckpointedFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSink;
-import org.apache.flink.streaming.api.datastream.DataStreamSource;
-import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.functions.source.RichSourceFunction;
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
 
 /**
@@ -23,7 +17,6 @@ import org.apache.flink.streaming.api.functions.source.SourceFunction;
  * @Description:
  **/
 public class TestApp extends StreamAppSupport<DataRecord<String>, DataRecord<String>> {
-
 
     public TestApp(StreamExecutionEnvironment environment, SupportAppContext appContext) {
         super(environment, appContext);

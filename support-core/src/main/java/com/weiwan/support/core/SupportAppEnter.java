@@ -3,6 +3,7 @@ package com.weiwan.support.core;
 import com.alibaba.fastjson.JSONObject;
 import com.weiwan.support.common.exception.SupportException;
 import com.weiwan.support.common.options.OptionParser;
+import com.weiwan.support.common.utils.Base64Util;
 import com.weiwan.support.common.utils.CommonUtil;
 import com.weiwan.support.common.utils.StringCompressUtil;
 import com.weiwan.support.core.api.FlinkSupport;
@@ -44,7 +45,7 @@ public class SupportAppEnter {
             System.out.println("============================================");
             Map<String, Object> optionToMap = OptionParser.optionToMap(options);
             //读取job描述文件 json
-            String jobContent = StringCompressUtil.uncompress(options.getJobDescJson());
+            String jobContent = Base64Util.decode(options.getJobDescJson());
 //        Map<String, String> jobMap = YamlUtils.loadYamlStr(jobConfContent);
             Map<String, String> jobMap = JSONObject.parseObject(jobContent, Map.class);
 
@@ -77,7 +78,14 @@ public class SupportAppEnter {
                     throw new SupportException("features not yet supported stay tuned!");
                 } else {
                     Class<?> aClass = Class.forName(appClassName);
-                    Constructor<?> constructor = aClass.getConstructor(StreamExecutionEnvironment.class, SupportAppContext.class);
+                    Constructor<?>[] constructors = aClass.getConstructors();
+                    System.out.println(constructors[0]);
+                    System.out.println(constructors);
+                    for (Constructor<?> constructor : constructors) {
+                        System.out.println(constructor);
+                    }
+
+                    Constructor<?> constructor = constructors[0];
                     flinkSupport = (FlinkSupport) constructor.newInstance(streamEnv, context);
 
                 }
