@@ -2,6 +2,7 @@ package com.weiwan.support.launcher.options;
 
 import com.beust.jcommander.DynamicParameter;
 import com.beust.jcommander.Parameter;
+import com.weiwan.support.common.options.CommonOptions;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,14 +14,7 @@ import java.util.Map;
  * @ClassName: GenericRunOption
  * @Description:
  **/
-public class GenericRunOption {
-
-
-    @Parameter(names = {"--help", "-help", "-h"}, help = true, description = "help info")
-    private boolean help;
-
-    @Parameter(names = {"--version", "-version", "-v"}, description = "support framework client version")
-    private boolean verbose;
+public class GenericRunOption extends CommonOptions {
 
     @Parameter(names = {"-m", "-mode"}, description = "support framework client runing env mode")
     private String runMode = "job";
@@ -45,25 +39,6 @@ public class GenericRunOption {
 
     @Parameter(names = "-myHome", description = "The location of the support framework installed on the disk")
     private String myHome;
-
-    @DynamicParameter(names = "-D", description = "Dynamic parameters go here")
-    private Map<String, String> params = new HashMap<>();
-
-    public boolean isHelp() {
-        return help;
-    }
-
-    public void setHelp(boolean help) {
-        this.help = help;
-    }
-
-    public boolean isVerbose() {
-        return verbose;
-    }
-
-    public void setVerbose(boolean verbose) {
-        this.verbose = verbose;
-    }
 
     public String getRunMode() {
         return runMode;
@@ -129,11 +104,5 @@ public class GenericRunOption {
         this.myHome = myHome;
     }
 
-    public Map<String, String> getParams() {
-        return params;
-    }
 
-    public void setParams(Map<String, String> params) {
-        this.params = params;
-    }
 }

@@ -3,11 +3,13 @@ package com.weiwan.support.launcher.envs;
 import com.weiwan.support.common.exception.SupportException;
 import com.weiwan.support.common.options.OptionParser;
 import com.weiwan.support.common.utils.*;
+import com.weiwan.support.core.SupportAppEnter;
 import com.weiwan.support.core.config.SupportCoreConf;
 import com.weiwan.support.core.config.SupportETLConf;
 import com.weiwan.support.core.config.SupportSqlConf;
 import com.weiwan.support.core.constant.SupportConstants;
 import com.weiwan.support.launcher.SupportAppClient;
+import com.weiwan.support.launcher.cluster.JobSubmiterFactory;
 import com.weiwan.support.launcher.enums.ResourceMode;
 import com.weiwan.support.launcher.enums.RunMode;
 import com.weiwan.support.launcher.options.GenericRunOption;
@@ -83,6 +85,9 @@ public abstract class ApplicationEnv implements EnvProcess {
             }
         }
 
+        if (RunMode.LOCAL == RunMode.valueOf(genericRunOption.getRunMode())) {
+            System.out.println("本地模式");
+        }
 
         if (!process()) {
             //处理失败
@@ -139,7 +144,7 @@ public abstract class ApplicationEnv implements EnvProcess {
         supportCoreConf.setStringVal(SupportConstants.KEY_LOCAL_HADOOP_CORE_SITE_CONF, FileUtil.readFileContent(coreSiteFile));
         supportCoreConf.setStringVal(SupportConstants.KEY_LOCAL_HADOOP_HDFS_SITE_CONF, FileUtil.readFileContent(hdfsSiteFile));
         supportCoreConf.setVal(SupportConstants.KEY_HADOOP_CONFIGURATION, ClusterConfigLoader.loadHadoopConfig(confDir));
-        supportCoreConf.setVal(SupportConstants.KEY_YARN_CONFIGURATION,ClusterConfigLoader.loadYarnConfig(confDir));
+        supportCoreConf.setVal(SupportConstants.KEY_YARN_CONFIGURATION, ClusterConfigLoader.loadYarnConfig(confDir));
         LOGGER.info("HADOOP_HOME path is : {}", hadoopHome);
     }
 

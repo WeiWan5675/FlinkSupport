@@ -1,6 +1,7 @@
 package com.weiwan.support.core.start;
 
 import com.beust.jcommander.Parameter;
+import com.weiwan.support.common.options.CommonOptions;
 
 /**
  * @Author: xiaozhennan
@@ -9,17 +10,17 @@ import com.beust.jcommander.Parameter;
  * @ClassName: RunOptions
  * @Description:
  **/
-public class RunOptions {
+public class RunOptions extends CommonOptions {
 
 
     @Parameter(names = {"-x", "-stream"}, description = "stream mode")
-    private boolean isStream;
+    private boolean stream;
 
     @Parameter(names = {"-t", "-table"}, description = "stream table mode")
-    private boolean isTable;
+    private boolean table;
 
     @Parameter(names = {"-e", "-etl", "-etlMode"}, description = "running etl mode")
-    private boolean isEtl;
+    private boolean etl;
 
     @Parameter(names = {"-logLevel"}, description = "setting log level")
     private String logLevel;
@@ -28,20 +29,27 @@ public class RunOptions {
     private String jobDescJson;
 
     public boolean isStream() {
-        return isStream;
+        return stream;
     }
 
     public void setStream(boolean stream) {
-        isStream = stream;
+        this.stream = stream;
     }
 
+    public boolean isTable() {
+        return table;
+    }
+
+    public void setTable(boolean table) {
+        this.table = table;
+    }
 
     public boolean isEtl() {
-        return isEtl;
+        return etl;
     }
 
     public void setEtl(boolean etl) {
-        isEtl = etl;
+        this.etl = etl;
     }
 
     public String getLogLevel() {

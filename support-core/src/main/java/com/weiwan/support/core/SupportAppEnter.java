@@ -35,7 +35,7 @@ public class SupportAppEnter {
 
     public static void main(String[] args) throws Exception {
 
-
+        args = new String[0];
         OptionParser optionParser = new OptionParser(args);
         RunOptions options = optionParser.parse(RunOptions.class);
         CommonUtil.useCommandLogLevel(options.getLogLevel());

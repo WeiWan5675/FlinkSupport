@@ -55,13 +55,10 @@ public class YarnJobSubmiter implements JobSubmiter {
                 PipelineOptions.JARS,
                 jobInfo.getUserJars());
 
-        flinkConfiguration.set(
-                PipelineOptions.CLASSPATHS,
-                jobInfo.getUserClasspath());
 
         flinkConfiguration.set(
                 YarnConfigOptions.PROVIDED_LIB_DIRS,
-                jobInfo.getFlinkLibs());
+                jobInfo.getUserClasspath());
 
         flinkConfiguration.set(
                 YarnConfigOptions.FLINK_DIST_JAR,

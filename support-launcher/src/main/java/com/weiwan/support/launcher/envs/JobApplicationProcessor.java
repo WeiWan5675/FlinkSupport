@@ -5,6 +5,7 @@ import com.weiwan.support.common.constant.Constans;
 import com.weiwan.support.common.exception.SupportException;
 import com.weiwan.support.common.options.OptionParser;
 import com.weiwan.support.common.utils.*;
+import com.weiwan.support.common.utils.FileUtil;
 import com.weiwan.support.core.api.AppType;
 import com.weiwan.support.core.constant.SupportConstants;
 import com.weiwan.support.launcher.cluster.ClusterJobUtil;
@@ -21,10 +22,7 @@ import com.weiwan.support.utils.hadoop.HdfsUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.configuration.ConfigurationUtils;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FSDataInputStream;
-import org.apache.hadoop.fs.FileStatus;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.fs.*;
 import org.apache.hadoop.hdfs.client.HdfsUtils;
 import org.apache.hadoop.yarn.conf.YarnConfiguration;
 import org.slf4j.Logger;
@@ -33,8 +31,10 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -55,6 +55,8 @@ public class JobApplicationProcessor extends ApplicationEnv {
     private FileSystem fileSystem;
 
     private String flinkLibDir;
+    private String supportLibDir;
+    private String userLibDir;
     private String flinkDistJar;
     private String userResourceRemoteDir;
     private String applicationName;
@@ -231,21 +233,19 @@ public class JobApplicationProcessor extends ApplicationEnv {
             e.printStackTrace();
         }
         List<String> userJars = new ArrayList<>();
-        List<String> userClassPaths = new ArrayList<>();
+        Set<String> flinkClassPaths = new HashSet<>();
 
-        List<Path> userLibs = HdfsUtil.find(fileSystem, new Path(userResourceRemoteDir), ".jar");
+        flinkClassPaths.add(flinkLibDir);
+        flinkClassPaths.add(SupportConstants.SUPPORT_HDFS_LIB_DIR);
+        flinkClassPaths.add(userResourceRemoteDir);
 
-        List<Path> supportLibs = HdfsUtil.find(fileSystem, new Path(SupportConstants.SUPPORT_HDFS_LIB_DIR), ".jar");
-
-        for (Path supportLib : supportLibs) {
-            userClassPaths.add(supportLib.toUri().toString());
-        }
+        URL.setURLStreamHandlerFactory(new FsUrlStreamHandlerFactory());
 
 
-        for (Path userJar : userLibs) {
-            userJars.add(userJar.toUri().toString());
-        }
-
+        userJars.add("hdfs://nameservice1/flink_support_space/lib/support-core-1.0.jar");
+        logger.info("user jars size: {}", userJars.size());
+        System.out.println("classpath:" + flinkClassPaths.toString());
+        System.out.println("\n + userJar:" + userJars.toString());
         //组装了任务信息
         JobSubmitInfo submitInfo = JobSubmitInfo.newBuilder().appArgs(all_arg)
                 .appClassName(SupportConstants.SUPPORT_ENTER_CLASSNAME)
@@ -260,7 +260,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
                 .flinkLibs(Collections.singletonList(flinkLibDir))
                 .savePointPath(option.getSavePointPath())
                 .userJars(userJars)
-                .userClasspath(userClassPaths)
+                .userClasspath(new ArrayList<>(flinkClassPaths))
                 .build();
 
         submiter.submitJob(submitInfo);
