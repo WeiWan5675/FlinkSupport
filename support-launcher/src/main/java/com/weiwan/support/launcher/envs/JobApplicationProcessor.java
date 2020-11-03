@@ -54,7 +54,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
 
     private FileSystem fileSystem;
 
-    private List<String> flinkLibDirs;
+    private String flinkLibDir;
     private String flinkDistJar;
     private String userResourceRemoteDir;
     private String applicationName;
@@ -89,18 +89,10 @@ public class JobApplicationProcessor extends ApplicationEnv {
         String scala_version = supportCoreConf.getStringVal(SupportConstants.SCALA_VERSION);
 
         String flinkHdfsHome = SupportConstants.FLINK_HDFS_HOME.replace(SupportConstants.FLINK_VERSION_PLACEHOLDER, flink_version);
-        StringBuffer _libDir = new StringBuffer();
-        _libDir.append(flinkHdfsHome + Constans.SIGN_SLASH + SupportConstants.FLINK_LIB_DIR)
-                .append(";")
-                .append(SupportConstants.SUPPORT_HDFS_LIB_DIR)
-                .append(";")
-                .append(SupportConstants.SUPPORT_HDFS_PLUGINS_DIR);
 
-        flinkLibDirs = Arrays.asList(_libDir.toString().split(";"));
-
+        flinkLibDir = flinkHdfsHome + Constans.SIGN_SLASH + SupportConstants.FLINK_LIB_DIR;
         //获取该文件夹下所有的文件,排除dist
-        flinkDistJar = flinkHdfsHome + Constans.SIGN_SLASH + SupportConstants.FLINK_LIB_DIR
-                + Constans.SIGN_SLASH + SupportConstants.FLINK_DIST_JAR
+        flinkDistJar = flinkLibDir + Constans.SIGN_SLASH + SupportConstants.FLINK_DIST_JAR
                 .replace(SupportConstants.SCALA_VERSION_PLACEHOLDER, scala_version)
                 .replace(SupportConstants.FLINK_VERSION_PLACEHOLDER, flink_version);
 
@@ -238,10 +230,22 @@ public class JobApplicationProcessor extends ApplicationEnv {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        List<String> userClassPaths = new ArrayList<>();
-        userClassPaths.add("hdfs://flink_support_space/resources/support_TestApp_9f164e8e990e60bd2ce7f08fa5fe417f_job/app.yaml");
         List<String> userJars = new ArrayList<>();
-        userJars.add("hdfs:///flink_support_space/resources/support_TestApp_9f164e8e990e60bd2ce7f08fa5fe417f_job/support-test-1.0.jar");
+        List<String> userClassPaths = new ArrayList<>();
+
+        List<Path> userLibs = HdfsUtil.find(fileSystem, new Path(userResourceRemoteDir), ".jar");
+
+        List<Path> supportLibs = HdfsUtil.find(fileSystem, new Path(SupportConstants.SUPPORT_HDFS_LIB_DIR), ".jar");
+
+        for (Path supportLib : supportLibs) {
+            userClassPaths.add(supportLib.toUri().toString());
+        }
+
+
+        for (Path userJar : userLibs) {
+            userJars.add(userJar.toUri().toString());
+        }
+
         //组装了任务信息
         JobSubmitInfo submitInfo = JobSubmitInfo.newBuilder().appArgs(all_arg)
                 .appClassName(SupportConstants.SUPPORT_ENTER_CLASSNAME)
@@ -253,7 +257,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
                 .yarnConfiguration(yarnConfiguration)
                 .yarnQueue("root.users.easylife")
                 .flinkDistJar(flinkDistJar)
-                .flinkLibs(flinkLibDirs)
+                .flinkLibs(Collections.singletonList(flinkLibDir))
                 .savePointPath(option.getSavePointPath())
                 .userJars(userJars)
                 .userClasspath(userClassPaths)

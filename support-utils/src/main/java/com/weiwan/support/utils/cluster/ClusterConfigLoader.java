@@ -51,7 +51,6 @@ public class ClusterConfigLoader {
             Map.Entry<String, String> entry = iterator.next();
             String key = entry.getKey();
             String value = entry.getValue();
-            System.out.println(key + "{}{}" + value);
             if (key.startsWith("yarn.resourcemanager.hostname.")) {
                 String rm = key.substring("yarn.resourcemanager.hostname.".length());
                 String addressKey = "yarn.resourcemanager.address." + rm;

@@ -2,15 +2,15 @@ package com.weiwan.support.utils.hadoop;
 
 
 import com.weiwan.support.common.utils.FileUtil;
-import org.apache.hadoop.fs.FSDataInputStream;
-import org.apache.hadoop.fs.FileStatus;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.Path;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.hadoop.fs.*;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HdfsUtil {
 
@@ -99,5 +99,41 @@ public class HdfsUtil {
         }
         //存在就直接上传
         fileSystem.copyFromLocalFile(false, true, paths, dstDir);
+    }
+
+    public static List<Path> find(FileSystem fileSystem, Path path, String suffix) {
+        List<Path> paths = new ArrayList<>();
+        if (fileSystem != null && path != null) {
+            try {
+                if (fileSystem.exists(path) && fileSystem.isDirectory(path)) {
+
+                    //后续操作
+                    PathFilter pathFilter = null;
+                    if (StringUtils.isNotEmpty(suffix)) {
+                        //后缀处理
+                        pathFilter = new PathFilter() {
+                            @Override
+                            public boolean accept(Path path) {
+                                return path.toString().endsWith(suffix);
+                            }
+                        };
+                    }
+                    FileStatus[] fileStatuses = null;
+                    if (pathFilter != null) {
+                        fileStatuses = fileSystem.listStatus(path, pathFilter);
+                    } else {
+                        fileStatuses = fileSystem.listStatus(path);
+                    }
+                    if (fileStatuses != null) {
+                        for (FileStatus file : fileStatuses) {
+                            paths.add(file.getPath());
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return paths;
     }
 }
