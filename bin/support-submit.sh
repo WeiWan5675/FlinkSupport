@@ -11,7 +11,7 @@ echo "SUPPORT_EXTLIB_DIR$CPSP "$SUPPORT_EXTLIB_DIR
 echo "SUPPORT_PLUGINS_DIR$CPSP "$SUPPORT_PLUGINS_DIR
 echo "---------------------------------------------"
 
-CPSP=";"
+CPSP=":"
 
 
 JAVA_RUN="$JAVA_RUN -Dlog4j.configurationFile=""${SUPPORT_CONF_DIR}/support-log4j2.xml"
