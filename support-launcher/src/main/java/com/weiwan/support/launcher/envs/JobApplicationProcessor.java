@@ -1,5 +1,6 @@
 package com.weiwan.support.launcher.envs;
 
+import com.alibaba.fastjson.JSONObject;
 import com.weiwan.support.common.constant.Constans;
 import com.weiwan.support.common.exception.SupportException;
 import com.weiwan.support.common.options.OptionParser;
@@ -232,6 +233,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
         JobSubmiter submiter = JobSubmiterFactory.createYarnSubmiter(ClusterJobUtil.getYarnClient(yarnConfiguration));
         String[] all_arg = new String[0];
         try {
+            option.setJobConf(JSONObject.toJSONString(userJobConf.getAll()));
             all_arg = OptionParser.optionToArgs(option);
         } catch (Exception e) {
             e.printStackTrace();
@@ -242,7 +244,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
         userJars.add("hdfs:///flink_support_space/resources/support_TestApp_9f164e8e990e60bd2ce7f08fa5fe417f_job/support-test-1.0.jar");
         //组装了任务信息
         JobSubmitInfo submitInfo = JobSubmitInfo.newBuilder().appArgs(all_arg)
-                .appClassName(userJobConf.getStringVal(SupportConstants.SUPPORT_ENTER_CLASSNAME))
+                .appClassName(SupportConstants.SUPPORT_ENTER_CLASSNAME)
                 .appName(appName)
                 .appType("Apache Flink")
                 .clusterSpecification(ClusterJobUtil.createClusterSpecification(option.getParams()))
