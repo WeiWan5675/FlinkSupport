@@ -125,24 +125,15 @@ public class JobApplicationProcessor extends ApplicationEnv {
                     uploadUserResources(resourcesDir, userResourceRemoteDir, true);
                 }
             }
+        }
 
-
-            //获取App名称
-            applicationName = option.getAppName();
+        //获取App名称
+        applicationName = option.getAppName();
+        if (StringUtils.isEmpty(applicationName)) {
+            applicationName = userJobConf.getStringVal(SupportKey.APP_NAME);
             if (StringUtils.isEmpty(applicationName)) {
-                applicationName = userJobConf.getStringVal(SupportKey.APP_NAME);
-                if (StringUtils.isEmpty(applicationName)) {
-                    applicationName = supportCoreConf.getStringVal(SupportKey.APP_NAME);
-                }
+                applicationName = supportCoreConf.getStringVal(SupportKey.APP_NAME);
             }
-
-            /**
-             * 1. 获得resources路径
-             * 2. 判断目标resources是否存在
-             * 3. 如果不存在就上传,存在的话判断是否有需要重新上传参数
-             * 4. 如果需要重新上传,就重新上传
-             * 5. 启动应用
-             */
         }
 
     }

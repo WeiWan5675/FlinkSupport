@@ -3,7 +3,8 @@
 flink:
   task:
     name: TestApp
-
+    common:
+      queue: root.users.easylife
 
 
 
