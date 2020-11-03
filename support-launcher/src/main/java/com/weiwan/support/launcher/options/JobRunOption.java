@@ -24,6 +24,17 @@ public class JobRunOption extends GenericRunOption {
     @Parameter(names = {"-sp", "-s", "-savepoint"}, description = "The program starts from the savepoint snapshot and specifies the snapshot file address")
     private String savePointPath;
 
+    @Parameter(names = {"-q","-queue"}, description = "set the name of the yarn resource queue")
+    private String queueName;
+
+    public String getQueueName() {
+        return queueName;
+    }
+
+    public void setQueueName(String queueName) {
+        this.queueName = queueName;
+    }
+
     public String getResources() {
         return resources;
     }

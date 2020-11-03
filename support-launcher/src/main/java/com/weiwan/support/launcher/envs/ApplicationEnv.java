@@ -85,7 +85,7 @@ public abstract class ApplicationEnv implements EnvProcess {
             }
         }
 
-        if (RunMode.LOCAL == RunMode.valueOf(genericRunOption.getRunMode())) {
+        if (RunMode.LOCAL == RunMode.valueOf(genericRunOption.getRunMode().toUpperCase())) {
             System.out.println("本地模式");
         }
 

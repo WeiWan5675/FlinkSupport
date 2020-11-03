@@ -76,4 +76,7 @@ public class SupportConstants {
     public static final String JOB_RESOURCES_MD5_KEY_PLACEHOLDER = "${jobResourcesMD5}";
     public static final String JOB_RESOURCES_DIR = SUPPORT_HDFS_WORKSPACE + Constans.SIGN_SLASH + "resources/support_${jobName}_${jobResourcesMD5}_job";
     public static final String KEY_YARN_CONFIGURATION = "yarnConfiguration";
+    public static final String SUPPORT_STREAM_TYPE = "Flink Stream Support";
+
+    public static final String SUPPORT_BATCH_TYPE = "Flink Batch Support";
 }

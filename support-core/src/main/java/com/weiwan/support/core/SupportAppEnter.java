@@ -4,10 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.weiwan.support.common.exception.SupportException;
 import com.weiwan.support.common.options.OptionParser;
 import com.weiwan.support.common.utils.CommonUtil;
-import com.weiwan.support.core.api.AppType;
 import com.weiwan.support.core.api.FlinkSupport;
 import com.weiwan.support.core.config.JobConfig;
 import com.weiwan.support.core.constant.SupportConstants;
+import com.weiwan.support.core.constant.SupportKey;
 import com.weiwan.support.core.start.RunOptions;
 import com.weiwan.support.utils.flink.conf.FlinkEnvConfig;
 import com.weiwan.support.utils.flink.env.FlinkContext;
@@ -35,52 +35,63 @@ public class SupportAppEnter {
 
     public static void main(String[] args) throws Exception {
 
-        args = new String[0];
-        OptionParser optionParser = new OptionParser(args);
-        RunOptions options = optionParser.parse(RunOptions.class);
-        CommonUtil.useCommandLogLevel(options.getLogLevel());
-        Map<String, Object> optionToMap = OptionParser.optionToMap(options);
-        //读取job描述文件 json
-        String jobContent = options.getJobDescJson();
+        try {
+            OptionParser optionParser = new OptionParser(args);
+            RunOptions options = optionParser.parse(RunOptions.class);
+            System.out.println("========================================");
+            CommonUtil.useCommandLogLevel(options.getLogLevel());
+            System.out.println("============================================");
+            Map<String, Object> optionToMap = OptionParser.optionToMap(options);
+            //读取job描述文件 json
+            String jobContent = options.getJobDescJson();
 //        Map<String, String> jobMap = YamlUtils.loadYamlStr(jobConfContent);
-        Map<String, String> jobMap = JSONObject.parseObject(jobContent, Map.class);
-        printEnvInfo(optionToMap, jobMap);
-        Map<String, Object> tmpObj = new HashMap<>();
-        tmpObj.putAll(jobMap);
-        tmpObj.putAll(optionToMap);
-        SupportAppContext context = convertOptionsToContext(options, tmpObj);
-        FlinkSupport flinkSupport = null;
-        AppType appType = AppType.ETL_SUPPORT_APPLICATION;
-        if (AppType.STREAM_SUPPORT_APPLICATION == appType) {
-            FlinkContext<StreamExecutionEnvironment> streamContext = FlinkContextUtil.getStreamContext(context.getFlinkEnvConfig());
-            StreamExecutionEnvironment streamEnv = streamContext.getEnv();
-            //流模式
-            String appClassName = context.getJobConfig().getStringVal("app.appName");
-            //判断是否是etl模式
-            if (AppType.ETL_SUPPORT_APPLICATION == appType) {
-                //动态加载etl框架,如果是etl模式,实际上这个类名是固定的:
-                //com.weiwan.support.etl.framework.app.ETLStreamBaseApp
-                Class<?> aClass = Class.forName(SupportConstants.ETL_BASE_APP_CLASSNAME);
-                Constructor<?> constructor = aClass.getConstructor(StreamExecutionEnvironment.class, SupportAppContext.class);
-                flinkSupport = (FlinkSupport) constructor.newInstance(streamEnv, context);
-                flinkSupport.addReader(null);
-                flinkSupport.addProcess(null);
-                flinkSupport.addWriter(null);
-            } else if (AppType.SQL_SUPPORT_APPLICATION == appType) {
+            Map<String, String> jobMap = JSONObject.parseObject(jobContent, Map.class);
 
-                throw new SupportException("features not yet supported stay tuned!");
-            } else {
-                Class<?> aClass = Class.forName(appClassName);
-                Constructor<?> constructor = aClass.getConstructor(StreamExecutionEnvironment.class, SupportAppContext.class);
-                flinkSupport = (FlinkSupport) constructor.newInstance(streamEnv, context);
-
+            if (jobMap != null) {
+                logger.info(jobMap.toString());
             }
-        } else if (AppType.BATCH_SUPPORT_APPLICATION == appType) {
-            //批模式
-            ExecutionEnvironment bathcEnv = ExecutionEnvironment.getExecutionEnvironment();
-            flinkSupport = new BatchAppSupport(bathcEnv, context);
-        } else {
-            throw new SupportException("Unsupported application mode, please check the operating parameters");
+            System.out.println(jobMap);
+            printEnvInfo(optionToMap, jobMap);
+            Map<String, Object> tmpObj = new HashMap<>();
+            tmpObj.putAll(jobMap);
+            tmpObj.putAll(optionToMap);
+            SupportAppContext context = convertOptionsToContext(options, tmpObj);
+            FlinkSupport flinkSupport = null;
+            if (options.isStream()) {
+                FlinkContext<StreamExecutionEnvironment> streamContext = FlinkContextUtil.getStreamContext(context.getFlinkEnvConfig());
+                StreamExecutionEnvironment streamEnv = streamContext.getEnv();
+                //流模式
+                String appClassName = context.getJobConfig().getStringVal(SupportKey.APP_ENTER_CLASS);
+                //判断是否是etl模式
+                if (options.isEtl()) {
+                    //动态加载etl框架,如果是etl模式,实际上这个类名是固定的:
+                    //com.weiwan.support.etl.framework.app.ETLStreamBaseApp
+                    Class<?> aClass = Class.forName(SupportConstants.ETL_BASE_APP_CLASSNAME);
+                    Constructor<?> constructor = aClass.getConstructor(StreamExecutionEnvironment.class, SupportAppContext.class);
+                    flinkSupport = (FlinkSupport) constructor.newInstance(streamEnv, context);
+                    flinkSupport.addReader(null);
+                    flinkSupport.addProcess(null);
+                    flinkSupport.addWriter(null);
+                } else if (options.isTable()) {
+                    throw new SupportException("features not yet supported stay tuned!");
+                } else {
+                    Class<?> aClass = Class.forName(appClassName);
+                    Constructor<?> constructor = aClass.getConstructor(StreamExecutionEnvironment.class, SupportAppContext.class);
+                    flinkSupport = (FlinkSupport) constructor.newInstance(streamEnv, context);
+
+                }
+            } else if (options.isBatch()) {
+                //批模式
+                ExecutionEnvironment bathcEnv = ExecutionEnvironment.getExecutionEnvironment();
+                flinkSupport = new BatchAppSupport(bathcEnv, context);
+            } else {
+                throw new SupportException("Unsupported application mode, please check the operating parameters");
+            }
+        } catch (Exception e) {
+            System.err.println("报错拉+++++++++++++++++++++++");
+            System.err.println("报错拉+++++++++++++++++++++++" + e.getLocalizedMessage());
+            System.err.println("报错拉+++++++++++++++++++++++" + e.getMessage());
+            e.printStackTrace();
         }
 
 

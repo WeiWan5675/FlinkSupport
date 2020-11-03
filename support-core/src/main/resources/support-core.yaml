@@ -26,6 +26,7 @@ flink:
       restartNum: 1  #重启次数  默认3
       restartInterval: 30000  #重启延迟  默认30S
       restartFailMaxNum: 1 #最大重启失败次数
+      queue: root.default
     batch:
       sessionTimeout:     #保存作业的中间结果的超时时间 暂未启用
     stream:
@@ -47,3 +48,10 @@ flink:
       type: Memory #三种 Memory  FileSystem  RocksDB
       async: true #仅在配置为Memory FileSystem 时生效 RocksDB默认为异步
       path:  #支持hdfs路径 或者本地文件路径 hdfs://namenode:40010/flink/checkpoints  file:///data/flink/checkpoints
+
+
+
+
+  app:
+    appClass:
+    appName: Support Application

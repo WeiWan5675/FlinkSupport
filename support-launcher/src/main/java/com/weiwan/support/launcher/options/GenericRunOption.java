@@ -17,10 +17,10 @@ import java.util.Map;
 public class GenericRunOption extends CommonOptions {
 
     @Parameter(names = {"-m", "-mode"}, description = "support framework client runing env mode")
-    private String runMode = "job";
+    private String runMode = "JOB";
 
     @Parameter(names = {"-n", "-name"}, description = "User program name, default is: Support Application")
-    private String appName = "Support Application";
+    private String appName;
 
     @Parameter(names = "-logLevel", description = "client log level, default is: INFO")
     private String logLevel = "INFO";

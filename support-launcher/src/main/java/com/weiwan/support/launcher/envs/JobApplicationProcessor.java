@@ -6,36 +6,30 @@ import com.weiwan.support.common.exception.SupportException;
 import com.weiwan.support.common.options.OptionParser;
 import com.weiwan.support.common.utils.*;
 import com.weiwan.support.common.utils.FileUtil;
-import com.weiwan.support.core.api.AppType;
 import com.weiwan.support.core.constant.SupportConstants;
+import com.weiwan.support.core.constant.SupportKey;
+import com.weiwan.support.core.start.RunOptions;
 import com.weiwan.support.launcher.cluster.ClusterJobUtil;
 import com.weiwan.support.launcher.cluster.JobSubmitInfo;
 import com.weiwan.support.launcher.cluster.JobSubmiter;
 import com.weiwan.support.launcher.cluster.JobSubmiterFactory;
+import com.weiwan.support.launcher.enums.JobType;
 import com.weiwan.support.launcher.enums.ResourceMode;
-import com.weiwan.support.launcher.enums.RunMode;
 import com.weiwan.support.launcher.options.GenericRunOption;
 import com.weiwan.support.launcher.options.JobRunOption;
 import com.weiwan.support.utils.flink.conf.FlinkContains;
 import com.weiwan.support.utils.hadoop.HadoopUtil;
 import com.weiwan.support.utils.hadoop.HdfsUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.flink.configuration.ConfigurationUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.*;
-import org.apache.hadoop.hdfs.client.HdfsUtils;
 import org.apache.hadoop.yarn.conf.YarnConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -55,15 +49,12 @@ public class JobApplicationProcessor extends ApplicationEnv {
     private FileSystem fileSystem;
 
     private String flinkLibDir;
-    private String supportLibDir;
-    private String userLibDir;
     private String flinkDistJar;
     private String userResourceRemoteDir;
     private String applicationName;
 
     private UserJobConf userJobConf;
 
-    private AppType appType;
     private Configuration hadoopConfiguration;
     private org.apache.flink.configuration.Configuration flinkConfiguration;
     private YarnConfiguration yarnConfiguration;
@@ -132,6 +123,16 @@ public class JobApplicationProcessor extends ApplicationEnv {
                 //判断是否需要重新上传,需要就重新上传
                 if (option.isOverwriteResource()) {
                     uploadUserResources(resourcesDir, userResourceRemoteDir, true);
+                }
+            }
+
+
+            //获取App名称
+            applicationName = option.getAppName();
+            if (StringUtils.isEmpty(applicationName)) {
+                applicationName = userJobConf.getStringVal(SupportKey.APP_NAME);
+                if (StringUtils.isEmpty(applicationName)) {
+                    applicationName = supportCoreConf.getStringVal(SupportKey.APP_NAME);
                 }
             }
 
@@ -213,8 +214,6 @@ public class JobApplicationProcessor extends ApplicationEnv {
     @Override
     public boolean process() {
         logger.info("The Job application handler starts and starts processing the job submission work!");
-        String appName = option.getAppName();
-        logger.info("job Name is : {}", appName);
 
 
         //准备提交任务
@@ -224,45 +223,71 @@ public class JobApplicationProcessor extends ApplicationEnv {
          * 3.
          */
 
-        JobSubmiter submiter = JobSubmiterFactory.createYarnSubmiter(ClusterJobUtil.getYarnClient(yarnConfiguration));
-        String[] all_arg = new String[0];
+        RunOptions runOptions = convertCmdToRunOption(option);
+
+
+        //获取job类型
+        JobType jobType = JobType.getType(userJobConf.getStringVal(SupportKey.APP_TYPE, "stream").toUpperCase());
+        if (JobType.BATCH == jobType) {
+            runOptions.setBatch(true);
+        } else {
+            runOptions.setStream(true);
+            //处理流任务的其它状态
+            if (userJobConf.getBooleanVal(SupportKey.ETL_MODE, false)) {
+                runOptions.setEtl(true);
+                //TODO 这里要兼容其它模式
+            } else if (userJobConf.getBooleanVal(SupportKey.SQL_MODE, false)) {
+                //sql模式
+                runOptions.setTable(true);
+            } else {
+                //普通模式
+            }
+        }
+
+        //JobDescJson
+        runOptions.setJobDescJson(JSONObject.toJSONString(userJobConf.getAll()));
+
+        String queueName = option.getQueueName();
+        if (StringUtils.isEmpty(queueName)) {
+            String userQueue = userJobConf.getStringVal(FlinkContains.FLINK_TASK_COMMON_QUEUE_KEY);
+            queueName = StringUtils.isNotEmpty(userQueue) ? userQueue : supportCoreConf.getStringVal(FlinkContains.FLINK_TASK_COMMON_QUEUE_KEY);
+        }
+
+
+        String[] args = null;
         try {
-            option.setJobConf(JSONObject.toJSONString(userJobConf.getAll()));
-            all_arg = OptionParser.optionToArgs(option);
+            args = OptionParser.optionToArgs(runOptions);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        List<String> userJars = new ArrayList<>();
-        Set<String> flinkClassPaths = new HashSet<>();
+        //coreJar
+        String coreJar = "hdfs://nameservice1/flink_support_space/lib/support-core-1.0.jar";
 
+        Set<String> flinkClassPaths = new HashSet<>();
         flinkClassPaths.add(flinkLibDir);
         flinkClassPaths.add(SupportConstants.SUPPORT_HDFS_LIB_DIR);
         flinkClassPaths.add(userResourceRemoteDir);
-
         URL.setURLStreamHandlerFactory(new FsUrlStreamHandlerFactory());
-
-
-        userJars.add("hdfs://nameservice1/flink_support_space/lib/support-core-1.0.jar");
-        logger.info("user jars size: {}", userJars.size());
         System.out.println("classpath:" + flinkClassPaths.toString());
-        System.out.println("\n + userJar:" + userJars.toString());
         //组装了任务信息
-        JobSubmitInfo submitInfo = JobSubmitInfo.newBuilder().appArgs(all_arg)
+        JobSubmitInfo submitInfo = JobSubmitInfo.newBuilder().appArgs(args)
                 .appClassName(SupportConstants.SUPPORT_ENTER_CLASSNAME)
-                .appName(appName)
-                .appType("Apache Flink")
+                .appName(applicationName)
+                .appType(jobType.getType())
                 .clusterSpecification(ClusterJobUtil.createClusterSpecification(option.getParams()))
                 .flinkConfiguration(flinkConfiguration)
                 .hadoopConfiguration(hadoopConfiguration)
                 .yarnConfiguration(yarnConfiguration)
-                .yarnQueue("root.users.easylife")
+                .yarnQueue(queueName)
                 .flinkDistJar(flinkDistJar)
                 .flinkLibs(Collections.singletonList(flinkLibDir))
                 .savePointPath(option.getSavePointPath())
-                .userJars(userJars)
+                .userJars(Collections.singletonList(coreJar))
                 .userClasspath(new ArrayList<>(flinkClassPaths))
                 .build();
 
+
+        JobSubmiter submiter = JobSubmiterFactory.createYarnSubmiter(ClusterJobUtil.getYarnClient(yarnConfiguration));
         submiter.submitJob(submitInfo);
 
 
@@ -296,6 +321,13 @@ public class JobApplicationProcessor extends ApplicationEnv {
 
         logger.info("The job handler is processed and the job has been submitted!");
         return true;
+    }
+
+    private RunOptions convertCmdToRunOption(JobRunOption option) {
+        RunOptions runOptions = new RunOptions();
+        runOptions.setLogLevel(option.getLogLevel());
+        runOptions.setParams(option.getParams());
+        return runOptions;
     }
 
     /**

@@ -29,6 +29,7 @@ public class FlinkContains {
     public static final String FLINK_TASK_COMMON_RESTART_NUM_KEY = "flink.task.common.restartNum";
     public static final String FLINK_TASK_COMMON_RESTART_INTERVAL_KEY = "flink.task.common.restartInterval";
     public static final String FLINK_TASK_COMMON_RESTART_FAIL_MAX_KEY = "flink.task.common.restartFailMaxNum";
+    public static final String FLINK_TASK_COMMON_QUEUE_KEY = "flink.task.common.queue";
 
     /**
      * Flink配置参数Key -> checkpoint

@@ -16,6 +16,9 @@ public class RunOptions extends CommonOptions {
     @Parameter(names = {"-x", "-stream"}, description = "stream mode")
     private boolean stream;
 
+    @Parameter(names = {"-b", "-batch"}, description = "stream mode")
+    private boolean batch;
+
     @Parameter(names = {"-t", "-table"}, description = "stream table mode")
     private boolean table;
 
@@ -27,6 +30,15 @@ public class RunOptions extends CommonOptions {
 
     @Parameter(names = {"-jobConf", "-jc"}, description = "job desc json content")
     private String jobDescJson;
+
+
+    public boolean isBatch() {
+        return batch;
+    }
+
+    public void setBatch(boolean batch) {
+        this.batch = batch;
+    }
 
     public boolean isStream() {
         return stream;
