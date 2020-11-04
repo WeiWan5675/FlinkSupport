@@ -2,6 +2,7 @@ package com.weiwan.test.easylife;
 
 import com.weiwan.support.core.StreamAppSupport;
 import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.annotation.Support;
 import com.weiwan.support.core.pojo.DataRecord;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -16,6 +17,7 @@ import org.apache.flink.streaming.api.functions.source.SourceFunction;
  * @ClassName: TestApp
  * @Description:
  **/
+@Support
 public class TestApp extends StreamAppSupport<DataRecord<String>, DataRecord<String>> {
 
     public TestApp(StreamExecutionEnvironment environment, SupportAppContext appContext) {

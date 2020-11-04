@@ -16,18 +16,15 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  **/
 public abstract class StreamAppSupport<IN, OIN> implements FlinkSupport<StreamExecutionEnvironment> {
 
-    private Reader<IN> reader;
-    private Processer<IN, OIN> process;
-    private Writer<OIN> writer;
+    protected Reader<IN> reader;
+    protected Processer<IN, OIN> process;
+    protected Writer<OIN> writer;
     protected StreamExecutionEnvironment environment;
     protected SupportAppContext appContext;
 
     public StreamAppSupport(StreamExecutionEnvironment environment, SupportAppContext appContext) {
         this.environment = environment;
         this.appContext = appContext;
-    }
-
-    public StreamAppSupport() {
     }
 
     public void addReader(Reader reader) {

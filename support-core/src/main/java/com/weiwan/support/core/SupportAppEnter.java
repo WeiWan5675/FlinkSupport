@@ -6,6 +6,7 @@ import com.weiwan.support.common.options.OptionParser;
 import com.weiwan.support.common.utils.Base64Util;
 import com.weiwan.support.common.utils.CommonUtil;
 import com.weiwan.support.common.utils.StringCompressUtil;
+import com.weiwan.support.core.annotation.Support;
 import com.weiwan.support.core.api.FlinkSupport;
 import com.weiwan.support.core.api.TaskResult;
 import com.weiwan.support.core.config.JobConfig;
@@ -17,13 +18,20 @@ import com.weiwan.support.utils.flink.env.FlinkContext;
 import com.weiwan.support.utils.flink.env.FlinkContextUtil;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
+import org.reflections.scanners.TypeAnnotationsScanner;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.TypeVariable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @Author: xiaozhennan
@@ -72,22 +80,29 @@ public class SupportAppEnter {
                     //动态加载etl框架,如果是etl模式,实际上这个类名是固定的:
                     //com.weiwan.support.etl.framework.app.ETLStreamBaseApp
                     Class<?> aClass = Class.forName(SupportConstants.ETL_BASE_APP_CLASSNAME);
-                    Constructor<?> constructor = aClass.getDeclaredConstructor(StreamExecutionEnvironment.class, SupportAppContext.class);
-                    flinkSupport = (FlinkSupport) constructor.newInstance((StreamExecutionEnvironment) env, context);
+                    Constructor<?> constructor = aClass.getConstructor(StreamExecutionEnvironment.class, SupportAppContext.class);
+                    flinkSupport = (FlinkSupport) constructor.newInstance(env, context);
                     flinkSupport.addReader(null);
                     flinkSupport.addProcess(null);
                     flinkSupport.addWriter(null);
                 } else if (options.isTable()) {
                     throw new SupportException("features not yet supported stay tuned!");
                 } else {
-                    Class<?> aClass = Class.forName(appClassName);
-                    System.out.println(aClass.getName());
 
-                    System.out.println(aClass.getTypeParameters().toString());
-                    Constructor<?> declaredConstructor = aClass.getConstructor(StreamExecutionEnvironment.class, SupportAppContext.class);
+                    Reflections reflections = new Reflections(new ConfigurationBuilder()
+                            .setUrls(ClasspathHelper.forJavaClassPath())
+                            .setScanners(new SubTypesScanner(),
+                                    new TypeAnnotationsScanner()));
 
-                    declaredConstructor.setAccessible(true);
-                    flinkSupport = (FlinkSupport) declaredConstructor.newInstance((StreamExecutionEnvironment) env, context);
+                    Set<Class<?>> typesAnnotatedWith = reflections.getTypesAnnotatedWith(Support.class);
+                    for (Class<?> aClass : typesAnnotatedWith) {
+                        if (aClass.getName().equalsIgnoreCase(appClassName)) {
+                            Constructor<?> constructor = aClass.getConstructor(StreamExecutionEnvironment.class, SupportAppContext.class);
+                            flinkSupport = (FlinkSupport) constructor.newInstance((StreamExecutionEnvironment) env, context);
+                        }
+                    }
+
+
                 }
             } else if (options.isBatch()) {
                 //批模式
