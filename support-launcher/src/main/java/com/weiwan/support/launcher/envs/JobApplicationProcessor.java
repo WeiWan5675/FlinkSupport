@@ -276,7 +276,14 @@ public class JobApplicationProcessor extends ApplicationEnv {
                 .userClasspath(new ArrayList<>(flinkClassPaths))
                 .build();
 
+        StringBuffer sb = new StringBuffer();
 
+        for (String arg : args) {
+            sb.append(arg);
+            sb.append("{}{}");
+        }
+
+        logger.info("启动参数: {}", sb.toString());
         JobSubmiter submiter = JobSubmiterFactory.createYarnSubmiter(ClusterJobUtil.getYarnClient(yarnConfiguration));
         submiter.submitJob(submitInfo);
 

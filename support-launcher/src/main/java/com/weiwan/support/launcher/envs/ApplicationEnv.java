@@ -141,8 +141,8 @@ public abstract class ApplicationEnv implements EnvProcess {
         String confDir = hadoopHome + File.separator + SupportConstants.HADOOP_CONF_DIR;
         String coreSiteFile = hadoopHome + File.separator + SupportConstants.HADOOP_CONF_DIR + File.separator + SupportConstants.HADOOP_CONF_CORE_SITE;
         String hdfsSiteFile = hadoopHome + File.separator + SupportConstants.HADOOP_CONF_DIR + File.separator + SupportConstants.HADOOP_CONF_HDFS_SITE;
-        supportCoreConf.setStringVal(SupportConstants.KEY_LOCAL_HADOOP_CORE_SITE_CONF, FileUtil.readFileContent(coreSiteFile));
-        supportCoreConf.setStringVal(SupportConstants.KEY_LOCAL_HADOOP_HDFS_SITE_CONF, FileUtil.readFileContent(hdfsSiteFile));
+//        supportCoreConf.setStringVal(SupportConstants.KEY_LOCAL_HADOOP_CORE_SITE_CONF, FileUtil.readFileContent(coreSiteFile));
+//        supportCoreConf.setStringVal(SupportConstants.KEY_LOCAL_HADOOP_HDFS_SITE_CONF, FileUtil.readFileContent(hdfsSiteFile));
         supportCoreConf.setVal(SupportConstants.KEY_HADOOP_CONFIGURATION, ClusterConfigLoader.loadHadoopConfig(confDir));
         supportCoreConf.setVal(SupportConstants.KEY_YARN_CONFIGURATION, ClusterConfigLoader.loadYarnConfig(confDir));
         LOGGER.info("HADOOP_HOME path is : {}", hadoopHome);
@@ -165,7 +165,7 @@ public abstract class ApplicationEnv implements EnvProcess {
         option.setFlinkHome(flinkHome);
         String confDir = flinkHome + File.separator + SupportConstants.FLINK_CONF_DIR;
         String confFile = flinkHome + File.separator + SupportConstants.FLINK_CONF_DIR + File.separator + SupportConstants.FLINK_CONF_FILE;
-        supportCoreConf.setStringVal(SupportConstants.KEY_LOCAL_FLINK_CONF, FileUtil.readFileContent(confFile));
+//        supportCoreConf.setStringVal(SupportConstants.KEY_LOCAL_FLINK_CONF, FileUtil.readFileContent(confFile));
         supportCoreConf.setVal(SupportConstants.KEY_FLINK_CONFIGURATION, GlobalConfiguration.loadConfiguration(confDir));
         LOGGER.info("FLINK_HOME path is : {}", flinkHome);
     }

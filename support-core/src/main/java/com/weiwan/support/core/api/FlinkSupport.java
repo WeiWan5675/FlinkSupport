@@ -28,6 +28,6 @@ public interface FlinkSupport<T> {
 
     public SupportAppContext getContext();
 
-    TaskResult submitFlinkTask(T env);
+    TaskResult submitFlinkTask(T env) throws Exception;
 
 }
