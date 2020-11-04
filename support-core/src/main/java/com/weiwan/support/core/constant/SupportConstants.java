@@ -14,8 +14,8 @@ public class SupportConstants {
 
     //APPLICATION
     public static final String SUPPORT_ENTER_CLASSNAME = "com.weiwan.support.core.SupportAppEnter";
-    public static final String ETL_BASE_APP_CLASSNAME = "com.weiwan.support.etl.framework.app.ETLStreamBaseApp";
-    public static final String SQL_BASE_APP_CLASSNAME = "com.weiwan.support.sql.framework.app.SQLStreamBaseApp";
+    public static final String ETL_BASE_APP_CLASSNAME = "com.weiwan.support.etl.framework.app.StreamETLBaseApp";
+    public static final String SQL_BASE_APP_CLASSNAME = "com.weiwan.support.sql.framework.app.StreamSqlBaseApp";
 
     //HOME KEY
     public static final String KEY_SUPPORT_HOME = "FLINK_SUPPORT_HOME";

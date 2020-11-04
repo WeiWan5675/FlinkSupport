@@ -81,10 +81,13 @@ public class SupportAppEnter {
                     throw new SupportException("features not yet supported stay tuned!");
                 } else {
                     Class<?> aClass = Class.forName(appClassName);
-                    Constructor<?> declaredConstructor = aClass.getDeclaredConstructor(StreamExecutionEnvironment.class, SupportAppContext.class);
+                    System.out.println(aClass.getName());
+
+                    System.out.println(aClass.getTypeParameters().toString());
+                    Constructor<?> declaredConstructor = aClass.getConstructor(StreamExecutionEnvironment.class, SupportAppContext.class);
+
                     declaredConstructor.setAccessible(true);
                     flinkSupport = (FlinkSupport) declaredConstructor.newInstance((StreamExecutionEnvironment) env, context);
-
                 }
             } else if (options.isBatch()) {
                 //批模式
@@ -100,8 +103,6 @@ public class SupportAppEnter {
 
         } catch (Exception e) {
             System.err.println("报错拉+++++++++++++++++++++++");
-            System.err.println("报错拉+++++++++++++++++++++++" + e.getLocalizedMessage());
-            System.err.println("报错拉+++++++++++++++++++++++" + e.getMessage());
             e.printStackTrace();
         }
 
