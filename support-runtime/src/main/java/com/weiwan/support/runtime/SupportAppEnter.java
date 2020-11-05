@@ -1,12 +1,12 @@
-package com.weiwan.support.core;
+package com.weiwan.support.runtime;
 
 import com.alibaba.fastjson.JSONObject;
 import com.weiwan.support.common.exception.SupportException;
 import com.weiwan.support.common.options.OptionParser;
 import com.weiwan.support.common.utils.Base64Util;
 import com.weiwan.support.common.utils.CommonUtil;
-import com.weiwan.support.common.utils.StringCompressUtil;
-import com.weiwan.support.core.annotation.Support;
+import com.weiwan.support.core.BatchAppSupport;
+import com.weiwan.support.core.SupportAppContext;
 import com.weiwan.support.core.api.FlinkSupport;
 import com.weiwan.support.core.api.TaskResult;
 import com.weiwan.support.core.config.JobConfig;
@@ -18,20 +18,12 @@ import com.weiwan.support.utils.flink.env.FlinkContext;
 import com.weiwan.support.utils.flink.env.FlinkContextUtil;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
-import org.reflections.scanners.TypeAnnotationsScanner;
-import org.reflections.util.ClasspathHelper;
-import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.TypeVariable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @Author: xiaozhennan
@@ -63,13 +55,15 @@ public class SupportAppEnter {
 
             try {
                 Class<?> appReClass = Class.forName("com.weiwan.tester.run.TasterApp");
-                FlinkSupport o1 = (FlinkSupport) appReClass.newInstance();
-                o1.init(null, null);
-                o1.submitFlinkTask(null);
-                System.err.println("taskerapp任务提交成功,没报错 " + o1.getClass().getName());
+                Object o = appReClass.newInstance();
+                FlinkSupport flinkSupport = (FlinkSupport) o;
+                flinkSupport.init(null, null);
+                flinkSupport.submitFlinkTask(null);
+                System.err.println("taskerapp任务提交成功,没报错 " + flinkSupport.getClass().getName());
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             } catch (Exception e) {
+                System.err.println("taskerapp 报错了");
                 e.printStackTrace();
             }
 

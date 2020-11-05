@@ -13,7 +13,7 @@ import com.weiwan.support.common.constant.Constans;
 public class SupportConstants {
 
     //APPLICATION
-    public static final String SUPPORT_ENTER_CLASSNAME = "com.weiwan.support.core.SupportAppEnter";
+    public static final String SUPPORT_ENTER_CLASSNAME = "com.weiwan.support.runtime.SupportAppEnter";
     public static final String ETL_BASE_APP_CLASSNAME = "com.weiwan.support.etl.framework.app.StreamETLBaseApp";
     public static final String SQL_BASE_APP_CLASSNAME = "com.weiwan.support.sql.framework.app.StreamSqlBaseApp";
 

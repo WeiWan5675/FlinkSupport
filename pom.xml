@@ -18,6 +18,7 @@
         <module>support-monitor</module>
         <module>support-test</module>
         <module>support-package</module>
+        <module>support-runtime</module>
     </modules>
     <properties>
         <package.name>FlinkSupport-${project.version}</package.name>

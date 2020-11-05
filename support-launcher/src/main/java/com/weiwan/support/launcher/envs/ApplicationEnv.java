@@ -3,27 +3,22 @@ package com.weiwan.support.launcher.envs;
 import com.weiwan.support.common.exception.SupportException;
 import com.weiwan.support.common.options.OptionParser;
 import com.weiwan.support.common.utils.*;
-import com.weiwan.support.core.SupportAppEnter;
 import com.weiwan.support.core.config.SupportCoreConf;
 import com.weiwan.support.core.config.SupportETLConf;
 import com.weiwan.support.core.config.SupportSqlConf;
 import com.weiwan.support.core.constant.SupportConstants;
 import com.weiwan.support.launcher.SupportAppClient;
-import com.weiwan.support.launcher.cluster.JobSubmiterFactory;
 import com.weiwan.support.launcher.enums.ResourceMode;
 import com.weiwan.support.launcher.enums.RunMode;
 import com.weiwan.support.launcher.options.GenericRunOption;
 import com.weiwan.support.utils.cluster.ClusterConfigLoader;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.flink.configuration.Configuration;
 import org.apache.flink.configuration.GlobalConfiguration;
-import org.apache.flink.runtime.util.bash.FlinkConfigLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Set;
 
 /**
  * @Author: xiaozhennan
