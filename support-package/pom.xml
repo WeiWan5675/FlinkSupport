@@ -22,6 +22,10 @@
         </dependency>
         <dependency>
             <groupId>com.weiwan</groupId>
+            <artifactId>support-runtime</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.weiwan</groupId>
             <artifactId>etl-framework</artifactId>
             <version>${support-etl-framework.version}</version>
         </dependency>

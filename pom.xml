@@ -57,6 +57,7 @@
         <support-monitor.version>1.0</support-monitor.version>
         <support-etl-framework.version>1.0</support-etl-framework.version>
         <support-sql-framework.version>1.0</support-sql-framework.version>
+        <support-runtime.version>1.0</support-runtime.version>
     </properties>
 
 
@@ -73,6 +74,11 @@
                 <groupId>com.weiwan</groupId>
                 <artifactId>support-core</artifactId>
                 <version>${support-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.weiwan</groupId>
+                <artifactId>support-runtime</artifactId>
+                <version>${support-runtime.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.weiwan</groupId>
