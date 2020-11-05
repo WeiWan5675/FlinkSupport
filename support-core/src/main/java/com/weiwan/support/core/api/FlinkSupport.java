@@ -13,13 +13,13 @@ import org.apache.flink.streaming.api.datastream.DataStreamSink;
  **/
 public interface FlinkSupport<T> {
 
+    void init(T t, SupportAppContext context);
 
-    public T getEnv();
+    T getEnv();
 
-    public SupportAppContext getContext();
+    SupportAppContext getContext();
 
     TaskResult submitFlinkTask(T env) throws Exception;
-
 
 
 }

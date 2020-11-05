@@ -16,10 +16,6 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  **/
 public class StreamETLBaseApp extends StreamAppSupport<DataRecord, DataRecord> {
 
-    private StreamETLBaseApp(StreamExecutionEnvironment environment, SupportAppContext appContext) {
-        super(environment, appContext);
-    }
-
     @Override
     public DataStream<DataRecord> streamOpen(StreamExecutionEnvironment environment, SupportAppContext appContext) {
         SupportAppContext context = getContext();

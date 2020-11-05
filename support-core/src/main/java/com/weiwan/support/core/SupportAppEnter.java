@@ -48,11 +48,47 @@ public class SupportAppEnter {
     public static void main(String[] args) throws Exception {
 
         try {
+
+            try {
+                Class<?> appReClass = Class.forName("com.weiwan.support.core.AppRe");
+                FlinkSupport o1 = (FlinkSupport) appReClass.newInstance();
+                o1.init(null, null);
+                o1.submitFlinkTask(null);
+                System.err.println("AppRe任务提交成功,没报错 " + o1.getClass().getName());
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                Class<?> appReClass = Class.forName("com.weiwan.tester.run.TasterApp");
+                FlinkSupport o1 = (FlinkSupport) appReClass.newInstance();
+                o1.init(null, null);
+                o1.submitFlinkTask(null);
+                System.err.println("taskerapp任务提交成功,没报错 " + o1.getClass().getName());
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                Class<?> aClass1 = Class.forName("com.weiwan.tester.run.TastAppV2");
+                Object o = aClass1.newInstance();
+                System.err.println(o.getClass().getName());
+                System.err.println("代码运行到v2创建");
+            } catch (Exception e) {
+                System.err.println("v2不存在报错");
+                e.printStackTrace();
+            }
+
+
             OptionParser optionParser = new OptionParser(args);
             RunOptions options = optionParser.parse(RunOptions.class);
-            System.out.println("========================================");
+            System.err.println("========================================");
             CommonUtil.useCommandLogLevel(options.getLogLevel());
-            System.out.println("============================================");
+            System.err.println("============================================");
             Map<String, Object> optionToMap = OptionParser.optionToMap(options);
             //读取job描述文件 json
             String jobContent = Base64Util.decode(options.getJobDescJson());
@@ -80,27 +116,17 @@ public class SupportAppEnter {
                     //动态加载etl框架,如果是etl模式,实际上这个类名是固定的:
                     //com.weiwan.support.etl.framework.app.ETLStreamBaseApp
                     Class<?> aClass = Class.forName(SupportConstants.ETL_BASE_APP_CLASSNAME);
-                    Constructor<?> constructor = aClass.getConstructor(StreamExecutionEnvironment.class, SupportAppContext.class);
-                    flinkSupport = (FlinkSupport) constructor.newInstance(env, context);
+                    Constructor<?> constructor = aClass.getConstructor(SupportAppContext.class, StreamExecutionEnvironment.class);
+                    flinkSupport = (FlinkSupport) constructor.newInstance(context, (StreamExecutionEnvironment) env);
                 } else if (options.isTable()) {
                     throw new SupportException("features not yet supported stay tuned!");
                 } else {
-
-                    Reflections reflections = new Reflections(new ConfigurationBuilder()
-                            .setUrls(ClasspathHelper.forJavaClassPath())
-                            .setScanners(new SubTypesScanner(),
-                                    new TypeAnnotationsScanner()));
-
-                    Set<Class<?>> typesAnnotatedWith = reflections.getTypesAnnotatedWith(Support.class);
-                    for (Class<?> aClass : typesAnnotatedWith) {
-                        if (aClass.getName().equalsIgnoreCase(appClassName)) {
-                            Constructor<?> constructor = aClass.getConstructor(StreamExecutionEnvironment.class, SupportAppContext.class);
-                            flinkSupport = (FlinkSupport) constructor.newInstance((StreamExecutionEnvironment) env, context);
-                        }
-                    }
-
-
+                    Class<?> aClass = Class.forName(appClassName);
+                    Constructor<?> constructor = aClass.getConstructor(StreamExecutionEnvironment.class, SupportAppContext.class);
+                    flinkSupport = (FlinkSupport) constructor.newInstance((StreamExecutionEnvironment) env, context);
                 }
+
+
             } else if (options.isBatch()) {
                 //批模式
                 env = ExecutionEnvironment.getExecutionEnvironment();
