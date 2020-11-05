@@ -23,7 +23,7 @@ public class BatchAppSupport<IN, OIN> implements FlinkSupport<ExecutionEnvironme
 
 
     @Override
-    public void init(ExecutionEnvironment executionEnvironment, SupportAppContext context) {
+    public void initEnv(ExecutionEnvironment executionEnvironment, SupportAppContext context) {
 
     }
 

@@ -41,48 +41,12 @@ public class SupportAppEnter {
 
         try {
 
-            try {
-                Class<?> appReClass = Class.forName("com.weiwan.support.core.AppRe");
-                FlinkSupport o1 = (FlinkSupport) appReClass.newInstance();
-                o1.init(null, null);
-                o1.submitFlinkTask(null);
-                System.err.println("AppRe任务提交成功,没报错 " + o1.getClass().getName());
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            try {
-                Class<?> appReClass = Class.forName("com.weiwan.tester.run.TasterApp");
-                Object o = appReClass.newInstance();
-                FlinkSupport flinkSupport = (FlinkSupport) o;
-                flinkSupport.init(null, null);
-                flinkSupport.submitFlinkTask(null);
-                System.err.println("taskerapp任务提交成功,没报错 " + flinkSupport.getClass().getName());
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
-                System.err.println("taskerapp 报错了");
-                e.printStackTrace();
-            }
-
-            try {
-                Class<?> aClass1 = Class.forName("com.weiwan.tester.run.TastAppV2");
-                Object o = aClass1.newInstance();
-                System.err.println(o.getClass().getName());
-                System.err.println("代码运行到v2创建");
-            } catch (Exception e) {
-                System.err.println("v2不存在报错");
-                e.printStackTrace();
-            }
-
 
             OptionParser optionParser = new OptionParser(args);
             RunOptions options = optionParser.parse(RunOptions.class);
             System.err.println("========================================");
             CommonUtil.useCommandLogLevel(options.getLogLevel());
-            System.err.println("============================================");
+            System.err.println("========================================");
             Map<String, Object> optionToMap = OptionParser.optionToMap(options);
             //读取job描述文件 json
             String jobContent = Base64Util.decode(options.getJobDescJson());
@@ -115,9 +79,8 @@ public class SupportAppEnter {
                 } else if (options.isTable()) {
                     throw new SupportException("features not yet supported stay tuned!");
                 } else {
-                    Class<?> aClass = Class.forName(appClassName);
-                    Constructor<?> constructor = aClass.getConstructor(StreamExecutionEnvironment.class, SupportAppContext.class);
-                    flinkSupport = (FlinkSupport) constructor.newInstance((StreamExecutionEnvironment) env, context);
+                    Class<?> userAppClass = Class.forName(appClassName);
+                    flinkSupport = (FlinkSupport) userAppClass.newInstance();
                 }
 
 
@@ -130,9 +93,9 @@ public class SupportAppEnter {
             }
 
 
+            flinkSupport.initEnv(env, context);
             TaskResult taskResult = flinkSupport.submitFlinkTask(env);
-
-
+            System.out.println("Job: " + taskResult.getJobID() + " run!!!!!!!!!!!!!!!!!!!!!!!");
         } catch (Exception e) {
             System.err.println("报错拉+++++++++++++++++++++++");
             e.printStackTrace();

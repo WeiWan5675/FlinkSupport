@@ -16,9 +16,6 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  **/
 public abstract class StreamAppSupport<IN, OIN> implements FlinkSupport<StreamExecutionEnvironment> {
 
-    private Reader<IN> reader;
-    private Processer<IN, OIN> process;
-    private Writer<OIN> writer;
     private StreamExecutionEnvironment env;
     private SupportAppContext context;
 
@@ -30,7 +27,7 @@ public abstract class StreamAppSupport<IN, OIN> implements FlinkSupport<StreamEx
     public abstract DataStreamSink streamOutput(DataStream<OIN> outputStream);
 
     @Override
-    public void init(StreamExecutionEnvironment executionEnvironment, SupportAppContext context) {
+    public void initEnv(StreamExecutionEnvironment executionEnvironment, SupportAppContext context) {
         this.env = executionEnvironment;
         this.context = context;
     }
@@ -45,14 +42,13 @@ public abstract class StreamAppSupport<IN, OIN> implements FlinkSupport<StreamEx
 
     public TaskResult submitFlinkTask(StreamExecutionEnvironment environment) throws Exception {
         System.err.println("任务提交!!!");
+        DataStream<IN> inDataStream = this.streamOpen(environment, context);
+        DataStream<OIN> oinDataStream = this.streamProcess(inDataStream);
+        DataStreamSink dataStreamSink = this.streamOutput(oinDataStream);
+        JobExecutionResult execute = environment.execute();
+        JobID jobID = execute.getJobID();
+        System.out.println(jobID);
         return null;
-//        DataStream<IN> inDataStream = this.streamOpen(environment, context);
-//        DataStream<OIN> oinDataStream = this.streamProcess(inDataStream);
-//        DataStreamSink dataStreamSink = this.streamOutput(oinDataStream);
-//        JobExecutionResult execute = environment.execute();
-//        JobID jobID = execute.getJobID();
-//        System.out.println(jobID);
-//        return null;
     }
 
 

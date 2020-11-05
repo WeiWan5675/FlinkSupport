@@ -3,6 +3,8 @@
 flink:
   task:
     name: TestApp
+    common:
+      queue: root.users.easylife
 
 
 
@@ -11,5 +13,5 @@ flink:
 
 app:
   appName: TestApp
-  appClass: com.weiwan.test.easylife.TestApp
+  appClass: com.weiwan.tester.run.TasterApp
   appType: stream
