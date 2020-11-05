@@ -82,9 +82,6 @@ public class SupportAppEnter {
                     Class<?> aClass = Class.forName(SupportConstants.ETL_BASE_APP_CLASSNAME);
                     Constructor<?> constructor = aClass.getConstructor(StreamExecutionEnvironment.class, SupportAppContext.class);
                     flinkSupport = (FlinkSupport) constructor.newInstance(env, context);
-                    flinkSupport.addReader(null);
-                    flinkSupport.addProcess(null);
-                    flinkSupport.addWriter(null);
                 } else if (options.isTable()) {
                     throw new SupportException("features not yet supported stay tuned!");
                 } else {

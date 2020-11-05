@@ -251,7 +251,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
             e.printStackTrace();
         }
         //coreJar
-        String coreJar = "hdfs://nameservice1/flink_support_space/support-core-1.0.jar";
+        String coreJar = "hdfs://nameservice1/flink_support_space/lib/support-core-1.0.jar";
 
         Set<String> flinkClassPaths = new HashSet<>();
         flinkClassPaths.add(flinkLibDir);

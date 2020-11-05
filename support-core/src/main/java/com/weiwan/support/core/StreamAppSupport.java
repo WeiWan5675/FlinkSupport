@@ -14,17 +14,20 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  * @ClassName: FlinkSupportAssembly
  * @Description:
  **/
-public abstract class StreamAppSupport<IN, OIN> implements FlinkSupport<StreamExecutionEnvironment> {
+public abstract class StreamAppSupport<IN, OIN>  {
 
-    protected Reader<IN> reader;
-    protected Processer<IN, OIN> process;
-    protected Writer<OIN> writer;
-    protected StreamExecutionEnvironment environment;
-    protected SupportAppContext appContext;
+    private Reader<IN> reader;
+    private Processer<IN, OIN> process;
+    private Writer<OIN> writer;
+    private StreamExecutionEnvironment env;
+    private SupportAppContext context;
 
     public StreamAppSupport(StreamExecutionEnvironment environment, SupportAppContext appContext) {
-        this.environment = environment;
-        this.appContext = appContext;
+        this.env = environment;
+        this.context = appContext;
+    }
+
+    public StreamAppSupport() {
     }
 
     public void addReader(Reader reader) {
@@ -47,19 +50,16 @@ public abstract class StreamAppSupport<IN, OIN> implements FlinkSupport<StreamEx
     public abstract DataStreamSink streamOutput(DataStream<OIN> outputStream);
 
 
-    @Override
     public StreamExecutionEnvironment getEnv() {
-        return this.environment;
+        return this.env;
     }
 
-    @Override
     public SupportAppContext getContext() {
-        return this.appContext;
+        return this.context;
     }
 
-    @Override
     public TaskResult submitFlinkTask(StreamExecutionEnvironment environment) throws Exception {
-        DataStream<IN> inDataStream = this.streamOpen(environment, appContext);
+        DataStream<IN> inDataStream = this.streamOpen(environment, context);
         DataStream<OIN> oinDataStream = this.streamProcess(inDataStream);
         DataStreamSink dataStreamSink = this.streamOutput(oinDataStream);
         JobExecutionResult execute = environment.execute();
@@ -68,19 +68,4 @@ public abstract class StreamAppSupport<IN, OIN> implements FlinkSupport<StreamEx
         return null;
     }
 
-    public StreamExecutionEnvironment getEnvironment() {
-        return environment;
-    }
-
-    public void setEnvironment(StreamExecutionEnvironment environment) {
-        this.environment = environment;
-    }
-
-    public SupportAppContext getAppContext() {
-        return appContext;
-    }
-
-    public void setAppContext(SupportAppContext appContext) {
-        this.appContext = appContext;
-    }
 }

@@ -20,8 +20,9 @@ import org.apache.flink.streaming.api.functions.source.SourceFunction;
 @Support
 public class TestApp extends StreamAppSupport<DataRecord<String>, DataRecord<String>> {
 
-    public TestApp(StreamExecutionEnvironment environment, SupportAppContext appContext) {
-        super(environment, appContext);
+
+    private TestApp(StreamExecutionEnvironment environment, SupportAppContext appContext) {
+        super(environment,appContext);
     }
 
     @Override
