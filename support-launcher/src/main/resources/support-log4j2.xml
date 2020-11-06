@@ -50,51 +50,6 @@
         </Console>
 
 
-        <!-- TRACE级别日志 ; 设置日志格式并配置日志压缩格式，压缩文件独立放在一个文件夹内， 日期格式不能为冒号，否则无法生成，因为文件名不允许有冒号，此appender只输出trace级别的数据到trace.log -->
-        <RollingFile name="trace_appender" immediateFlush="true"
-                     fileName="${sys:LOG_HOME}/${SYS:APP_NAME}-trace.log"
-                     filePattern="${sys:LOG_HOME}/trace/trace - %d{yyyy-MM-dd HH_mm_ss}.log.gz">
-            <PatternLayout>
-                <pattern>%5p [%t] %d{yyyy-MM-dd HH:mm:ss} (%F:%L) %m%n</pattern>
-            </PatternLayout>
-            <Policies>
-                <!-- 每个日志文件最大20MB -->
-                <SizeBasedTriggeringPolicy size="20MB"/>
-
-            </Policies>
-            <Filters>
-                <!-- 此Filter意思是，只输出TRACE级别的数据 DENY，日志将立即被抛弃不再经过其他过滤器； NEUTRAL，有序列表里的下个过滤器过接着处理日志；
-                    ACCEPT，日志会被立即处理，不再经过剩余过滤器。 -->
-                <ThresholdFilter level="debug" onMatch="DENY"
-                                 onMismatch="NEUTRAL"/>
-                <ThresholdFilter level="trace" onMatch="ACCEPT"
-                                 onMismatch="DENY"/>
-            </Filters>
-        </RollingFile>
-
-        <!-- DEBUG级别日志 设置日志格式并配置日志压缩格式，压缩文件独立放在一个文件夹内， 日期格式不能为冒号，否则无法生成，因为文件名不允许有冒号，此appender只输出debug级别的数据到debug.log; -->
-        <RollingFile name="debug_appender" immediateFlush="true"
-                     fileName="${sys:LOG_HOME}/${sys:APP_NAME}-debug.log"
-                     filePattern="${sys:LOG_HOME}/debug/debug - %d{yyyy-MM-dd HH_mm_ss}.log.gz">
-            <PatternLayout>
-                <pattern>%5p [%t] %d{yyyy-MM-dd HH:mm:ss} (%F:%L) %m%n</pattern>
-            </PatternLayout>
-            <Policies><!-- 每个日志文件最大20MB ; -->
-                <SizeBasedTriggeringPolicy size="20MB"/>
-
-                <!-- 如果启用此配置，则日志会按文件名生成新压缩文件， 即如果filePattern配置的日期格式为 %d{yyyy-MM-dd HH}
-                    ，则每小时生成一个压缩文件， 如果filePattern配置的日期格式为 %d{yyyy-MM-dd} ，则天生成一个压缩文件 -->
-<!--                <TimeBasedTriggeringPolicy interval="1"-->
-<!--                                           modulate="true"/>-->
-
-            </Policies>
-            <Filters><!-- 此Filter意思是，只输出debug级别的数据 -->
-                <ThresholdFilter level="info" onMatch="DENY"
-                                 onMismatch="NEUTRAL"/>
-                <ThresholdFilter level="debug" onMatch="ACCEPT"
-                                 onMismatch="DENY"/>
-            </Filters>
-        </RollingFile>
 
         <!-- INFO级别日志 -->
         <RollingFile name="info_appender" immediateFlush="true"
@@ -110,24 +65,6 @@
                 <ThresholdFilter level="warn" onMatch="DENY"
                                  onMismatch="NEUTRAL"/>
                 <ThresholdFilter level="info" onMatch="ACCEPT"
-                                 onMismatch="DENY"/>
-            </Filters>
-        </RollingFile>
-
-        <!-- WARN级别日志 -->
-        <RollingFile name="warn_appender" immediateFlush="true"
-                     fileName="${sys:LOG_HOME}/${sys:APP_NAME}-warn.log"
-                     filePattern="${sys:LOG_HOME}/warn/warn - %d{yyyy-MM-dd HH_mm_ss}.log.gz">
-            <PatternLayout>
-                <pattern>%5p [%t] %d{yyyy-MM-dd HH:mm:ss} (%F:%L) %m%n</pattern>
-            </PatternLayout>
-            <Policies>
-                <SizeBasedTriggeringPolicy size="20MB"/>
-            </Policies>
-            <Filters>
-                <ThresholdFilter level="error" onMatch="DENY"
-                                 onMismatch="NEUTRAL"/>
-                <ThresholdFilter level="warn" onMatch="ACCEPT"
                                  onMismatch="DENY"/>
             </Filters>
         </RollingFile>
@@ -155,11 +92,6 @@
         <root level="debug">
             <appender-ref ref="console_out_appender"/>
             <appender-ref ref="console_err_appender"/>
-            <appender-ref ref="trace_appender"/>
-            <appender-ref ref="debug_appender"/>
-            <appender-ref ref="info_appender"/>
-            <appender-ref ref="warn_appender"/>
-            <appender-ref ref="error_appender"/>
         </root>
 
         <!-- 第三方日志系统 -->

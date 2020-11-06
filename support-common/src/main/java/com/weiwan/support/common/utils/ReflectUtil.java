@@ -3,6 +3,7 @@ package com.weiwan.support.common.utils;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * @Author: xiaozhennan
@@ -107,7 +108,15 @@ public class ReflectUtil {
 
             }
             // 如果还需要其他的类型请自己做扩展
-
+            // 如果类型是Short
+            if (field.getType().equals(Map.class)) {
+                Method m = (Method) object.getClass().getMethod(
+                        "get" + getMethodName(field.getName()));
+                Map val = (Map) m.invoke(object);
+                if (val != null) {
+                    return val;
+                }
+            }
 
         }
         return null;

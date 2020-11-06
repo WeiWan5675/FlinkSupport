@@ -1,8 +1,10 @@
 package com.weiwan.support.common.options;
 
+import com.beust.jcommander.DynamicParameter;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
@@ -55,6 +57,18 @@ public class OptionParser {
         Map<String, Object> optionToMap = optionToMap(options);
         List<String> argsList = new ArrayList<>();
         for (String key : optionToMap.keySet()) {
+            if (optionToMap.get(key) instanceof Map) {
+                Map dMap = (Map) optionToMap.get(key);
+                for (Object dKey : dMap.keySet()) {
+                    String dValue = String.valueOf(dMap.get(dKey));
+                    if (dValue != null) {
+                        argsList.add("-D" + String.valueOf(dKey));
+                        argsList.add(dValue);
+                    }
+                }
+                continue;
+            }
+
             String var = String.valueOf(optionToMap.get(key));
             if (StringUtils.isEmpty(var) || "null".equalsIgnoreCase(var)) {
                 continue;
@@ -63,8 +77,8 @@ public class OptionParser {
                 if ("true".equalsIgnoreCase(var)) {
                     argsList.add(key);
                     continue;
-                }else{
-                    if(!"false".equalsIgnoreCase(var)){
+                } else {
+                    if (!"false".equalsIgnoreCase(var)) {
                         argsList.add(key);
                         argsList.add(var);
                     }
@@ -78,9 +92,9 @@ public class OptionParser {
 
 
     public static <T> Map<String, Object> optionToMap(T options) throws Exception {
-        Field[] declaredFields = options.getClass().getDeclaredFields();
+        Field[] optionFields = getSuperFields(options.getClass());
         Map<String, Object> res = new HashMap();
-        for (Field field : declaredFields) {
+        for (Field field : optionFields) {
             Object fieldValue = com.weiwan.support.common.utils.ReflectUtil.getObjectValue(options, field);
             Parameter optionField = field.getAnnotation(Parameter.class);
             if (optionField != null) {
@@ -89,9 +103,25 @@ public class OptionParser {
                     //取oweKeys的数据
                     res.put(oweKeys[0], fieldValue);
                 }
+            } else if (field.getAnnotation(DynamicParameter.class) != null) {
+                res.put("DynamicParameter", fieldValue);
             }
         }
         return res;
+    }
+
+
+    /**
+     * 递归获得类对象所有字段
+     * @param aClass
+     * @return
+     */
+    private static Field[] getSuperFields(Class<?> aClass) {
+        Field[] fields = aClass.getDeclaredFields();
+        if (aClass.getSuperclass() != null && !aClass.getSuperclass().equals(Object.class)) {
+            fields = ArrayUtils.addAll(fields, getSuperFields(aClass.getSuperclass()));
+        }
+        return fields;
     }
 
 

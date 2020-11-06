@@ -92,7 +92,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
         //远程配置文件,设置相关的启动参数,设置相关变量
         if (ResourceMode.HDFS == resourceMode) {
             //远程配置文件,设置相关的启动参数,设置相关变量
-            userResourceRemoteDir = option.getJobConf().substring(0, jobConfPath.lastIndexOf(File.separator)).replace("hdfs:", ((Configuration) supportCoreConf.getVal(SupportConstants.KEY_HADOOP_CONFIGURATION)).get(HadoopUtil.KEY_HA_DEFAULT_FS));
+            userResourceRemoteDir = option.getJobConf().substring(0, jobConfPath.lastIndexOf(Constans.SIGN_SLASH)).replace("hdfs:", ((Configuration) supportCoreConf.getVal(SupportConstants.KEY_HADOOP_CONFIGURATION)).get(HadoopUtil.KEY_HA_DEFAULT_FS));
             ;
             //判断远程资源目录是否存在
             Path resourcePath = new Path(userResourceRemoteDir);
@@ -136,6 +136,16 @@ public class JobApplicationProcessor extends ApplicationEnv {
             }
         }
 
+
+        //处理日志参数
+        Map<String, String> params = option.getParams();
+        String log4jFile = params.get("log4j.configurationFile");
+        if (StringUtils.isEmpty(log4jFile)) {
+            //为空,使用默认配置
+            params.put("log4j.configurationFile", userResourceRemoteDir.substring(userResourceRemoteDir.lastIndexOf("/") + 1) + "/support-log4j2.xml");
+        } else {
+
+        }
     }
 
     private void uploadUserResources(String resourcesDir, String userResourceRemoteDir, boolean overwrite) throws IOException {
