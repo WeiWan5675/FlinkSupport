@@ -14,7 +14,7 @@ echo "---------------------------------------------"
 CPSP=":"
 
 
-JAVA_RUN="$JAVA_RUN -Dlog4j.configurationFile=""${SUPPORT_CONF_DIR}/support-log4j2.xml"
+JAVA_RUN="$JAVA_RUN -Dlog4j.configurationFile=""${SUPPORT_CONF_DIR}/log4j.properties"
 CLASS_PATH=".$CPSP$JAVA_HOME/lib$CPSP$JAVA_HOME/lib/dt.jar$CPSP$JAVA_HOME/lib/tools.jar"
 
 

@@ -1,4 +1,4 @@
-package com.weiwan.support.launcher.envs;
+package com.weiwan.support.core.config;
 
 import com.weiwan.support.common.config.AbstractConfig;
 

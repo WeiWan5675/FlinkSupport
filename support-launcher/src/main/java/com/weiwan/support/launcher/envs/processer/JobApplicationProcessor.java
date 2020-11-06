@@ -1,4 +1,4 @@
-package com.weiwan.support.launcher.envs;
+package com.weiwan.support.launcher.envs.processer;
 
 import com.alibaba.fastjson.JSONObject;
 import com.weiwan.support.common.constant.Constans;
@@ -6,21 +6,25 @@ import com.weiwan.support.common.exception.SupportException;
 import com.weiwan.support.common.options.OptionParser;
 import com.weiwan.support.common.utils.*;
 import com.weiwan.support.common.utils.FileUtil;
+import com.weiwan.support.core.config.UserJobConf;
 import com.weiwan.support.core.constant.SupportConstants;
 import com.weiwan.support.core.constant.SupportKey;
 import com.weiwan.support.core.start.RunOptions;
 import com.weiwan.support.launcher.cluster.ClusterJobUtil;
-import com.weiwan.support.launcher.cluster.JobSubmitInfo;
-import com.weiwan.support.launcher.cluster.JobSubmiter;
-import com.weiwan.support.launcher.cluster.JobSubmiterFactory;
+import com.weiwan.support.launcher.envs.JVMOptions;
+import com.weiwan.support.launcher.submit.JobSubmitInfo;
+import com.weiwan.support.launcher.submit.JobSubmiter;
+import com.weiwan.support.launcher.submit.JobSubmiterFactory;
 import com.weiwan.support.launcher.enums.JobType;
 import com.weiwan.support.launcher.enums.ResourceMode;
+import com.weiwan.support.launcher.envs.ApplicationEnv;
 import com.weiwan.support.launcher.options.GenericRunOption;
 import com.weiwan.support.launcher.options.JobRunOption;
 import com.weiwan.support.utils.flink.conf.FlinkContains;
 import com.weiwan.support.utils.hadoop.HadoopUtil;
 import com.weiwan.support.utils.hadoop.HdfsUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.flink.configuration.CoreOptions;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.*;
 import org.apache.hadoop.yarn.conf.YarnConfiguration;
@@ -35,7 +39,7 @@ import java.util.*;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/9/30 10:46
- * @Package: com.weiwan.support.launcher.envs.JobApplicationProcessor
+ * @Package: com.weiwan.support.launcher.envs.processer.JobApplicationProcessor
  * @ClassName: JobApplicationProcessor
  * @Description:
  **/
@@ -52,7 +56,6 @@ public class JobApplicationProcessor extends ApplicationEnv {
     private String flinkDistJar;
     private String userResourceRemoteDir;
     private String applicationName;
-
     private UserJobConf userJobConf;
 
     private Configuration hadoopConfiguration;
@@ -125,6 +128,10 @@ public class JobApplicationProcessor extends ApplicationEnv {
                     uploadUserResources(resourcesDir, userResourceRemoteDir, true);
                 }
             }
+        }
+
+        if (!HdfsUtil.existsFile(fileSystem, new Path(SupportConstants.SUPPORT_RUMTIME_JAR))) {
+            throw new SupportException("FlinkSupport runtime jar is not found, please check FlinkSupport Lib dir");
         }
 
         //获取App名称
@@ -216,16 +223,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
     public boolean process() {
         logger.info("The Job application handler starts and starts processing the job submission work!");
 
-
-        //准备提交任务
-        /**
-         * 1. 准备依赖
-         * 2. 准备参数
-         * 3.
-         */
-
         RunOptions runOptions = convertCmdToRunOption(option);
-
 
         //获取job类型
         JobType jobType = JobType.getType(userJobConf.getStringVal(SupportKey.APP_TYPE, "stream").toUpperCase());
@@ -253,15 +251,13 @@ public class JobApplicationProcessor extends ApplicationEnv {
             queueName = StringUtils.isNotEmpty(userQueue) ? userQueue : supportCoreConf.getStringVal(FlinkContains.FLINK_TASK_COMMON_QUEUE_KEY);
         }
 
-
         String[] args = null;
         try {
             args = OptionParser.optionToArgs(runOptions);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //coreJar
-        String coreJar = "hdfs://nameservice1/flink_support_space/lib/support-runtime-1.0.jar";
+
 
         Set<String> flinkClassPaths = new HashSet<>();
         flinkClassPaths.add(flinkLibDir);
@@ -270,6 +266,17 @@ public class JobApplicationProcessor extends ApplicationEnv {
         URL.setURLStreamHandlerFactory(new FsUrlStreamHandlerFactory());
         System.out.println("classpath:" + flinkClassPaths.toString());
         //组装了任务信息
+
+        Map<String, String> params = option.getParams();
+        String s = params.get(JVMOptions.LOG4J_CONFIG_FILE);
+        if(StringUtils.isEmpty(s)){
+
+        }
+        String allEnv = flinkConfiguration.get(CoreOptions.FLINK_JVM_OPTIONS);
+        String hsEnv = flinkConfiguration.get(CoreOptions.FLINK_HS_JVM_OPTIONS);
+        String tmEnv = flinkConfiguration.get(CoreOptions.FLINK_TM_JVM_OPTIONS);
+        String jmEnv = flinkConfiguration.get(CoreOptions.FLINK_JM_JVM_OPTIONS);
+
         JobSubmitInfo submitInfo = JobSubmitInfo.newBuilder().appArgs(args)
                 .appClassName(SupportConstants.SUPPORT_ENTER_CLASSNAME)
                 .appName(applicationName)
@@ -282,7 +289,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
                 .flinkDistJar(flinkDistJar)
                 .flinkLibs(Collections.singletonList(flinkLibDir))
                 .savePointPath(option.getSavePointPath())
-                .userJars(Collections.singletonList(coreJar))
+                .userJars(Collections.singletonList(SupportConstants.SUPPORT_RUMTIME_JAR))
                 .userClasspath(new ArrayList<>(flinkClassPaths))
                 .build();
 
@@ -296,36 +303,6 @@ public class JobApplicationProcessor extends ApplicationEnv {
         logger.info("启动参数: {}", sb.toString());
         JobSubmiter submiter = JobSubmiterFactory.createYarnSubmiter(ClusterJobUtil.getYarnClient(yarnConfiguration));
         submiter.submitJob(submitInfo);
-
-
-//        try {
-//            Path userResourceDir = new Path(new URI(userResourcesDir));
-//            FileStatus[] fileStatuses = fileSystem.listStatus(userResourceDir);
-//            for (FileStatus fileStatus : fileStatuses) {
-//                userJars.append(fileStatus.getPath().toUri().toURL().toString());
-//            }
-//        } catch (URISyntaxException e) {
-//            e.printStackTrace();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        //读取job配置文件,以及配置文件所在文件夹所有内容
-
-        /**
-         * hdfs://flink_support_space/
-         * /lib
-         * /plugins
-         * /resources
-         * /flink/flink-1.1.1
-         */
-        /**
-         * 1. 读取配置文件
-         * 2. 读取配置文件文件夹下所有内容
-         * 3. 设置启动参数
-         */
-
         logger.info("The job handler is processed and the job has been submitted!");
         return true;
     }
@@ -393,7 +370,10 @@ public class JobApplicationProcessor extends ApplicationEnv {
 
     @Override
     public void stop() {
-
+        try {
+            fileSystem.close();
+        } catch (IOException e) {
+        }
     }
 
 }

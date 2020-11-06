@@ -1,4 +1,4 @@
-package com.weiwan.support.launcher.cluster;
+package com.weiwan.support.launcher.submit;
 
 import org.apache.flink.client.deployment.ClusterSpecification;
 import org.apache.hadoop.conf.Configuration;
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/10/29 16:09
- * @Package: com.weiwan.support.launcher.cluster.JobSubmitInfo
+ * @Package: com.weiwan.support.launcher.submit.JobSubmitInfo
  * @ClassName: JobSubmitInfo
  * @Description:
  **/

@@ -62,8 +62,7 @@ public class OptionParser {
                 for (Object dKey : dMap.keySet()) {
                     String dValue = String.valueOf(dMap.get(dKey));
                     if (dValue != null) {
-                        argsList.add("-D" + String.valueOf(dKey));
-                        argsList.add(dValue);
+                        argsList.add("-D" + String.valueOf(dKey) + "=" + dValue);
                     }
                 }
                 continue;

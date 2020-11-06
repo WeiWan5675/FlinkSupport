@@ -1,29 +1,22 @@
-package com.weiwan.support.launcher.cluster;
+package com.weiwan.support.launcher.submit;
 
+import com.weiwan.support.launcher.envs.JOBOptions;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.client.deployment.ClusterDeploymentException;
 import org.apache.flink.client.deployment.application.ApplicationConfiguration;
 import org.apache.flink.client.program.ClusterClient;
 import org.apache.flink.client.program.ClusterClientProvider;
-import org.apache.flink.configuration.CheckpointingOptions;
-import org.apache.flink.configuration.DeploymentOptions;
-import org.apache.flink.configuration.PipelineOptions;
-import org.apache.flink.runtime.jobgraph.SavepointConfigOptions;
 import org.apache.flink.yarn.YarnClientYarnClusterInformationRetriever;
 import org.apache.flink.yarn.YarnClusterDescriptor;
 import org.apache.flink.yarn.YarnClusterInformationRetriever;
-import org.apache.flink.yarn.configuration.YarnConfigOptions;
 import org.apache.flink.yarn.configuration.YarnDeploymentTarget;
-import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.yarn.api.records.ApplicationId;
 import org.apache.hadoop.yarn.client.api.YarnClient;
-
-import java.util.Collections;
 
 /**
  * @Author: xiaozhennan
  * @Date: 2020/11/2 15:23
- * @Package: com.weiwan.support.launcher.cluster.YarnJobSubmiter
+ * @Package: com.weiwan.support.launcher.submit.YarnJobSubmiter
  * @ClassName: YarnJobSubmiter
  * @Description:
  **/
@@ -43,42 +36,41 @@ public class YarnJobSubmiter implements JobSubmiter {
         //checkpoint 恢复
         if (StringUtils.isNotEmpty(jobInfo.getSavePointPath())) {
             flinkConfiguration.set(
-                    SavepointConfigOptions.SAVEPOINT_PATH,
+                    JOBOptions.SAVEPOINT_PATH,
                     jobInfo.getSavePointPath());
         }
 
         flinkConfiguration.set(
-                CheckpointingOptions.INCREMENTAL_CHECKPOINTS,
+                JOBOptions.INCREMENTAL_CHECKPOINTS,
                 true);
         //核心jar包
         flinkConfiguration.set(
-                PipelineOptions.JARS,
+                JOBOptions.JARS,
                 jobInfo.getUserJars());
 
-
         flinkConfiguration.set(
-                YarnConfigOptions.PROVIDED_LIB_DIRS,
+                JOBOptions.PROVIDED_LIB_DIRS,
                 jobInfo.getUserClasspath());
 
         flinkConfiguration.set(
-                YarnConfigOptions.FLINK_DIST_JAR,
+                JOBOptions.FLINK_DIST_JAR,
                 jobInfo.getFlinkDistJar());
         //设置为application模式
         flinkConfiguration.set(
-                DeploymentOptions.TARGET,
+                JOBOptions.TARGET,
                 YarnDeploymentTarget.APPLICATION.getName());
         //yarn application name
         flinkConfiguration.set(
-                YarnConfigOptions.APPLICATION_NAME,
+                JOBOptions.APPLICATION_NAME,
                 jobInfo.getAppName());
 
         flinkConfiguration.set(
-                YarnConfigOptions.APPLICATION_TYPE,
+                JOBOptions.APPLICATION_TYPE,
                 jobInfo.getAppType());
 
         if (StringUtils.isNotEmpty(jobInfo.getYarnQueue())) {
             flinkConfiguration.set(
-                    YarnConfigOptions.APPLICATION_QUEUE,
+                    JOBOptions.APPLICATION_QUEUE,
                     jobInfo.getYarnQueue());
         }
 

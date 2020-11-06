@@ -1,0 +1,40 @@
+package com.weiwan.support.launcher.envs;
+
+import org.apache.flink.configuration.CheckpointingOptions;
+import org.apache.flink.configuration.ConfigOption;
+import org.apache.flink.configuration.DeploymentOptions;
+import org.apache.flink.configuration.PipelineOptions;
+import org.apache.flink.runtime.jobgraph.SavepointConfigOptions;
+import org.apache.flink.yarn.configuration.YarnConfigOptions;
+
+import java.util.List;
+
+/**
+ * @Author: xiaozhennan
+ * @Date: 2020/11/6 16:14
+ * @Package: com.weiwan.support.launcher.envs.JOBOptions
+ * @ClassName: JOBOptions
+ * @Description:
+ **/
+public class JOBOptions {
+
+    //保存点路径,从检查点启动时可用
+    public static final ConfigOption<String> SAVEPOINT_PATH = SavepointConfigOptions.SAVEPOINT_PATH;
+    //是否开启增量检查点
+    public static final ConfigOption<Boolean> INCREMENTAL_CHECKPOINTS = CheckpointingOptions.INCREMENTAL_CHECKPOINTS;
+    //用户JAR
+    public static final ConfigOption<List<String>> JARS = PipelineOptions.JARS;
+    //依赖目录,包括FLINK_HOME/lib FLINK_HOME/plugins FLINK_SUPPORT_HOME/lib USER_RESOURCE
+    public static final ConfigOption<List<String>> PROVIDED_LIB_DIRS = YarnConfigOptions.PROVIDED_LIB_DIRS;
+    //Flink核心jar
+    public static final ConfigOption<String> FLINK_DIST_JAR = YarnConfigOptions.FLINK_DIST_JAR;
+    //部署模式
+    public static final ConfigOption<String> TARGET = DeploymentOptions.TARGET;
+    //应用名称
+    public static final ConfigOption<String> APPLICATION_NAME = YarnConfigOptions.APPLICATION_NAME;
+    //应用类型
+    public static final ConfigOption<String> APPLICATION_TYPE = YarnConfigOptions.APPLICATION_TYPE;
+    //应用资源队列
+    public static final ConfigOption<String> APPLICATION_QUEUE = YarnConfigOptions.APPLICATION_QUEUE;
+
+}

@@ -52,6 +52,6 @@ flink:
 
 
 
-  app:
-    appClass:
-    appName: Support Application
+app:
+  appClass:
+  appName: Support Application

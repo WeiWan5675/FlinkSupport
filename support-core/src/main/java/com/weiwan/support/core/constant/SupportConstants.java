@@ -79,4 +79,5 @@ public class SupportConstants {
     public static final String SUPPORT_STREAM_TYPE = "Flink Stream Support";
 
     public static final String SUPPORT_BATCH_TYPE = "Flink Batch Support";
+    public static final String SUPPORT_RUMTIME_JAR = SUPPORT_HDFS_LIB_DIR + Constans.SIGN_SLASH + "support-runtime-1.0.jar";
 }

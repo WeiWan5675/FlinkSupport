@@ -1,9 +1,9 @@
-package com.weiwan.support.launcher.cluster;
+package com.weiwan.support.launcher.submit;
 
 /**
  * @Author: xiaozhennan
  * @Date: 2020/11/2 15:23
- * @Package: com.weiwan.support.launcher.cluster.KubernetesJobSubmiter
+ * @Package: com.weiwan.support.launcher.submit.KubernetesJobSubmiter
  * @ClassName: KubernetesJobSubmiter
  * @Description:
  **/

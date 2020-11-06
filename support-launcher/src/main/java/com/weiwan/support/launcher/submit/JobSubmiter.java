@@ -1,11 +1,9 @@
-package com.weiwan.support.launcher.cluster;
-
-import org.apache.hadoop.yarn.api.records.ApplicationId;
+package com.weiwan.support.launcher.submit;
 
 /**
  * @Author: xiaozhennan
  * @Date: 2020/11/2 15:28
- * @Package: com.weiwan.support.launcher.cluster.JobSubmiter
+ * @Package: com.weiwan.support.launcher.submit.JobSubmiter
  * @ClassName: JobSubmiter
  * @Description:
  **/
