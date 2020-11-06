@@ -44,15 +44,12 @@ public class SupportAppEnter {
 
             OptionParser optionParser = new OptionParser(args);
             RunOptions options = optionParser.parse(RunOptions.class);
-            System.err.println("========================================");
             CommonUtil.useCommandLogLevel(options.getLogLevel());
-            System.err.println("========================================");
             Map<String, Object> optionToMap = OptionParser.optionToMap(options);
             //读取job描述文件 json
             String jobContent = Base64Util.decode(options.getJobDescJson());
-//        Map<String, String> jobMap = YamlUtils.loadYamlStr(jobConfContent);
             Map<String, String> jobMap = JSONObject.parseObject(jobContent, Map.class);
-
+            printEnvInfo(optionToMap, jobMap);
             if (jobMap != null) {
                 logger.info(jobMap.toString());
             }
@@ -73,9 +70,8 @@ public class SupportAppEnter {
                 if (options.isEtl()) {
                     //动态加载etl框架,如果是etl模式,实际上这个类名是固定的:
                     //com.weiwan.support.etl.framework.app.ETLStreamBaseApp
-                    Class<?> aClass = Class.forName(SupportConstants.ETL_BASE_APP_CLASSNAME);
-                    Constructor<?> constructor = aClass.getConstructor(SupportAppContext.class, StreamExecutionEnvironment.class);
-                    flinkSupport = (FlinkSupport) constructor.newInstance(context, (StreamExecutionEnvironment) env);
+                    Class<?> etlAppClass = Class.forName(SupportConstants.ETL_BASE_APP_CLASSNAME);
+                    flinkSupport = (FlinkSupport) etlAppClass.newInstance();
                 } else if (options.isTable()) {
                     throw new SupportException("features not yet supported stay tuned!");
                 } else {
