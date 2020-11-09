@@ -36,6 +36,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
+import static org.apache.hadoop.yarn.conf.YarnConfiguration.YARN_APP_CONTAINER_LOG_DIR;
+
 /**
  * @Author: xiaozhennan
  * @Date: 2020/9/30 10:46
@@ -268,8 +270,6 @@ public class JobApplicationProcessor extends ApplicationEnv {
         //组装了任务信息
 
         Map<String, String> params = option.getParams();
-        params.put("log.file", "/var/log/flink/flink-support.log");
-
         JobSubmitInfo submitInfo = JobSubmitInfo.newBuilder().appArgs(args)
                 .appClassName(SupportConstants.SUPPORT_ENTER_CLASSNAME)
                 .appName(applicationName)

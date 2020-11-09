@@ -91,9 +91,13 @@ public class YarnJobSubmiter implements JobSubmiter {
                 flinkConfiguration.setString(parameterKey, dynamicParameters.get(parameterKey));
             }
         }
+        jmVmDynamic.append(" -Dlog.file=/tmp/flink_support/logs/" + "support_TestApp_463c4521a0f460e1b19674627086c06d_job" +"/jobmanager.log");
+        tmVmDynamic.append(" -Dlog.file=/tmp/flink_support/logs/" + "support_TestApp_463c4521a0f460e1b19674627086c06d_job" +"/taskmanager.log");
         flinkConfiguration.set(JVMOptions.FLINK_TM_JVM_OPTIONS, tmVmDynamic.toString());
         flinkConfiguration.set(JVMOptions.FLINK_JM_JVM_OPTIONS, jmVmDynamic.toString());
-
+        flinkConfiguration.set(JVMOptions.FLINK_JVM_OPTIONS, jmVmDynamic.toString());
+        flinkConfiguration.set(JVMOptions.FLINK_HS_JVM_OPTIONS, jmVmDynamic.toString());
+        flinkConfiguration.set(JVMOptions.FLINK_LOG_DIR, " -Dlog.file=/tmp/flink_support/logs/" + "support_TestApp_463c4521a0f460e1b19674627086c06d_job");
 
         //		设置用户jar的参数和主类
         ApplicationConfiguration appConfig = new ApplicationConfiguration(jobInfo.getAppArgs(), jobInfo.getAppClassName());

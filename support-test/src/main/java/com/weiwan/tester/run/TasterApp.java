@@ -9,6 +9,8 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSink;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.source.RichSourceFunction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @Author: xiaozhennan
@@ -19,17 +21,19 @@ import org.apache.flink.streaming.api.functions.source.RichSourceFunction;
  **/
 public class TasterApp extends StreamAppSupport<DataRecord<String>, DataRecord<String>> {
 
+    private static final Logger logger = LoggerFactory.getLogger(TasterApp.class);
 
     @Override
     public DataStream<DataRecord<String>> streamOpen(StreamExecutionEnvironment environment, SupportAppContext appContext) {
         return environment.addSource(new RichSourceFunction<DataRecord<String>>() {
-
             @Override
             public void run(SourceContext<DataRecord<String>> ctx) throws Exception {
                 while (true) {
                     DataRecord<String> record = new DataRecord<>();
                     record.setData("testData");
+                    logger.info("生产数据!!!" + record.toString());
                     ctx.collect(record);
+                    Thread.sleep(3000L);
                 }
             }
 
