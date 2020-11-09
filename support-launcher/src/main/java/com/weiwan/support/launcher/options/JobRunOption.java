@@ -15,7 +15,7 @@ public class JobRunOption extends GenericRunOption {
     @Parameter(names = {"-jc", "-jobConf"}, description = "Task description file, supports local path and HDFS path, HDFS path defaults to the corresponding application folder under resources")
     private String jobConf;
 
-    @Parameter(names = "-resources", description = "User resource path, support hdfs and local, default is hdfs://flink_support_space/resources/support_${appName}_${appResourcesMD5}_job")
+    @Parameter(names = "-resources", description = "User resource path, support hdfs and local, default is hdfs://flink_support/resources/support_${appName}_${appResourcesMD5}_job")
     private String resources;
 
     @Parameter(names = {"-overwrite", "-ow"}, description = "Whether to overwrite the remote resource directory, it will only take effect when the local resource directory is used to start")

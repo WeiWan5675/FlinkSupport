@@ -118,7 +118,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
             //support_xxxxxxxxxxxxxxxxx_job  资源文件夹下,所有的资源名称排序后md5视作一个整体,如果资源和appName都相同,就相当于是一个应用
             userResourceRemoteDir = generateJobResourcesDir(resourcesDir);
             ;
-            //hdfs://flink_support_space/resources/support_${jobName}_${jobResourcesMD5}_job
+            //hdfs://flink_support/resources/support_${jobName}_${jobResourcesMD5}_job
             if (!checkRemoteResourceDirExists(userResourceRemoteDir) || checkRemoteResourceDirEmpty(userResourceRemoteDir)) {
                 //上传
                 uploadUserResources(resourcesDir, userResourceRemoteDir, true);
