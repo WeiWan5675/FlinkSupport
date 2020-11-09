@@ -149,7 +149,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
         String log4jFile = params.get("log4j.configurationFile");
         if (StringUtils.isEmpty(log4jFile)) {
             //为空,使用默认配置
-            params.put("log4j.configurationFile", userResourceRemoteDir.substring(userResourceRemoteDir.lastIndexOf("/") + 1) + "/support-log4j2.xml");
+            params.put("log4j.configurationFile", userResourceRemoteDir.substring(userResourceRemoteDir.lastIndexOf("/") + 1) + "/log4j.properties");
         } else {
 
         }
