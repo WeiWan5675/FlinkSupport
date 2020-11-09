@@ -11,11 +11,11 @@ import com.weiwan.support.core.constant.SupportConstants;
 import com.weiwan.support.core.constant.SupportKey;
 import com.weiwan.support.core.start.RunOptions;
 import com.weiwan.support.launcher.cluster.ClusterJobUtil;
+import com.weiwan.support.launcher.enums.TaskType;
 import com.weiwan.support.launcher.envs.JVMOptions;
 import com.weiwan.support.launcher.submit.JobSubmitInfo;
 import com.weiwan.support.launcher.submit.JobSubmiter;
 import com.weiwan.support.launcher.submit.JobSubmiterFactory;
-import com.weiwan.support.launcher.enums.JobType;
 import com.weiwan.support.launcher.enums.ResourceMode;
 import com.weiwan.support.launcher.envs.ApplicationEnv;
 import com.weiwan.support.launcher.options.GenericRunOption;
@@ -226,8 +226,8 @@ public class JobApplicationProcessor extends ApplicationEnv {
         RunOptions runOptions = convertCmdToRunOption(option);
 
         //获取job类型
-        JobType jobType = JobType.getType(userJobConf.getStringVal(SupportKey.APP_TYPE, "stream").toUpperCase());
-        if (JobType.BATCH == jobType) {
+        TaskType jobType = TaskType.getType(userJobConf.getStringVal(FlinkContains.FLINK_TASK_TYPE, "stream").toUpperCase());
+        if (TaskType.BATCH == jobType) {
             runOptions.setBatch(true);
         } else {
             runOptions.setStream(true);
@@ -268,14 +268,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
         //组装了任务信息
 
         Map<String, String> params = option.getParams();
-        String s = params.get(JVMOptions.LOG4J_CONFIG_FILE);
-        if(StringUtils.isEmpty(s)){
-
-        }
-        String allEnv = flinkConfiguration.get(CoreOptions.FLINK_JVM_OPTIONS);
-        String hsEnv = flinkConfiguration.get(CoreOptions.FLINK_HS_JVM_OPTIONS);
-        String tmEnv = flinkConfiguration.get(CoreOptions.FLINK_TM_JVM_OPTIONS);
-        String jmEnv = flinkConfiguration.get(CoreOptions.FLINK_JM_JVM_OPTIONS);
+        params.put("log.file", "/var/log/flink/flink-support.log");
 
         JobSubmitInfo submitInfo = JobSubmitInfo.newBuilder().appArgs(args)
                 .appClassName(SupportConstants.SUPPORT_ENTER_CLASSNAME)
@@ -291,13 +284,13 @@ public class JobApplicationProcessor extends ApplicationEnv {
                 .savePointPath(option.getSavePointPath())
                 .userJars(Collections.singletonList(SupportConstants.SUPPORT_RUMTIME_JAR))
                 .userClasspath(new ArrayList<>(flinkClassPaths))
+                .dynamicParameters(params)
                 .build();
 
         StringBuffer sb = new StringBuffer();
-
         for (String arg : args) {
             sb.append(arg);
-            sb.append("{}{}");
+            sb.append("\n");
         }
 
         logger.info("启动参数: {}", sb.toString());

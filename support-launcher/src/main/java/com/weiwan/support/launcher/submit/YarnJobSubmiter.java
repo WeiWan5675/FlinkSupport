@@ -1,6 +1,7 @@
 package com.weiwan.support.launcher.submit;
 
 import com.weiwan.support.launcher.envs.JOBOptions;
+import com.weiwan.support.launcher.envs.JVMOptions;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.client.deployment.ClusterDeploymentException;
 import org.apache.flink.client.deployment.application.ApplicationConfiguration;
@@ -12,6 +13,8 @@ import org.apache.flink.yarn.YarnClusterInformationRetriever;
 import org.apache.flink.yarn.configuration.YarnDeploymentTarget;
 import org.apache.hadoop.yarn.api.records.ApplicationId;
 import org.apache.hadoop.yarn.client.api.YarnClient;
+
+import java.util.Map;
 
 /**
  * @Author: xiaozhennan
@@ -73,6 +76,24 @@ public class YarnJobSubmiter implements JobSubmiter {
                     JOBOptions.APPLICATION_QUEUE,
                     jobInfo.getYarnQueue());
         }
+
+        StringBuffer jmVmDynamic = new StringBuffer();
+        StringBuffer tmVmDynamic = new StringBuffer();
+
+        if (jobInfo.getDynamicParameters() != null && jobInfo.getDynamicParameters().size() > 0) {
+            Map<String, String> dynamicParameters = jobInfo.getDynamicParameters();
+            for (String parameterKey : dynamicParameters.keySet()) {
+                String dynamicStr = "-D" + parameterKey + "=" + dynamicParameters.get(parameterKey);
+                jmVmDynamic.append(" ");
+                jmVmDynamic.append(dynamicStr);
+                tmVmDynamic.append(" ");
+                tmVmDynamic.append(dynamicStr);
+                flinkConfiguration.setString(parameterKey, dynamicParameters.get(parameterKey));
+            }
+        }
+        flinkConfiguration.set(JVMOptions.FLINK_TM_JVM_OPTIONS, tmVmDynamic.toString());
+        flinkConfiguration.set(JVMOptions.FLINK_JM_JVM_OPTIONS, jmVmDynamic.toString());
+
 
         //		设置用户jar的参数和主类
         ApplicationConfiguration appConfig = new ApplicationConfiguration(jobInfo.getAppArgs(), jobInfo.getAppClassName());

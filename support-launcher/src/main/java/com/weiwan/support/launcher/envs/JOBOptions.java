@@ -36,5 +36,8 @@ public class JOBOptions {
     public static final ConfigOption<String> APPLICATION_TYPE = YarnConfigOptions.APPLICATION_TYPE;
     //应用资源队列
     public static final ConfigOption<String> APPLICATION_QUEUE = YarnConfigOptions.APPLICATION_QUEUE;
-
+    //是否是依附模式,默认false
+    public static final ConfigOption<Boolean> ATTACHED = DeploymentOptions.ATTACHED;
+    //依附模式下ctrl+c后最大努力stop任务
+    public static final ConfigOption<Boolean> SHUTDOWN_IF_ATTACHED = DeploymentOptions.SHUTDOWN_IF_ATTACHED;
 }

@@ -18,6 +18,7 @@ public class FlinkContains {
     public static final String FLINK_CONF_FILE_NAME = "flink.conf";
     public static final String FLINK_CONF_FILE_DEFAULT = "flink-conf.yaml";
     public static final String FLINK_TASK_NAME = "flink.task.name";
+    public static final String FLINK_TASK_TYPE = "flink.task.type";
     public static final String FLINK_TASK_NAME_DEFAULT_PREFIX = "FlinkApplication-";
 
 

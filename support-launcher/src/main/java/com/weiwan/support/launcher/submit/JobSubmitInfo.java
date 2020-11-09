@@ -5,6 +5,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.yarn.conf.YarnConfiguration;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: xiaozhennan
@@ -30,6 +31,7 @@ public class JobSubmitInfo {
     private String[] appArgs;
     private String appClassName;
     private String savePointPath;
+    private Map<String, String> dynamicParameters;
 
     private JobSubmitInfo(Builder builder) {
         setHadoopConfiguration(builder.hadoopConfiguration);
@@ -46,6 +48,7 @@ public class JobSubmitInfo {
         setAppArgs(builder.appArgs);
         setAppClassName(builder.appClassName);
         setSavePointPath(builder.savePointPath);
+        setDynamicParameters(builder.dynamicParameters);
     }
 
     public static Builder newBuilder() {
@@ -165,6 +168,14 @@ public class JobSubmitInfo {
         this.savePointPath = savePointPath;
     }
 
+    public Map<String, String> getDynamicParameters() {
+        return dynamicParameters;
+    }
+
+    public void setDynamicParameters(Map<String, String> dynamicParameters) {
+        this.dynamicParameters = dynamicParameters;
+    }
+
     public static final class Builder {
         private Configuration hadoopConfiguration;
         private org.apache.flink.configuration.Configuration flinkConfiguration;
@@ -180,6 +191,7 @@ public class JobSubmitInfo {
         private String[] appArgs;
         private String appClassName;
         private String savePointPath;
+        private Map<String, String> dynamicParameters;
 
         private Builder() {
         }
@@ -251,6 +263,11 @@ public class JobSubmitInfo {
 
         public Builder savePointPath(String val) {
             savePointPath = val;
+            return this;
+        }
+
+        public Builder dynamicParameters(Map<String, String> val) {
+            dynamicParameters = val;
             return this;
         }
 
