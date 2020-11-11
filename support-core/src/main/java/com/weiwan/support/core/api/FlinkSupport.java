@@ -1,8 +1,7 @@
 package com.weiwan.support.core.api;
 
 import com.weiwan.support.core.SupportAppContext;
-import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.streaming.api.datastream.DataStreamSink;
+import com.weiwan.support.core.start.RunOptions;
 
 /**
  * @Author: xiaozhennan
@@ -13,13 +12,11 @@ import org.apache.flink.streaming.api.datastream.DataStreamSink;
  **/
 public interface FlinkSupport<T> {
 
-    void initEnv(T t, SupportAppContext context);
+    void initEnv(T t, SupportAppContext context, RunOptions options);
 
     T getEnv();
 
     SupportAppContext getContext();
 
-    TaskResult submitFlinkTask(T env) throws Exception;
-
-
+    TaskResult executeTask() throws Exception;
 }

@@ -10,6 +10,7 @@ import org.apache.flink.streaming.api.datastream.DataStream;
  * @ClassName: Processer
  * @Description:
  **/
+@FunctionalInterface
 public interface Processer<IN, OUT> {
 
     public DataStream<OUT> process(DataStream<IN> inputStream, SupportAppContext context);

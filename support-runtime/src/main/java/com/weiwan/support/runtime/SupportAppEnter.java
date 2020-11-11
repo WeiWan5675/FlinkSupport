@@ -5,8 +5,9 @@ import com.weiwan.support.common.exception.SupportException;
 import com.weiwan.support.common.options.OptionParser;
 import com.weiwan.support.common.utils.Base64Util;
 import com.weiwan.support.common.utils.CommonUtil;
-import com.weiwan.support.core.BatchAppSupport;
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.common.utils.ReflectUtil;
+import com.weiwan.support.core.*;
+import com.weiwan.support.core.annotation.Support;
 import com.weiwan.support.core.api.FlinkSupport;
 import com.weiwan.support.core.api.TaskResult;
 import com.weiwan.support.core.config.JobConfig;
@@ -20,9 +21,12 @@ import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.reflect.annotation.AnnotationParser;
 
-import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,7 +45,8 @@ public class SupportAppEnter {
 
         try {
 
-
+            //输出重定向到日志文件
+//            StdoutRedirect.redirectSystemOutAndErrToLog();
             OptionParser optionParser = new OptionParser(args);
             RunOptions options = optionParser.parse(RunOptions.class);
             CommonUtil.useCommandLogLevel(options.getLogLevel());
@@ -89,8 +94,14 @@ public class SupportAppEnter {
             }
 
 
-            flinkSupport.initEnv(env, context);
-            TaskResult taskResult = flinkSupport.submitFlinkTask(env);
+            Class<? extends FlinkSupport> aClass = flinkSupport.getClass();
+            Support annotation = aClass.getDeclaredAnnotation(Support.class);
+            if(annotation != null){
+                options.setEnableAnnotation(true);
+            }
+            flinkSupport.initEnv(env, context, options);
+            Method submit = ReflectUtil.getDeclaredMethod(flinkSupport, "submit");
+            TaskResult taskResult = (TaskResult) submit.invoke(flinkSupport);
             System.out.println("Job: " + taskResult.getJobID() + " run!!!!!!!!!!!!!!!!!!!!!!!");
         } catch (Exception e) {
             System.err.println("报错拉+++++++++++++++++++++++");

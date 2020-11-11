@@ -2,9 +2,9 @@ package com.weiwan.tester.run;
 
 import com.weiwan.support.core.StreamAppSupport;
 import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.annotation.*;
 import com.weiwan.support.core.pojo.DataRecord;
 import org.apache.flink.api.common.functions.MapFunction;
-import org.apache.flink.streaming.api.checkpoint.CheckpointedFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSink;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -19,34 +19,24 @@ import org.slf4j.LoggerFactory;
  * @ClassName: TasterApp
  * @Description:
  **/
+@PrintToLog
+@Support
+@Checkpoint
 public class TasterApp extends StreamAppSupport<DataRecord<String>, DataRecord<String>> {
 
     private static final Logger logger = LoggerFactory.getLogger(TasterApp.class);
 
     @Override
-    public DataStream<DataRecord<String>> streamOpen(StreamExecutionEnvironment environment, SupportAppContext appContext) {
-        return environment.addSource(new RichSourceFunction<DataRecord<String>>() {
-            @Override
-            public void run(SourceContext<DataRecord<String>> ctx) throws Exception {
-                while (true) {
-                    DataRecord<String> record = new DataRecord<>();
-                    record.setData("testData");
-                    logger.info("生产数据!!!" + record.toString());
-                    ctx.collect(record);
-                    Thread.sleep(3000L);
-                }
-            }
-
-            @Override
-            public void cancel() {
-
-            }
-        });
+    @SupportKafkaSource
+    @SupportMysqlSource
+    @SupportSourceParallelism
+    public DataStream<DataRecord<String>> open(StreamExecutionEnvironment env, SupportAppContext context) {
+        return null;
     }
 
     @Override
-    public DataStream<DataRecord<String>> streamProcess(DataStream<DataRecord<String>> inputStream) {
-        return inputStream.map(new MapFunction<DataRecord<String>, DataRecord<String>>() {
+    public DataStream<DataRecord<String>> process(DataStream<DataRecord<String>> stream, SupportAppContext context) {
+        return stream.map(new MapFunction<DataRecord<String>, DataRecord<String>>() {
             @Override
             public DataRecord<String> map(DataRecord<String> value) throws Exception {
 
@@ -56,7 +46,10 @@ public class TasterApp extends StreamAppSupport<DataRecord<String>, DataRecord<S
     }
 
     @Override
-    public DataStreamSink streamOutput(DataStream<DataRecord<String>> outputStream) {
-        return outputStream.print();
+    public DataStreamSink output(DataStream<DataRecord<String>> stream, SupportAppContext context) {
+        return stream.print();
     }
+
+
 }
+

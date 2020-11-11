@@ -13,6 +13,10 @@ public class TaskResult {
 
     private JobID jobID;
 
+    public TaskResult(JobID jobID) {
+        this.jobID = jobID;
+    }
+
 
     public JobID getJobID() {
         return jobID;

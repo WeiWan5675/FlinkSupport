@@ -31,6 +31,15 @@ public class RunOptions extends CommonOptions {
     @Parameter(names = {"-jobConf", "-jc"}, description = "job desc json content")
     private String jobDescJson;
 
+    private boolean enableAnnotation;
+
+    public boolean isEnableAnnotation() {
+        return enableAnnotation;
+    }
+
+    public void setEnableAnnotation(boolean enableAnnotation) {
+        this.enableAnnotation = enableAnnotation;
+    }
 
     public boolean isBatch() {
         return batch;

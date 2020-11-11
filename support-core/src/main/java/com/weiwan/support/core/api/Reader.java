@@ -11,6 +11,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  * @ClassName: Reader
  * @Description:
  **/
+@FunctionalInterface
 public interface Reader<OUT> {
 
     public DataStream<OUT> read(StreamExecutionEnvironment env, SupportAppContext context);

@@ -11,6 +11,7 @@ import org.apache.flink.streaming.api.datastream.DataStreamSink;
  * @ClassName: Writer
  * @Description:
  **/
+@FunctionalInterface
 public interface Writer<IN> {
 
     public DataStreamSink write(DataStream<IN> inputStream, SupportAppContext context);

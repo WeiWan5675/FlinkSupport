@@ -1,6 +1,7 @@
 package com.weiwan.support.core;
 
 import com.weiwan.support.core.api.*;
+import com.weiwan.support.core.start.RunOptions;
 import org.apache.flink.api.java.ExecutionEnvironment;
 
 /**
@@ -21,9 +22,8 @@ public class BatchAppSupport<IN, OIN> implements FlinkSupport<ExecutionEnvironme
         this.appContext = appContext;
     }
 
-
     @Override
-    public void initEnv(ExecutionEnvironment executionEnvironment, SupportAppContext context) {
+    public void initEnv(ExecutionEnvironment executionEnvironment, SupportAppContext context, RunOptions options) {
 
     }
 
@@ -38,7 +38,11 @@ public class BatchAppSupport<IN, OIN> implements FlinkSupport<ExecutionEnvironme
     }
 
     @Override
-    public TaskResult submitFlinkTask(ExecutionEnvironment environment) {
+    public TaskResult executeTask() throws Exception {
+        return null;
+    }
+
+    private TaskResult submit() {
         return null;
     }
 }
