@@ -1,6 +1,8 @@
 package com.weiwan.support.core;
 
+import com.weiwan.support.core.annotation.Support;
 import com.weiwan.support.core.api.*;
+import com.weiwan.support.core.coprocessor.*;
 import com.weiwan.support.core.start.RunOptions;
 import org.apache.flink.api.common.JobExecutionResult;
 import org.apache.flink.api.common.JobID;
@@ -10,7 +12,6 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,8 +32,7 @@ public abstract class StreamAppSupport<I_OUT, P_OUT> implements
     private boolean isEtl;
     private boolean isTable;
     private boolean enableAnnotation;
-    private Map<Class, SupportCoprocessor> coprocessors = new LinkedHashMap<Class, SupportCoprocessor>();
-
+    private SupportCoprocessor coprocessors = new EnvCoprocessor();
 
     private static final Logger _LOGGER = LoggerFactory.getLogger(StreamAppSupport.class);
 
@@ -42,18 +42,30 @@ public abstract class StreamAppSupport<I_OUT, P_OUT> implements
         this.env = executionEnvironment;
         this.context = context;
         this.options = options;
-        this.isEtl = options.isEtl();
-        this.isTable = options.isTable();
-        this.enableAnnotation = options.isEnableAnnotation();
-        if (isEtl) {
-            coprocessors.put(EtlCoprocessor.class, new EtlCoprocessor());
+
+
+        /**
+         * 这里使用了责任链,通过添加不同得coprocessor 进行任务执行前预处理工作
+         * 默认包含一个{@link EnvCoprocessor}
+         */
+        if (options.isEtl()) {
+            this.isEtl = options.isEtl();
+            coprocessors = coprocessors.nextCoprocessor(new EtlCoprocessor());
+        } else if (options.isTable()) {
+            this.isTable = options.isTable();
+            coprocessors = coprocessors.nextCoprocessor(new TableCoprocessor());
+        } else {
+            Support annotation = this.getClass().getAnnotation(Support.class);
+            if (annotation != null) {
+                enableAnnotation = true;
+                coprocessors.nextCoprocessor(new AnnotationCoprocessor(context));
+            }
+            coprocessors.nextCoprocessor(
+                    new OpenStreamCoprocessor(context).nextCoprocessor(
+                            new StreamCoprocessor(context).nextCoprocessor(
+                                    new OutputStreamCoprocessor(context))));
         }
-        if (isTable) {
-            coprocessors.put(TableCoprocessor.class, new TableCoprocessor());
-        }
-        if (enableAnnotation) {
-            coprocessors.put(AnnotationCoprocessor.class, new AnnotationCoprocessor());
-        }
+
     }
 
     public final StreamExecutionEnvironment getEnv() {
@@ -64,6 +76,12 @@ public abstract class StreamAppSupport<I_OUT, P_OUT> implements
         return this.context;
     }
 
+    /**
+     * 运行类{@link com.weiwan.support.runtime.SupportAppEnter} 中反射该方法进行任务提交
+     *
+     * @return
+     * @throws Exception
+     */
     private TaskResult submit() throws Exception {
         FlinkSupport flinkSupport = preProcessing();
         TaskResult taskResult = flinkSupport.executeTask();
@@ -79,26 +97,8 @@ public abstract class StreamAppSupport<I_OUT, P_OUT> implements
     }
 
     private FlinkSupport preProcessing() {
-        if (coprocessors.size() < 1) {
-            DataStream<I_OUT> open = this.open(env, context);
-            DataStream<P_OUT> process = this.process(open, context);
-            DataStreamSink output = this.output(process, context);
-            return this;
-        } else {
-            SupportCoprocessor sc1 = coprocessors.get(AnnotationCoprocessor.class);
-            if (sc1 != null) {
-                sc1.process(this);
-            }
-
-            SupportCoprocessor sc2 = coprocessors.get(EtlCoprocessor.class);
-            if (sc2 != null) {
-                sc2.process(this);
-            }
-
-            SupportCoprocessor sc3 = coprocessors.get(EtlCoprocessor.class);
-            if (sc3 != null) {
-                sc3.process(this);
-            }
+        if (coprocessors != null) {
+            coprocessors.process(env, this, null);
         }
         return this;
     }

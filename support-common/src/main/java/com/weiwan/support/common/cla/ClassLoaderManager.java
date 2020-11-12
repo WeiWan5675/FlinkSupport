@@ -1,4 +1,4 @@
-package com.weiwan.support.core;
+package com.weiwan.support.common.cla;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

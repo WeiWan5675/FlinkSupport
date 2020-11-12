@@ -21,6 +21,11 @@
             <artifactId>reflections</artifactId>
             <version>0.9.12</version>
         </dependency>
+        <dependency>
+            <groupId>com.weiwan</groupId>
+            <artifactId>support-runtime</artifactId>
+            <scope>test</scope>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
 <!--        <dependency>-->

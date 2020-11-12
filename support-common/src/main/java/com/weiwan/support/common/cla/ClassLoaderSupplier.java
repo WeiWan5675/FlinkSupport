@@ -17,7 +17,7 @@
  */
 
 
-package com.weiwan.support.core;
+package com.weiwan.support.common.cla;
 
 /**
  * @Author: xiaozhennan

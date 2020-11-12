@@ -5,10 +5,12 @@ import com.weiwan.support.core.SupportAppContext;
 import com.weiwan.support.core.annotation.*;
 import com.weiwan.support.core.pojo.DataRecord;
 import org.apache.flink.api.common.functions.MapFunction;
+import org.apache.flink.streaming.api.checkpoint.CheckpointedFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSink;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.source.RichSourceFunction;
+import org.apache.flink.streaming.api.functions.source.SourceFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +33,22 @@ public class TasterApp extends StreamAppSupport<DataRecord<String>, DataRecord<S
     @SupportMysqlSource
     @SupportSourceParallelism
     public DataStream<DataRecord<String>> open(StreamExecutionEnvironment env, SupportAppContext context) {
-        return null;
+        return env.addSource(new SourceFunction<DataRecord<String>>() {
+            @Override
+            public void run(SourceContext<DataRecord<String>> ctx) throws Exception {
+                while (true) {
+                    DataRecord<String> record = new DataRecord<>();
+                    record.setData("test data");
+                    ctx.collect(record);
+                    Thread.sleep(3000L);
+                }
+            }
+
+            @Override
+            public void cancel() {
+
+            }
+        });
     }
 
     @Override
