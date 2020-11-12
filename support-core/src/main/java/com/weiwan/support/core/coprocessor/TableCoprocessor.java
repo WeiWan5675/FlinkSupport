@@ -11,6 +11,11 @@ import com.weiwan.support.core.api.SupportDataFlow;
  * @Description:
  **/
 public class TableCoprocessor extends SupportCoprocessor {
+
+    public TableCoprocessor(SupportAppContext context) {
+        super(context);
+    }
+
     @Override
     public <E, S1, S2> Object process(E env, SupportDataFlow<E, S1, S2> dataFlow, Object obj) {
         return null;

@@ -16,7 +16,7 @@ public class StreamCoprocessor extends SupportCoprocessor {
     }
 
     @Override
-    public <E, S1, S2> Object process(E env, SupportDataFlow<E, S1, S2> dataFlow, Object obj) {
+    public <E, S1, S2> Object process(E env, SupportDataFlow<E, S1, S2> dataFlow, Object obj) throws Exception {
         S2 process = dataFlow.process((S1) obj, context);
         return nextProcess(env, dataFlow, process);
     }

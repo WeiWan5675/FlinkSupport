@@ -25,11 +25,7 @@ public abstract class SupportCoprocessor {
         this.context = context;
     }
 
-    public SupportCoprocessor() {
-
-    }
-
-    public abstract <E, S1, S2> Object process(E env, SupportDataFlow<E, S1, S2> dataFlow, Object obj);
+    public abstract <E, S1, S2> Object process(E env, SupportDataFlow<E, S1, S2> dataFlow, Object obj) throws Exception;
 
 
     public final SupportCoprocessor nextCoprocessor(SupportCoprocessor next) {
@@ -37,7 +33,7 @@ public abstract class SupportCoprocessor {
         return this;
     }
 
-    protected final <E, S1, S2> Object nextProcess(E env, SupportDataFlow<E, S1, S2> dataFlow, Object obj) {
+    protected final <E, S1, S2> Object nextProcess(E env, SupportDataFlow<E, S1, S2> dataFlow, Object obj) throws Exception {
         if (this.nextCoprocessor != null) {
             return this.nextCoprocessor.process(env, dataFlow, obj);
         }

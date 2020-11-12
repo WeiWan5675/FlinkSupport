@@ -2,10 +2,7 @@ package com.weiwan.support.core.annotation;
 
 import jdk.nashorn.internal.ir.annotations.Reference;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * @Author: xiaozhennan
@@ -14,6 +11,7 @@ import java.lang.annotation.Target;
  * @ClassName: Support
  * @Description:
  **/
+@Inherited
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Support {

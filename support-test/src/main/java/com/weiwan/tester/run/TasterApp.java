@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 @PrintToLog
 @Support
 @Checkpoint
+@Parallelism
 public class TasterApp extends StreamAppSupport<DataRecord<String>, DataRecord<String>> {
 
     private static final Logger logger = LoggerFactory.getLogger(TasterApp.class);
