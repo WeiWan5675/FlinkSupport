@@ -162,7 +162,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
             log4jFile = userResourceRemoteDir + "/log4j.properties";
             if (HdfsUtil.existsFile(fileSystem, new Path(log4jFile))) {
                 params.put(JVMOptions.FLINK_LOG_DIR.key(), "/tmp/flink_support/logs/" + userResourceId);
-                params.put(JVMOptions.LOG4J_CONFIG_FILE, log4jFile);
+                params.put(JVMOptions.LOG4J_CONFIG_FILE, userResourceId + "/log4j.properties");
             }
         } else {
             params.put(JVMOptions.LOG4J_CONFIG_FILE, SupportConstants.SUPPORT_HDFS_CONF_DIR + "/log4j.properties");

@@ -30,7 +30,7 @@ public abstract class SupportCoprocessor {
 
     public final SupportCoprocessor nextCoprocessor(SupportCoprocessor next) {
         this.nextCoprocessor = next;
-        return this;
+        return next;
     }
 
     protected final <E, S1, S2> Object nextProcess(E env, SupportDataFlow<E, S1, S2> dataFlow, Object obj) throws Exception {

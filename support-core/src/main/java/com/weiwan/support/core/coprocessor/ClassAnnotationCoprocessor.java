@@ -25,13 +25,13 @@ public class ClassAnnotationCoprocessor extends SupportCoprocessor {
     private static final Logger logger = LoggerFactory.getLogger(ClassAnnotationCoprocessor.class);
 
     @Override
-    public <E, S1, S2> Object process(E env, SupportDataFlow<E, S1, S2> dataFlow, Object obj) {
+    public <E, S1, S2> Object process(E env, SupportDataFlow<E, S1, S2> dataFlow, Object obj) throws Exception {
         Class<? extends SupportDataFlow> userClass = dataFlow.getClass();
 
         Support annotation = userClass.getAnnotation(Support.class);
         if (annotation != null) {
             logger.info("support annotation is not null");
         }
-        return null;
+        return nextProcess(env,dataFlow,obj);
     }
 }

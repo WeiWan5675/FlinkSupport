@@ -35,9 +35,10 @@ public abstract class StreamAppSupport<I_OUT, P_OUT> implements
     /**
      * 初始化支持环境,
      * 该方法除了初始化Support运行环境外,还进行TaskGraph协处理器的创建
+     *
      * @param executionEnvironment flink环境
-     * @param context supportContext
-     * @param options 启动参数
+     * @param context              supportContext
+     * @param options              启动参数
      */
     @Override
     public final void initEnv(StreamExecutionEnvironment executionEnvironment, SupportAppContext context, RunOptions options) {
@@ -46,23 +47,22 @@ public abstract class StreamAppSupport<I_OUT, P_OUT> implements
         this.options = options;
 
 
-
-        coprocessors = new FirstPreCoprocessor(this.context);  //第一个预处理处理器
+        coprocessors = new FirstPreCoprocessor(this.context);
+        SupportCoprocessor next = coprocessors; //第一个预处理处理器
         if (options.isEtl()) {
             this.isEtl = options.isEtl();
-            coprocessors = coprocessors.nextCoprocessor(new EtlCoprocessor(this.context));  //etl插件模式处理器
+            next = next.nextCoprocessor(new EtlCoprocessor(this.context));  //etl插件模式处理器
         } else if (options.isTable()) {
             this.isTable = options.isTable();
-            coprocessors = coprocessors.nextCoprocessor(new TableCoprocessor(this.context));  //table环境处理器
+            next = next.nextCoprocessor(new TableCoprocessor(this.context));  //table环境处理器
         } else {
-            coprocessors.nextCoprocessor(
-                    new ClassAnnotationCoprocessor(this.context).nextCoprocessor(  //类注解处理器
-                            new OpenStreamCoprocessor(this.context).nextCoprocessor( //open方法处理器
-                                    new StreamCoprocessor(this.context).nextCoprocessor(  //process方法处理器
-                                            new OutputStreamCoprocessor(this.context))))); //output方法处理器
-
+            next = next
+                    .nextCoprocessor(new ClassAnnotationCoprocessor(context))
+                    .nextCoprocessor(new OpenStreamCoprocessor(context))
+                    .nextCoprocessor(new StreamCoprocessor(context))
+                    .nextCoprocessor(new OutputStreamCoprocessor(context));
         }
-        coprocessors.nextCoprocessor(new LastPreCoprocessor(this.context));  //最后一个预处理处理器
+        next.nextCoprocessor(new LastPreCoprocessor(this.context));  //最后一个预处理处理器
 
     }
 
