@@ -35,19 +35,19 @@ public class ClusterJobUtil {
      * @param conf cluster dynamic parameter
      * @return
      */
-    public static ClusterSpecification createClusterSpecification(Map conf) {
+    public static ClusterSpecification createClusterSpecification(Map<String,String> conf) {
         int jobmanagerMemoryMb = 768;
         int taskmanagerMemoryMb = 768;
         int slotsPerTaskManager = 1;
         if (conf != null) {
             if (conf.containsKey(JOBMANAGER_MEMORY_MB)) {
-                jobmanagerMemoryMb = Math.max(MIN_JM_MEMORY, (Integer) conf.getOrDefault(JOBMANAGER_MEMORY_MB, jobmanagerMemoryMb));
+                jobmanagerMemoryMb = Math.max(MIN_JM_MEMORY, Integer.valueOf(conf.getOrDefault(JOBMANAGER_MEMORY_MB, jobmanagerMemoryMb+"")));
             }
             if (conf.containsKey(TASKMANAGER_MEMORY_MB)) {
-                taskmanagerMemoryMb = Math.max(MIN_TM_MEMORY, (Integer) conf.getOrDefault(TASKMANAGER_MEMORY_MB, taskmanagerMemoryMb));
+                taskmanagerMemoryMb = Math.max(MIN_TM_MEMORY, Integer.valueOf(conf.getOrDefault(TASKMANAGER_MEMORY_MB, taskmanagerMemoryMb+"")));
             }
             if (conf.containsKey(SLOTS_PER_TASKMANAGER)) {
-                slotsPerTaskManager = (int) conf.getOrDefault(SLOTS_PER_TASKMANAGER, slotsPerTaskManager);
+                slotsPerTaskManager = Integer.valueOf(conf.getOrDefault(SLOTS_PER_TASKMANAGER, slotsPerTaskManager+""));
             }
         }
         return new ClusterSpecification.ClusterSpecificationBuilder()
