@@ -38,7 +38,7 @@ public class YarnJobSubmiter implements JobSubmiter {
 
     @Override
     public Object submitJob(JobSubmitInfo jobInfo) {
-        YarnClusterInformationRetriever informationRetriever = YarnClientYarnClusterInformationRetriever.create(yarnClient);
+
         org.apache.flink.configuration.Configuration flinkConfiguration = jobInfo.getFlinkConfiguration();
 
         //checkpoint 恢复
@@ -98,7 +98,6 @@ public class YarnJobSubmiter implements JobSubmiter {
             jmVmDynamic.append(" -Dlog.file=/tmp/flink_support/logs/" + dynamicParameters.get(SupportKey.USER_RESOURCE_ID) + "/jobmanager.log");
             tmVmDynamic.append(" -Dlog.file=/tmp/flink_support/logs/" + dynamicParameters.get(SupportKey.USER_RESOURCE_ID) + "/taskmanager.log");
             flinkConfiguration.set(JVMOptions.FLINK_LOG_DIR, " /tmp/flink_support/logs/" + dynamicParameters.get(SupportKey.USER_RESOURCE_ID));
-            flinkConfiguration.set(YarnConfigOptionsInternal.APPLICATION_LOG_CONFIG_FILE,dynamicParameters.get(SupportKey.LOG4J_CONFIG_FILE));
         }
 
 
@@ -109,6 +108,8 @@ public class YarnJobSubmiter implements JobSubmiter {
         //		设置用户jar的参数和主类
         ApplicationConfiguration appConfig = new ApplicationConfiguration(jobInfo.getAppArgs(), jobInfo.getAppClassName());
 
+
+        YarnClusterInformationRetriever informationRetriever = YarnClientYarnClusterInformationRetriever.create(yarnClient);
         YarnClusterDescriptor yarnClusterDescriptor = new YarnClusterDescriptor(
                 flinkConfiguration,
                 jobInfo.getYarnConfiguration(),
