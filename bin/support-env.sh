@@ -33,6 +33,12 @@ export SUPPORT_LIB_DIR=$SUPPORT_HOME/lib
 export SUPPORT_BIN_DIR=$SUPPORT_HOME/bin
 export SUPPORT_EXTLIB_DIR=$SUPPORT_HOME/extlib
 export SUPPORT_PLUGINS_DIR=$SUPPORT_HOME/plugins
+export SUPPORT_LOG_DIR=$SUPPORT_HOME/logs
+
+#创建日志文件夹
+if [ -z "$SUPPORT_LOG_DIR" ]; then
+  mkdir -p $SUPPORT_LOG_DIR
+fi
 
 
 # Find the java binary

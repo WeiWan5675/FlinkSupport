@@ -18,7 +18,7 @@ public class OutputStreamCoprocessor extends SupportCoprocessor {
     }
 
     @Override
-    public <E, S1, S2> Object process(E env, SupportDataFlow<E, S1, S2> dataFlow, Object obj) {
+    public <E, S1, S2> Object process(E env, SupportDataFlow<E, S1, S2> dataFlow, Object obj) throws Exception {
         DataStreamSink output = dataFlow.output((S2) obj, context);
         return nextProcess(env, dataFlow, output);
     }

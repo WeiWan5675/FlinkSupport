@@ -1,9 +1,12 @@
 package com.weiwan.support.core.coprocessor;
 
 import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.annotation.Support;
 import com.weiwan.support.core.annotation.SupportClassAnno;
 import com.weiwan.support.core.api.SupportDataFlow;
 import com.weiwan.support.core.coprocessor.SupportCoprocessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 
@@ -19,12 +22,15 @@ public class ClassAnnotationCoprocessor extends SupportCoprocessor {
         super(context);
     }
 
+    private static final Logger logger = LoggerFactory.getLogger(ClassAnnotationCoprocessor.class);
+
     @Override
     public <E, S1, S2> Object process(E env, SupportDataFlow<E, S1, S2> dataFlow, Object obj) {
         Class<? extends SupportDataFlow> userClass = dataFlow.getClass();
-        SupportClassAnno[] values = SupportClassAnno.values();
-        for (SupportClassAnno value : values) {
-            Class<Object> annoClass = value.getAnnoClass();
+
+        Support annotation = userClass.getAnnotation(Support.class);
+        if (annotation != null) {
+            logger.info("support annotation is not null");
         }
         return null;
     }
