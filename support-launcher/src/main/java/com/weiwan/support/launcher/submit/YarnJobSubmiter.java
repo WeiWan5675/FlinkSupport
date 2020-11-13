@@ -1,5 +1,6 @@
 package com.weiwan.support.launcher.submit;
 
+import com.weiwan.support.core.constant.SupportKey;
 import com.weiwan.support.launcher.envs.JOBOptions;
 import com.weiwan.support.launcher.envs.JVMOptions;
 import org.apache.commons.lang3.StringUtils;
@@ -79,7 +80,6 @@ public class YarnJobSubmiter implements JobSubmiter {
 
         StringBuffer jmVmDynamic = new StringBuffer();
         StringBuffer tmVmDynamic = new StringBuffer();
-
         if (jobInfo.getDynamicParameters() != null && jobInfo.getDynamicParameters().size() > 0) {
             Map<String, String> dynamicParameters = jobInfo.getDynamicParameters();
             for (String parameterKey : dynamicParameters.keySet()) {
@@ -90,14 +90,13 @@ public class YarnJobSubmiter implements JobSubmiter {
                 tmVmDynamic.append(dynamicStr);
                 flinkConfiguration.setString(parameterKey, dynamicParameters.get(parameterKey));
             }
+
+            jmVmDynamic.append(" -Dlog.file=/tmp/flink_support/logs/" + dynamicParameters.get(SupportKey.USER_RESOURCE_ID) + "/jobmanager.log");
+            tmVmDynamic.append(" -Dlog.file=/tmp/flink_support/logs/" + dynamicParameters.get(SupportKey.USER_RESOURCE_ID) + "/taskmanager.log");
+            flinkConfiguration.set(JVMOptions.FLINK_LOG_DIR, " /tmp/flink_support/logs/" + dynamicParameters.get(SupportKey.USER_RESOURCE_ID));
         }
-        jmVmDynamic.append(" -Dlog.file=/tmp/flink_support/logs/" + "support_TestApp_463c4521a0f460e1b19674627086c06d_job" +"/jobmanager.log");
-        tmVmDynamic.append(" -Dlog.file=/tmp/flink_support/logs/" + "support_TestApp_463c4521a0f460e1b19674627086c06d_job" +"/taskmanager.log");
         flinkConfiguration.set(JVMOptions.FLINK_TM_JVM_OPTIONS, tmVmDynamic.toString());
         flinkConfiguration.set(JVMOptions.FLINK_JM_JVM_OPTIONS, jmVmDynamic.toString());
-        flinkConfiguration.set(JVMOptions.FLINK_JVM_OPTIONS, jmVmDynamic.toString());
-        flinkConfiguration.set(JVMOptions.FLINK_HS_JVM_OPTIONS, jmVmDynamic.toString());
-        flinkConfiguration.set(JVMOptions.FLINK_LOG_DIR, " -Dlog.file=/tmp/flink_support/logs/" + "support_TestApp_463c4521a0f460e1b19674627086c06d_job");
 
         //		设置用户jar的参数和主类
         ApplicationConfiguration appConfig = new ApplicationConfiguration(jobInfo.getAppArgs(), jobInfo.getAppClassName());

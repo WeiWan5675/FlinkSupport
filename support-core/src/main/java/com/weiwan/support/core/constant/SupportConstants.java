@@ -32,6 +32,7 @@ public class SupportConstants {
     public static final String SUPPORT_HDFS_LIB_DIR = SUPPORT_HDFS_WORKSPACE + Constans.SIGN_SLASH + "lib";
     public static final String SUPPORT_HDFS_PLUGINS_DIR = SUPPORT_HDFS_WORKSPACE + Constans.SIGN_SLASH + "plugins";
     public static final String SUPPORT_HDFS_RESOURCES_DIR = SUPPORT_HDFS_WORKSPACE + Constans.SIGN_SLASH + "resources";
+    public static final String SUPPORT_HDFS_CONF_DIR = SUPPORT_HDFS_WORKSPACE + Constans.SIGN_SLASH + "conf";
     public static final String FLINKS = "flinks";
     public static final String FLINK_HDFS_HOME = SUPPORT_HDFS_WORKSPACE +
             Constans.SIGN_SLASH + FLINKS +
@@ -52,6 +53,7 @@ public class SupportConstants {
     public static final String FLINK_DIST_JAR = "flink-dist_" + SCALA_VERSION_PLACEHOLDER + "-" + FLINK_VERSION_PLACEHOLDER + ".jar";
     public static final String FLINK_CONF_DIR = "conf";
     public static final String FLINK_LIB_DIR = "lib";
+    public static final String FLINK_PLUGINS_DIR = "plugins";
     public static final String FLINK_CONF_FILE = "flink-conf.yaml";
     public static final String FLINK_LOG_CONF_FILE = "log4j.properties";
 
@@ -80,4 +82,6 @@ public class SupportConstants {
 
     public static final String SUPPORT_BATCH_TYPE = "Flink Batch Support";
     public static final String SUPPORT_RUMTIME_JAR = SUPPORT_HDFS_LIB_DIR + Constans.SIGN_SLASH + "support-runtime-1.0.jar";
+
+
 }

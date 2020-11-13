@@ -13,6 +13,7 @@ import com.weiwan.support.launcher.enums.RunMode;
 import com.weiwan.support.launcher.envs.processer.EnvProcess;
 import com.weiwan.support.launcher.options.GenericRunOption;
 import com.weiwan.support.utils.cluster.ClusterConfigLoader;
+import com.weiwan.support.utils.hadoop.HdfsUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.configuration.GlobalConfiguration;
 import org.slf4j.Logger;
@@ -91,6 +92,9 @@ public abstract class ApplicationEnv implements EnvProcess {
         }
         //处理后进行一些特殊处理
         return true;
+    }
+
+    private void supportHdfsEnvCheck(GenericRunOption genericRunOption) {
     }
 
     private void setSupportDefault(GenericRunOption option) {

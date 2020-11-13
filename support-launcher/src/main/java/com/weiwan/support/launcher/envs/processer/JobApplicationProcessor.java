@@ -6,6 +6,7 @@ import com.weiwan.support.common.exception.SupportException;
 import com.weiwan.support.common.options.OptionParser;
 import com.weiwan.support.common.utils.*;
 import com.weiwan.support.common.utils.FileUtil;
+import com.weiwan.support.core.annotation.Support;
 import com.weiwan.support.core.config.UserJobConf;
 import com.weiwan.support.core.constant.SupportConstants;
 import com.weiwan.support.core.constant.SupportKey;
@@ -55,6 +56,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
     private FileSystem fileSystem;
 
     private String flinkLibDir;
+    private String flinkPluginDir;
     private String flinkDistJar;
     private String userResourceRemoteDir;
     private String applicationName;
@@ -78,6 +80,10 @@ public class JobApplicationProcessor extends ApplicationEnv {
         this.flinkConfiguration = (org.apache.flink.configuration.Configuration) supportCoreConf.getVal(SupportConstants.KEY_FLINK_CONFIGURATION);
         this.yarnConfiguration = (YarnConfiguration) supportCoreConf.getVal(SupportConstants.KEY_YARN_CONFIGURATION);
         this.fileSystem = HadoopUtil.getFileSystem(hadoopConfiguration);
+
+        //检查远程工作目录是否存在
+        supportRemoteEnvCheck();
+
         //解析用户配置文件
         String jobConfPath = option.getJobConf();
         //读取用户配置文件
@@ -89,6 +95,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
         String flinkHdfsHome = SupportConstants.FLINK_HDFS_HOME.replace(SupportConstants.FLINK_VERSION_PLACEHOLDER, flink_version);
 
         flinkLibDir = flinkHdfsHome + Constans.SIGN_SLASH + SupportConstants.FLINK_LIB_DIR;
+        flinkPluginDir = flinkHdfsHome + Constans.SIGN_SLASH + SupportConstants.FLINK_PLUGINS_DIR;
         //获取该文件夹下所有的文件,排除dist
         flinkDistJar = flinkLibDir + Constans.SIGN_SLASH + SupportConstants.FLINK_DIST_JAR
                 .replace(SupportConstants.SCALA_VERSION_PLACEHOLDER, scala_version)
@@ -102,7 +109,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
             //判断远程资源目录是否存在
             Path resourcePath = new Path(userResourceRemoteDir);
 
-            if (!checkRemoteResourceDirExists(userResourceRemoteDir) || checkRemoteResourceDirEmpty(userResourceRemoteDir)) {
+            if (!checkRemoteDirExists(userResourceRemoteDir) || checkRemoteResourceDirEmpty(userResourceRemoteDir)) {
                 //远程资源目录为空,需要处理
                 throw new SupportException(String.format("The remote resource directory %s is empty, please check", resourcePath.toString()));
             }
@@ -121,7 +128,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
             userResourceRemoteDir = generateJobResourcesDir(resourcesDir);
             ;
             //hdfs://flink_support/resources/support_${jobName}_${jobResourcesMD5}_job
-            if (!checkRemoteResourceDirExists(userResourceRemoteDir) || checkRemoteResourceDirEmpty(userResourceRemoteDir)) {
+            if (!checkRemoteDirExists(userResourceRemoteDir) || checkRemoteDirExists(userResourceRemoteDir)) {
                 //上传
                 uploadUserResources(resourcesDir, userResourceRemoteDir, true);
             } else {
@@ -146,14 +153,43 @@ public class JobApplicationProcessor extends ApplicationEnv {
         }
 
 
-        //处理日志参数
+        //处理动态参数
         Map<String, String> params = option.getParams();
         String log4jFile = params.get("log4j.configurationFile");
+        String userResourceId = userResourceRemoteDir.substring(userResourceRemoteDir.lastIndexOf("/") + 1);
         if (StringUtils.isEmpty(log4jFile)) {
             //为空,使用默认配置
-            params.put("log4j.configurationFile", userResourceRemoteDir.substring(userResourceRemoteDir.lastIndexOf("/") + 1) + "/log4j.properties");
+            log4jFile = userResourceRemoteDir + "/log4j.properties";
+            if (HdfsUtil.existsFile(fileSystem, new Path(log4jFile))) {
+                params.put(JVMOptions.FLINK_LOG_DIR.key(), "/tmp/flink_support/logs/" + userResourceId);
+                params.put(JVMOptions.LOG4J_CONFIG_FILE, log4jFile);
+            }
         } else {
+            params.put(JVMOptions.LOG4J_CONFIG_FILE, SupportConstants.SUPPORT_HDFS_CONF_DIR + "/log4j.properties");
+        }
+        params.put(SupportKey.USER_RESOURCE_ID, userResourceId);
+    }
 
+    private void supportRemoteEnvCheck() {
+        boolean checkSupportEnvSign = false;
+        if (checkRemoteDirExists(SupportConstants.SUPPORT_HDFS_WORKSPACE)) {
+            if (checkRemoteDirExists(SupportConstants.SUPPORT_HDFS_LIB_DIR)) {
+                if (checkRemoteDirExists(SupportConstants.SUPPORT_HDFS_CONF_DIR)) {
+                    if (checkRemoteDirExists(SupportConstants.FLINK_HDFS_HOME.replace(SupportConstants.FLINK_VERSION_PLACEHOLDER, ""))) {
+                        checkSupportEnvSign = true;
+                        logger.info("check support remote env success");
+                    }
+                }
+            }
+        }
+        if (!checkSupportEnvSign) {
+            logger.error("check support remote env Failed, please check the remote directory");
+            logger.warn("There should be the following directories under SUPPORT HDFS HOME:\n{}\n{}\n{}\n{}]",
+                    SupportConstants.SUPPORT_HDFS_WORKSPACE,
+                    SupportConstants.SUPPORT_HDFS_LIB_DIR,
+                    SupportConstants.SUPPORT_HDFS_CONF_DIR,
+                    SupportConstants.FLINK_HDFS_HOME);
+            throw new SupportException("check support remote env Failed, please check the remote directory");
         }
     }
 
@@ -173,6 +209,9 @@ public class JobApplicationProcessor extends ApplicationEnv {
             configContent = FileUtil.readFileContent(jobConfPath);
         }
         if (resourceMode == ResourceMode.HDFS) {
+            if (!jobConfPath.contains("nameservice")) {
+                jobConfPath = jobConfPath.replaceAll("hdfs:/+", Constans.PROTOCOL_HDFS + "nameservice1/");
+            }
             configContent = HdfsUtil.readFileContent(fileSystem, new Path(jobConfPath));
         }
         Map<String, String> userVarMap = YamlUtils.loadYamlStr(configContent);
@@ -180,7 +219,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
         return userJobConf;
     }
 
-    private boolean checkRemoteResourceDirExists(String userResourceDir) {
+    private boolean checkRemoteDirExists(String userResourceDir) {
         if (StringUtils.isNotEmpty(userResourceDir)) {
             if (userResourceDir.startsWith(Constans.PROTOCOL_HDFS)) {
                 //是合法路径
@@ -224,7 +263,6 @@ public class JobApplicationProcessor extends ApplicationEnv {
     @Override
     public boolean process() {
         logger.info("The Job application handler starts and starts processing the job submission work!");
-
         RunOptions runOptions = convertCmdToRunOption(option);
 
         //获取job类型
@@ -263,12 +301,12 @@ public class JobApplicationProcessor extends ApplicationEnv {
 
         Set<String> flinkClassPaths = new HashSet<>();
         flinkClassPaths.add(flinkLibDir);
+        flinkClassPaths.add(flinkPluginDir);
         flinkClassPaths.add(SupportConstants.SUPPORT_HDFS_LIB_DIR);
+        flinkClassPaths.add(SupportConstants.SUPPORT_HDFS_PLUGINS_DIR);
         flinkClassPaths.add(userResourceRemoteDir);
         URL.setURLStreamHandlerFactory(new FsUrlStreamHandlerFactory());
-        System.out.println("classpath:" + flinkClassPaths.toString());
         //组装了任务信息
-
         Map<String, String> params = option.getParams();
         JobSubmitInfo submitInfo = JobSubmitInfo.newBuilder().appArgs(args)
                 .appClassName(SupportConstants.SUPPORT_ENTER_CLASSNAME)
@@ -292,7 +330,6 @@ public class JobApplicationProcessor extends ApplicationEnv {
             sb.append(arg);
             sb.append("\n");
         }
-
         logger.info("启动参数: {}", sb.toString());
         JobSubmiter submiter = JobSubmiterFactory.createYarnSubmiter(ClusterJobUtil.getYarnClient(yarnConfiguration));
         submiter.submitJob(submitInfo);

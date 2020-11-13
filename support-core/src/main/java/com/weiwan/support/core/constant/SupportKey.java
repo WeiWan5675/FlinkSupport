@@ -8,6 +8,10 @@ package com.weiwan.support.core.constant;
  * @Description:
  **/
 public class SupportKey {
+    public static final String USER_RESOURCE_ID = "user.resources.id";
+
+
+
     public static final String APP_ENTER_CLASS = "app.appClass";
     public static final String APP_NAME = "app.appName";
     public static final String ETL_MODE = "app.etlMode";
