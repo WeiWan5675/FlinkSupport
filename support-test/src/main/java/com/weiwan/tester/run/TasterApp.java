@@ -9,6 +9,7 @@ import org.apache.flink.streaming.api.checkpoint.CheckpointedFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSink;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 import org.apache.flink.streaming.api.functions.source.RichSourceFunction;
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
 import org.slf4j.Logger;
@@ -65,7 +66,14 @@ public class TasterApp extends StreamAppSupport<DataRecord<String>, DataRecord<S
 
     @Override
     public DataStreamSink output(DataStream<DataRecord<String>> stream, SupportAppContext context) {
-        return stream.print();
+
+        return stream.addSink(new SinkFunction<DataRecord<String>>() {
+
+            @Override
+            public void invoke(DataRecord<String> value, Context context) throws Exception {
+                logger.info(value.getData());
+            }
+        });
     }
 
 
