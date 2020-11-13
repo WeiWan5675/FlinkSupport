@@ -155,7 +155,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
 
         //处理动态参数
         Map<String, String> params = option.getParams();
-        String log4jFile = params.get("log4j.configurationFile");
+        String log4jFile = params.get(SupportKey.LOG4J_CONFIG_FILE);
         String userResourceId = userResourceRemoteDir.substring(userResourceRemoteDir.lastIndexOf("/") + 1);
         if (StringUtils.isEmpty(log4jFile)) {
             //为空,使用默认配置

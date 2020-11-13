@@ -16,4 +16,5 @@ public class SupportKey {
     public static final String APP_NAME = "app.appName";
     public static final String ETL_MODE = "app.etlMode";
     public static final String SQL_MODE = "app.sqlMode";
+    public static final String LOG4J_CONFIG_FILE = "log4j.configurationFile";
 }

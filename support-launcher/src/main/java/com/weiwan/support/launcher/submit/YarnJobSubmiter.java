@@ -4,13 +4,17 @@ import com.weiwan.support.core.constant.SupportKey;
 import com.weiwan.support.launcher.envs.JOBOptions;
 import com.weiwan.support.launcher.envs.JVMOptions;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.flink.client.deployment.ClusterClientFactory;
 import org.apache.flink.client.deployment.ClusterDeploymentException;
+import org.apache.flink.client.deployment.ClusterDescriptor;
+import org.apache.flink.client.deployment.ClusterSpecification;
 import org.apache.flink.client.deployment.application.ApplicationConfiguration;
 import org.apache.flink.client.program.ClusterClient;
 import org.apache.flink.client.program.ClusterClientProvider;
 import org.apache.flink.yarn.YarnClientYarnClusterInformationRetriever;
 import org.apache.flink.yarn.YarnClusterDescriptor;
 import org.apache.flink.yarn.YarnClusterInformationRetriever;
+import org.apache.flink.yarn.configuration.YarnConfigOptionsInternal;
 import org.apache.flink.yarn.configuration.YarnDeploymentTarget;
 import org.apache.hadoop.yarn.api.records.ApplicationId;
 import org.apache.hadoop.yarn.client.api.YarnClient;
@@ -94,7 +98,11 @@ public class YarnJobSubmiter implements JobSubmiter {
             jmVmDynamic.append(" -Dlog.file=/tmp/flink_support/logs/" + dynamicParameters.get(SupportKey.USER_RESOURCE_ID) + "/jobmanager.log");
             tmVmDynamic.append(" -Dlog.file=/tmp/flink_support/logs/" + dynamicParameters.get(SupportKey.USER_RESOURCE_ID) + "/taskmanager.log");
             flinkConfiguration.set(JVMOptions.FLINK_LOG_DIR, " /tmp/flink_support/logs/" + dynamicParameters.get(SupportKey.USER_RESOURCE_ID));
+            flinkConfiguration.set(YarnConfigOptionsInternal.APPLICATION_LOG_CONFIG_FILE,dynamicParameters.get(SupportKey.LOG4J_CONFIG_FILE));
         }
+
+
+
         flinkConfiguration.set(JVMOptions.FLINK_TM_JVM_OPTIONS, tmVmDynamic.toString());
         flinkConfiguration.set(JVMOptions.FLINK_JM_JVM_OPTIONS, jmVmDynamic.toString());
 
@@ -109,7 +117,7 @@ public class YarnJobSubmiter implements JobSubmiter {
                 true);
         ClusterClientProvider<ApplicationId> clusterClientProvider = null;
 
-        try {
+            try {
             clusterClientProvider = yarnClusterDescriptor.deployApplicationCluster(jobInfo.getClusterSpecification(), appConfig);
         } catch (ClusterDeploymentException e) {
             e.printStackTrace();
