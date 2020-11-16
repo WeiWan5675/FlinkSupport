@@ -31,6 +31,7 @@ public class JobSubmitInfo {
     private String[] appArgs;
     private String appClassName;
     private String savePointPath;
+    private String jobResourceId;
     private Map<String, String> dynamicParameters;
 
     private JobSubmitInfo(Builder builder) {
@@ -48,6 +49,7 @@ public class JobSubmitInfo {
         setAppArgs(builder.appArgs);
         setAppClassName(builder.appClassName);
         setSavePointPath(builder.savePointPath);
+        setJobResourceId(builder.jobResourceId);
         setDynamicParameters(builder.dynamicParameters);
     }
 
@@ -168,6 +170,14 @@ public class JobSubmitInfo {
         this.savePointPath = savePointPath;
     }
 
+    public String getJobResourceId() {
+        return jobResourceId;
+    }
+
+    public void setJobResourceId(String jobResourceId) {
+        this.jobResourceId = jobResourceId;
+    }
+
     public Map<String, String> getDynamicParameters() {
         return dynamicParameters;
     }
@@ -191,6 +201,7 @@ public class JobSubmitInfo {
         private String[] appArgs;
         private String appClassName;
         private String savePointPath;
+        private String jobResourceId;
         private Map<String, String> dynamicParameters;
 
         private Builder() {
@@ -263,6 +274,11 @@ public class JobSubmitInfo {
 
         public Builder savePointPath(String val) {
             savePointPath = val;
+            return this;
+        }
+
+        public Builder jobResourceId(String val) {
+            jobResourceId = val;
             return this;
         }
 

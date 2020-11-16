@@ -97,12 +97,10 @@ public class YarnJobSubmiter implements JobSubmiter {
             flinkConfiguration.set(JVMOptions.FLINK_LOG_DIR, " /tmp/flink_support/logs/" + dynamicParameters.get(SupportKey.USER_RESOURCE_ID));
         }
 
-
-
         flinkConfiguration.set(JVMOptions.FLINK_TM_JVM_OPTIONS, tmVmDynamic.toString());
         flinkConfiguration.set(JVMOptions.FLINK_JM_JVM_OPTIONS, jmVmDynamic.toString());
 
-        flinkConfiguration.set(PipelineOptionsInternal.PIPELINE_FIXED_JOB_ID,"463c4521a0f460e1b19674627086c06d");
+        flinkConfiguration.set(PipelineOptionsInternal.PIPELINE_FIXED_JOB_ID,jobInfo.getJobResourceId());
 
         //		设置用户jar的参数和主类
         ApplicationConfiguration appConfig = new ApplicationConfiguration(jobInfo.getAppArgs(), jobInfo.getAppClassName());

@@ -66,6 +66,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
     private Configuration hadoopConfiguration;
     private org.apache.flink.configuration.Configuration flinkConfiguration;
     private YarnConfiguration yarnConfiguration;
+    private String jobResourceId;
 
 
     public JobApplicationProcessor(String[] args) {
@@ -115,6 +116,14 @@ public class JobApplicationProcessor extends ApplicationEnv {
                 throw new SupportException(String.format("The remote resource directory %s is empty, please check", resourcePath.toString()));
             }
 
+            List<Path> paths = HdfsUtil.find(fileSystem, resourcePath, "");
+            StringBuffer jsb = new StringBuffer();
+            for (Path path : paths) {
+                String name = path.getName();
+                jsb.append(name);
+            }
+            String jobKey = StringUtil.sortStrByDict(jobResourceId.toString());
+            jobResourceId = MD5Utils.md5(jobKey);
         } else if (ResourceMode.LOCAL == resourceMode) {
             String resourcesDir = option.getResources();
 
@@ -254,6 +263,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
             sb.append(subFile.getName());
         }
         String sortJobKey = StringUtil.sortStrByDict(sb.toString());
+        jobResourceId = MD5Utils.md5(sortJobKey);
         return SupportConstants.JOB_RESOURCES_DIR
                 .replace(SupportConstants.JOB_NAME_PLACEHOLDER,
                         userJobConf.getStringVal(FlinkContains.FLINK_TASK_NAME,
@@ -314,6 +324,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
                 .appClassName(SupportConstants.SUPPORT_ENTER_CLASSNAME)
                 .appName(applicationName)
                 .appType(jobType.getType())
+                .jobResourceId(jobResourceId)
                 .clusterSpecification(ClusterJobUtil.createClusterSpecification(option.getParams()))
                 .flinkConfiguration(flinkConfiguration)
                 .hadoopConfiguration(hadoopConfiguration)
