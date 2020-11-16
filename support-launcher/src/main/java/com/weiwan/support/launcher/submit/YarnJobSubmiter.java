@@ -4,20 +4,12 @@ import com.weiwan.support.core.constant.SupportKey;
 import com.weiwan.support.launcher.envs.JOBOptions;
 import com.weiwan.support.launcher.envs.JVMOptions;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.flink.client.cli.ApplicationDeployer;
 import org.apache.flink.client.deployment.*;
 import org.apache.flink.client.deployment.application.ApplicationConfiguration;
-import org.apache.flink.client.deployment.application.cli.ApplicationClusterDeployer;
-import org.apache.flink.client.program.ClusterClient;
 import org.apache.flink.client.program.ClusterClientProvider;
-import org.apache.flink.configuration.DeploymentOptionsInternal;
-import org.apache.flink.yarn.YarnClientYarnClusterInformationRetriever;
-import org.apache.flink.yarn.YarnClusterDescriptor;
-import org.apache.flink.yarn.YarnClusterInformationRetriever;
-import org.apache.flink.yarn.configuration.YarnConfigOptionsInternal;
 import org.apache.flink.yarn.configuration.YarnDeploymentTarget;
-import org.apache.hadoop.yarn.api.records.ApplicationId;
 import org.apache.hadoop.yarn.client.api.YarnClient;
+import org.apache.hadoop.yarn.conf.YarnConfiguration;
 
 import java.util.Map;
 
@@ -41,6 +33,8 @@ public class YarnJobSubmiter implements JobSubmiter {
 
         org.apache.flink.configuration.Configuration flinkConfiguration = jobInfo.getFlinkConfiguration();
         ApplicationConfiguration appConfig = new ApplicationConfiguration(jobInfo.getAppArgs(), jobInfo.getAppClassName());
+
+        YarnConfiguration yarnConfiguration = jobInfo.getYarnConfiguration();
 
 
         //checkpoint 恢复
@@ -102,14 +96,18 @@ public class YarnJobSubmiter implements JobSubmiter {
             flinkConfiguration.set(JVMOptions.FLINK_LOG_DIR, " /tmp/flink_support/logs/" + dynamicParameters.get(SupportKey.USER_RESOURCE_ID));
         }
 
+
+
         flinkConfiguration.set(JVMOptions.FLINK_TM_JVM_OPTIONS, tmVmDynamic.toString());
         flinkConfiguration.set(JVMOptions.FLINK_JM_JVM_OPTIONS, jmVmDynamic.toString());
 
-        final ApplicationDeployer deployer =
-                new ApplicationClusterDeployer(new DefaultClusterClientServiceLoader());
 
-        deployer.run(flinkConfiguration, appConfig);
-        return null;
+        DefaultClusterClientServiceLoader clientServiceLoader = new DefaultClusterClientServiceLoader();
+        final ClusterClientFactory<Object> clientFactory = clientServiceLoader.getClusterClientFactory(flinkConfiguration);
+        ClusterDescriptor<Object> clusterDescriptor = clientFactory.createClusterDescriptor(flinkConfiguration,yarnConfiguration);
+        ClusterSpecification clusterSpecification = clientFactory.getClusterSpecification(flinkConfiguration);
+        ClusterClientProvider<Object> objectClusterClientProvider = clusterDescriptor.deployApplicationCluster(clusterSpecification, appConfig);
+        return objectClusterClientProvider.getClusterClient().getClusterId();
     }
 
     @Override
