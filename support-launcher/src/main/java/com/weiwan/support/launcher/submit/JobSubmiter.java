@@ -9,7 +9,7 @@ package com.weiwan.support.launcher.submit;
  **/
 public interface JobSubmiter {
 
-    Object submitJob(JobSubmitInfo jobInfo);
+    Object submitJob(JobSubmitInfo jobInfo) throws Exception;
 
     Object stopJob(JobSubmitInfo jobInfo);
 

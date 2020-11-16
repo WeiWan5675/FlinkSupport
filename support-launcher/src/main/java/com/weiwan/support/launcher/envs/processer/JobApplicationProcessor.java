@@ -335,7 +335,11 @@ public class JobApplicationProcessor extends ApplicationEnv {
         logger.info("启动参数: {}", sb.toString());
         JobSubmiter submiter = JobSubmiterFactory.createYarnSubmiter(ClusterJobUtil.getYarnClient(yarnConfiguration));
 
-        submiter.submitJob(submitInfo);
+        try {
+            submiter.submitJob(submitInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         logger.info("The job handler is processed and the job has been submitted!");
         return true;
     }
