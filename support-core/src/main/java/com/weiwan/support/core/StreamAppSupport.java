@@ -87,7 +87,7 @@ public abstract class StreamAppSupport<I_OUT, P_OUT> implements
     }
 
     public TaskResult executeTask() throws Exception {
-        JobExecutionResult execute = env.execute();
+        JobExecutionResult execute = env.execute("TestApp");
         JobID jobID = execute.getJobID();
         _LOGGER.info("the job has been submitted and the job id is {}", jobID.toString());
         TaskResult taskResult = new TaskResult(jobID);
