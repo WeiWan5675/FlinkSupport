@@ -26,6 +26,7 @@ import com.weiwan.support.utils.hadoop.HadoopUtil;
 import com.weiwan.support.utils.hadoop.HdfsUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.configuration.CoreOptions;
+import org.apache.flink.configuration.DeploymentOptionsInternal;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.*;
 import org.apache.hadoop.yarn.conf.YarnConfiguration;
@@ -308,6 +309,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
         URL.setURLStreamHandlerFactory(new FsUrlStreamHandlerFactory());
         //组装了任务信息
         Map<String, String> params = option.getParams();
+        flinkConfiguration.set(DeploymentOptionsInternal.CONF_DIR, this.flinkConfDir);
         JobSubmitInfo submitInfo = JobSubmitInfo.newBuilder().appArgs(args)
                 .appClassName(SupportConstants.SUPPORT_ENTER_CLASSNAME)
                 .appName(applicationName)
@@ -332,6 +334,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
         }
         logger.info("启动参数: {}", sb.toString());
         JobSubmiter submiter = JobSubmiterFactory.createYarnSubmiter(ClusterJobUtil.getYarnClient(yarnConfiguration));
+
         submiter.submitJob(submitInfo);
         logger.info("The job handler is processed and the job has been submitted!");
         return true;

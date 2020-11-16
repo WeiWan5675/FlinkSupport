@@ -40,6 +40,7 @@ public abstract class ApplicationEnv implements EnvProcess {
     protected SupportETLConf supportETLConf;
     protected SupportSqlConf supportSqlConf;
 
+    protected String flinkConfDir;
 
     protected ResourceMode resourceMode;
     protected RunMode runMode;
@@ -165,6 +166,7 @@ public abstract class ApplicationEnv implements EnvProcess {
         option.setFlinkHome(flinkHome);
         String confDir = flinkHome + File.separator + SupportConstants.FLINK_CONF_DIR;
         String confFile = flinkHome + File.separator + SupportConstants.FLINK_CONF_DIR + File.separator + SupportConstants.FLINK_CONF_FILE;
+        this.flinkConfDir = confDir;
 //        supportCoreConf.setStringVal(SupportConstants.KEY_LOCAL_FLINK_CONF, FileUtil.readFileContent(confFile));
         supportCoreConf.setVal(SupportConstants.KEY_FLINK_CONFIGURATION, GlobalConfiguration.loadConfiguration(confDir));
         LOGGER.info("FLINK_HOME path is : {}", flinkHome);
