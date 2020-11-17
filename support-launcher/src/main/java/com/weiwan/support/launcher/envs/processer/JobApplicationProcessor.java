@@ -6,12 +6,12 @@ import com.weiwan.support.common.exception.SupportException;
 import com.weiwan.support.common.options.OptionParser;
 import com.weiwan.support.common.utils.*;
 import com.weiwan.support.common.utils.FileUtil;
-import com.weiwan.support.core.annotation.Support;
 import com.weiwan.support.core.config.UserJobConf;
 import com.weiwan.support.core.constant.SupportConstants;
 import com.weiwan.support.core.constant.SupportKey;
 import com.weiwan.support.core.start.RunOptions;
 import com.weiwan.support.launcher.cluster.ClusterJobUtil;
+import com.weiwan.support.launcher.enums.RunCmd;
 import com.weiwan.support.launcher.enums.TaskType;
 import com.weiwan.support.launcher.envs.JVMOptions;
 import com.weiwan.support.launcher.submit.JobSubmitInfo;
@@ -25,7 +25,6 @@ import com.weiwan.support.utils.flink.conf.FlinkContains;
 import com.weiwan.support.utils.hadoop.HadoopUtil;
 import com.weiwan.support.utils.hadoop.HdfsUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.flink.configuration.CoreOptions;
 import org.apache.flink.configuration.DeploymentOptionsInternal;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.*;
@@ -37,8 +36,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-
-import static org.apache.hadoop.yarn.conf.YarnConfiguration.YARN_APP_CONTAINER_LOG_DIR;
 
 /**
  * @Author: xiaozhennan
@@ -83,6 +80,70 @@ public class JobApplicationProcessor extends ApplicationEnv {
         this.yarnConfiguration = (YarnConfiguration) supportCoreConf.getVal(SupportConstants.KEY_YARN_CONFIGURATION);
         this.fileSystem = HadoopUtil.getFileSystem(hadoopConfiguration);
 
+        switch (option.getCmd()) {
+            case RUN:
+                initRunJobPreconditions();
+                break;
+            case STOP:
+            case CANAL:
+                initStopAndCanalJobPreconditions();
+                break;
+            case INFO:
+                printJobInfo();
+                return;
+            case LIST:
+                printJobList();
+            case SAVEPOINT:
+                executeSavepoint();
+                return;
+            default:
+                throw new SupportException(String.format("please specify an operation the options are : [%s]", RunCmd.print()));
+        }
+
+    }
+
+    @Override
+    public boolean process() {
+
+        switch (option.getCmd()) {
+            case RUN:
+                processJobSubmit();
+                break;
+            case STOP:
+            case CANAL:
+                processJobStopAndCanal();
+                break;
+        }
+        return true;
+    }
+
+
+    private void processJobStopAndCanal() {
+
+    }
+
+    private void executeSavepoint() {
+
+    }
+
+    private void printJobList() {
+
+    }
+
+
+    private void printJobInfo() {
+        logger.info("this is job info");
+        logger.info("job id is {}", option.getJobId());
+
+    }
+
+    private void initStopAndCanalJobPreconditions() {
+
+
+    }
+
+
+    private void initRunJobPreconditions() throws IOException {
         //检查远程工作目录是否存在
         supportRemoteEnvCheck();
 
@@ -106,24 +167,14 @@ public class JobApplicationProcessor extends ApplicationEnv {
         //远程配置文件,设置相关的启动参数,设置相关变量
         if (ResourceMode.HDFS == resourceMode) {
             //远程配置文件,设置相关的启动参数,设置相关变量
-            userResourceRemoteDir = option.getJobConf().substring(0, jobConfPath.lastIndexOf(Constans.SIGN_SLASH)).replace("hdfs:", ((Configuration) supportCoreConf.getVal(SupportConstants.KEY_HADOOP_CONFIGURATION)).get(HadoopUtil.KEY_HA_DEFAULT_FS));
-            ;
+            this.userResourceRemoteDir = option.getJobConf().substring(0, jobConfPath.lastIndexOf(Constans.SIGN_SLASH)).replace("hdfs:", ((Configuration) supportCoreConf.getVal(SupportConstants.KEY_HADOOP_CONFIGURATION)).get(HadoopUtil.KEY_HA_DEFAULT_FS));
             //判断远程资源目录是否存在
             Path resourcePath = new Path(userResourceRemoteDir);
-
             if (!checkRemoteDirExists(userResourceRemoteDir) || checkRemoteResourceDirEmpty(userResourceRemoteDir)) {
                 //远程资源目录为空,需要处理
                 throw new SupportException(String.format("The remote resource directory %s is empty, please check", resourcePath.toString()));
             }
-
-            List<Path> paths = HdfsUtil.find(fileSystem, resourcePath, "");
-            StringBuffer jsb = new StringBuffer();
-            for (Path path : paths) {
-                String name = path.getName();
-                jsb.append(name);
-            }
-            String jobKey = StringUtil.sortStrByDict(jobResourceId.toString());
-            jobResourceId = MD5Utils.md5(jobKey);
+            this.jobResourceId = getRemoteJobResourceId(resourcePath);
         } else if (ResourceMode.LOCAL == resourceMode) {
             String resourcesDir = option.getResources();
 
@@ -135,8 +186,9 @@ public class JobApplicationProcessor extends ApplicationEnv {
 
             //目录下所有资源的名称拼接后按字母顺序排序后取MD5(就是Job的ID)
             //support_xxxxxxxxxxxxxxxxx_job  资源文件夹下,所有的资源名称排序后md5视作一个整体,如果资源和appName都相同,就相当于是一个应用
-            userResourceRemoteDir = generateJobResourcesDir(resourcesDir);
-            ;
+            this.jobResourceId = getLocalJobResourceId(resourcesDir);
+            this.userResourceRemoteDir = SupportConstants.JOB_RESOURCES_DIR
+                    .replace(SupportConstants.JOB_RESOURCES_MD5_KEY_PLACEHOLDER, jobResourceId);
             //hdfs://flink_support/resources/support_${jobName}_${jobResourcesMD5}_job
             if (!checkRemoteDirExists(userResourceRemoteDir) || checkRemoteDirExists(userResourceRemoteDir)) {
                 //上传
@@ -166,18 +218,40 @@ public class JobApplicationProcessor extends ApplicationEnv {
         //处理动态参数
         Map<String, String> params = option.getParams();
         String log4jFile = params.get(SupportKey.LOG4J_CONFIG_FILE);
-        String userResourceId = userResourceRemoteDir.substring(userResourceRemoteDir.lastIndexOf("/") + 1);
         if (StringUtils.isEmpty(log4jFile)) {
             //为空,使用默认配置
             log4jFile = userResourceRemoteDir + "/log4j.properties";
             if (HdfsUtil.existsFile(fileSystem, new Path(log4jFile))) {
-                params.put(JVMOptions.FLINK_LOG_DIR.key(), "/tmp/flink_support/logs/" + userResourceId);
-                params.put(JVMOptions.LOG4J_CONFIG_FILE, userResourceId + "/log4j.properties");
+                //这里的log4j.properties路径都是相对路径,flink在处理provider资源时,会使用资源目录一级的相对路径作为类路径
+                params.put(JVMOptions.LOG4J_CONFIG_FILE, userResourceRemoteDir.substring(userResourceRemoteDir.lastIndexOf("/") + 1) + "/log4j.properties");
             }
         } else {
-            params.put(JVMOptions.LOG4J_CONFIG_FILE, SupportConstants.SUPPORT_HDFS_CONF_DIR + "/log4j.properties");
+            params.put(JVMOptions.LOG4J_CONFIG_FILE, "conf/log4j.properties");
         }
-        params.put(SupportKey.USER_RESOURCE_ID, userResourceId);
+        params.put(SupportKey.JOB_RESOURCES_ID, jobResourceId);
+    }
+
+    private String getLocalJobResourceId(String resourcesDir) {
+        File file = new File(resourcesDir);
+        File[] files = file.listFiles();
+        if (files == null || files.length < 1) {
+            throw SupportException.generateParameterEmptyException("the resource directory is empty please check");
+        }
+        StringBuffer sb = new StringBuffer();
+        for (File subFile : files) {
+            sb.append(subFile.getName());
+        }
+        return MD5Utils.md5(StringUtil.sortStrByDict(sb.toString()));
+    }
+
+    private String getRemoteJobResourceId(Path resourcePath) {
+        List<Path> paths = HdfsUtil.find(fileSystem, resourcePath, "");
+        StringBuffer jsb = new StringBuffer();
+        for (Path path : paths) {
+            String name = path.getName();
+            jsb.append(name);
+        }
+        return MD5Utils.md5(StringUtil.sortStrByDict(jsb.toString()));
     }
 
     private void supportRemoteEnvCheck() {
@@ -252,30 +326,10 @@ public class JobApplicationProcessor extends ApplicationEnv {
         return true;
     }
 
-    private String generateJobResourcesDir(String resourcesDir) {
-        File file = new File(resourcesDir);
-        File[] files = file.listFiles();
-        if (files == null || files.length < 1) {
-            throw SupportException.generateParameterEmptyException("the resource directory is empty please check");
-        }
-        StringBuffer sb = new StringBuffer();
-        for (File subFile : files) {
-            sb.append(subFile.getName());
-        }
-        String sortJobKey = StringUtil.sortStrByDict(sb.toString());
-        jobResourceId = MD5Utils.md5(sortJobKey);
-        return SupportConstants.JOB_RESOURCES_DIR
-                .replace(SupportConstants.JOB_NAME_PLACEHOLDER,
-                        userJobConf.getStringVal(FlinkContains.FLINK_TASK_NAME,
-                                supportCoreConf.getStringVal(FlinkContains.FLINK_TASK_NAME)))
-                .replace(SupportConstants.JOB_RESOURCES_MD5_KEY_PLACEHOLDER, MD5Utils.md5(sortJobKey));
-    }
 
-    @Override
-    public boolean process() {
+    private boolean processJobSubmit() {
         logger.info("The Job application handler starts and starts processing the job submission work!");
         RunOptions runOptions = convertCmdToRunOption(option);
-
         //获取job类型
         TaskType jobType = TaskType.getType(userJobConf.getStringVal(FlinkContains.FLINK_TASK_TYPE, "stream").toUpperCase());
         if (TaskType.BATCH == jobType) {
@@ -335,6 +389,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
                 .savePointPath(option.getSavePointPath())
                 .userJars(Collections.singletonList(SupportConstants.SUPPORT_RUMTIME_JAR))
                 .userClasspath(new ArrayList<>(flinkClassPaths))
+                .localLogDir(supportCoreConf.getStringVal(SupportKey.SUPPORT_TASK_LOGDIR, SupportConstants.DEFAULT_SUPPORT_TASK_LOGDIR))
                 .dynamicParameters(params)
                 .build();
 
@@ -379,8 +434,18 @@ public class JobApplicationProcessor extends ApplicationEnv {
     @Override
     public void emptyParameterCheck(GenericRunOption genericRunOption) {
         JobRunOption jobRunOption = (JobRunOption) genericRunOption;
-        if (VariableCheckTool.checkNullOrEmpty(jobRunOption.getJobConf())) {
+        if (jobRunOption.getCmd() == null) {
+            throw new SupportException(String.format("Please specify an operation to be performed, optional operations are: {%s}", RunCmd.print()));
+        }
+
+        if (jobRunOption.getCmd() == RunCmd.RUN && VariableCheckTool.checkNullOrEmpty(jobRunOption.getJobConf())) {
             throw new SupportException("The job configuration file cannot be empty, please specify the configuration file!");
+        }
+
+        if (jobRunOption.getCmd() == RunCmd.CANAL || jobRunOption.getCmd() == RunCmd.STOP || jobRunOption.getCmd() == RunCmd.INFO || jobRunOption.getCmd() == RunCmd.SAVEPOINT) {
+            if (VariableCheckTool.checkNullOrEmpty(jobRunOption.getJobId())) {
+                throw new SupportException("Need to specify a jobid");
+            }
         }
 
     }

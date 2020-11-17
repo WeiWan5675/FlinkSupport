@@ -16,6 +16,7 @@ import org.apache.flink.yarn.configuration.YarnDeploymentTarget;
 import org.apache.hadoop.yarn.api.records.ApplicationId;
 import org.apache.hadoop.yarn.client.api.YarnClient;
 
+import java.io.File;
 import java.util.Map;
 
 /**
@@ -37,14 +38,13 @@ public class YarnJobSubmiter implements JobSubmiter {
     public Object submitJob(JobSubmitInfo jobInfo) {
 
         org.apache.flink.configuration.Configuration flinkConfiguration = jobInfo.getFlinkConfiguration();
-
         //checkpoint 恢复
         if (StringUtils.isNotEmpty(jobInfo.getSavePointPath())) {
             flinkConfiguration.set(
                     JOBOptions.SAVEPOINT_PATH,
                     jobInfo.getSavePointPath());
         }
-        
+
         flinkConfiguration.set(
                 JOBOptions.INCREMENTAL_CHECKPOINTS,
                 true);
@@ -91,16 +91,15 @@ public class YarnJobSubmiter implements JobSubmiter {
                 tmVmDynamic.append(dynamicStr);
                 flinkConfiguration.setString(parameterKey, dynamicParameters.get(parameterKey));
             }
-
-            jmVmDynamic.append(" -Dlog.file=/tmp/flink_support/logs/" + dynamicParameters.get(SupportKey.USER_RESOURCE_ID) + "/jobmanager.log");
-            tmVmDynamic.append(" -Dlog.file=/tmp/flink_support/logs/" + dynamicParameters.get(SupportKey.USER_RESOURCE_ID) + "/taskmanager.log");
-            flinkConfiguration.set(JVMOptions.FLINK_LOG_DIR, " /tmp/flink_support/logs/" + dynamicParameters.get(SupportKey.USER_RESOURCE_ID));
+            //处理日志配置文件路径动态地址
+            jmVmDynamic.append(" -Dlog.file=" + jobInfo.getLocalLogDir() + File.separator + dynamicParameters.get(SupportKey.JOB_RESOURCES_ID) + "/jobmanager.log");
+            tmVmDynamic.append(" -Dlog.file=" + jobInfo.getLocalLogDir() + File.separator + dynamicParameters.get(SupportKey.JOB_RESOURCES_ID) + "/taskmanager.log");
+            flinkConfiguration.set(JVMOptions.FLINK_LOG_DIR, jobInfo.getLocalLogDir() + File.separator + dynamicParameters.get(SupportKey.JOB_RESOURCES_ID));
         }
 
         flinkConfiguration.set(JVMOptions.FLINK_TM_JVM_OPTIONS, tmVmDynamic.toString());
         flinkConfiguration.set(JVMOptions.FLINK_JM_JVM_OPTIONS, jmVmDynamic.toString());
-
-        flinkConfiguration.set(PipelineOptionsInternal.PIPELINE_FIXED_JOB_ID,jobInfo.getJobResourceId());
+        flinkConfiguration.set(PipelineOptionsInternal.PIPELINE_FIXED_JOB_ID, jobInfo.getJobResourceId());
 
         //		设置用户jar的参数和主类
         ApplicationConfiguration appConfig = new ApplicationConfiguration(jobInfo.getAppArgs(), jobInfo.getAppClassName());
@@ -115,7 +114,7 @@ public class YarnJobSubmiter implements JobSubmiter {
                 true);
         ClusterClientProvider<ApplicationId> clusterClientProvider = null;
 
-            try {
+        try {
             clusterClientProvider = yarnClusterDescriptor.deployApplicationCluster(jobInfo.getClusterSpecification(), appConfig);
         } catch (ClusterDeploymentException e) {
             e.printStackTrace();

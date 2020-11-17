@@ -76,7 +76,7 @@ public class SupportConstants {
     //JOB
     public static final String JOB_NAME_PLACEHOLDER = "${jobName}";
     public static final String JOB_RESOURCES_MD5_KEY_PLACEHOLDER = "${jobResourcesMD5}";
-    public static final String JOB_RESOURCES_DIR = SUPPORT_HDFS_WORKSPACE + Constans.SIGN_SLASH + "resources/support_${jobName}_${jobResourcesMD5}_job";
+    public static final String JOB_RESOURCES_DIR = SUPPORT_HDFS_WORKSPACE + Constans.SIGN_SLASH + "resources/${jobResourcesMD5}";
     public static final String KEY_YARN_CONFIGURATION = "yarnConfiguration";
     public static final String SUPPORT_STREAM_TYPE = "Flink Stream Support";
 
@@ -84,4 +84,6 @@ public class SupportConstants {
     public static final String SUPPORT_RUMTIME_JAR = SUPPORT_HDFS_LIB_DIR + Constans.SIGN_SLASH + "support-runtime-1.0.jar";
 
 
+    //DEFAULT LOG
+    public static final String DEFAULT_SUPPORT_TASK_LOGDIR = "/tmp/flink_support/logs";
 }

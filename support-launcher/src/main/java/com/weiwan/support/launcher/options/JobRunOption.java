@@ -1,6 +1,7 @@
 package com.weiwan.support.launcher.options;
 
 import com.beust.jcommander.Parameter;
+import com.weiwan.support.launcher.enums.RunCmd;
 
 /**
  * @Author: xiaozhennan
@@ -11,6 +12,8 @@ import com.beust.jcommander.Parameter;
  **/
 public class JobRunOption extends GenericRunOption {
 
+    @Parameter(names = {"-cmd"}, converter = RumCmdEnumConverter.class, description = "The command to be executed, the optional commands are [run|stop|canal|info|list]")
+    private RunCmd cmd;
 
     @Parameter(names = {"-jc", "-jobConf"}, description = "Task description file, supports local path and HDFS path, HDFS path defaults to the corresponding application folder under resources")
     private String jobConf;
@@ -24,8 +27,19 @@ public class JobRunOption extends GenericRunOption {
     @Parameter(names = {"-sp", "-s", "-savepoint"}, description = "The program starts from the savepoint snapshot and specifies the snapshot file address")
     private String savePointPath;
 
-    @Parameter(names = {"-q","-queue"}, description = "set the name of the yarn resource queue")
+    @Parameter(names = {"-q", "-queue"}, description = "set the name of the yarn resource queue")
     private String queueName;
+
+    @Parameter(names = "-jid",description = "When you want to execute {stop|canal|info}, you need to use this parameter to specify job Id")
+    private String jobId;
+
+    public String getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(String jobId) {
+        this.jobId = jobId;
+    }
 
     public String getQueueName() {
         return queueName;
@@ -65,5 +79,14 @@ public class JobRunOption extends GenericRunOption {
 
     public void setJobConf(String jobConf) {
         this.jobConf = jobConf;
+    }
+
+
+    public RunCmd getCmd() {
+        return cmd;
+    }
+
+    public void setCmd(RunCmd cmd) {
+        this.cmd = cmd;
     }
 }

@@ -14,6 +14,7 @@ FLINK_VERSION: 1.11.1
 SCALA_VERSION: 2.11
 HADOOP_USER_NAME: easylife
 
+SUPPORT_TASK_LOGDIR: /tmp/flink_support/logs
 
 flink:
   task:
@@ -30,7 +31,6 @@ flink:
       sessionTimeout:     #保存作业的中间结果的超时时间 暂未启用
     stream:
       timeCharacteristic:    #流处理的事件模式  默认processTime eventTime
-
     checkpoint:
       enable: false       #是否启用检查点
       interval: 60000         #检查点间隔  单位毫秒
@@ -42,7 +42,6 @@ flink:
         enable: false    #是否开启checkpoint的外部持久化
         cleanUp: DELETE_ON_CANCELLATION #DELETE_ON_CANCELLATION  自动删除   RETAIN_ON_CANCELLATION 保留
       onFail: true  #当checkpoint发生错误时,是否认为任务失败 true 失败  false 拒绝checkpoint继续任务
-
     stateBackend:
       type: Memory #三种 Memory  FileSystem  RocksDB
       async: true #仅在配置为Memory FileSystem 时生效 RocksDB默认为异步

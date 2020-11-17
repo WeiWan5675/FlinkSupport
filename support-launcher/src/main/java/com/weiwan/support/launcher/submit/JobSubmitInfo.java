@@ -32,6 +32,7 @@ public class JobSubmitInfo {
     private String appClassName;
     private String savePointPath;
     private String jobResourceId;
+    private String localLogDir;
     private Map<String, String> dynamicParameters;
 
     private JobSubmitInfo(Builder builder) {
@@ -50,6 +51,7 @@ public class JobSubmitInfo {
         setAppClassName(builder.appClassName);
         setSavePointPath(builder.savePointPath);
         setJobResourceId(builder.jobResourceId);
+        setLocalLogDir(builder.localLogDir);
         setDynamicParameters(builder.dynamicParameters);
     }
 
@@ -178,6 +180,14 @@ public class JobSubmitInfo {
         this.jobResourceId = jobResourceId;
     }
 
+    public String getLocalLogDir() {
+        return localLogDir;
+    }
+
+    public void setLocalLogDir(String localLogDir) {
+        this.localLogDir = localLogDir;
+    }
+
     public Map<String, String> getDynamicParameters() {
         return dynamicParameters;
     }
@@ -202,6 +212,7 @@ public class JobSubmitInfo {
         private String appClassName;
         private String savePointPath;
         private String jobResourceId;
+        private String localLogDir;
         private Map<String, String> dynamicParameters;
 
         private Builder() {
@@ -279,6 +290,11 @@ public class JobSubmitInfo {
 
         public Builder jobResourceId(String val) {
             jobResourceId = val;
+            return this;
+        }
+
+        public Builder localLogDir(String val) {
+            localLogDir = val;
             return this;
         }
 

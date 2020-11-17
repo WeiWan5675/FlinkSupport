@@ -8,7 +8,7 @@ package com.weiwan.support.core.constant;
  * @Description:
  **/
 public class SupportKey {
-    public static final String USER_RESOURCE_ID = "user.resources.id";
+    public static final String JOB_RESOURCES_ID = "job.resources.id";
 
 
 
@@ -17,4 +17,5 @@ public class SupportKey {
     public static final String ETL_MODE = "app.etlMode";
     public static final String SQL_MODE = "app.sqlMode";
     public static final String LOG4J_CONFIG_FILE = "log4j.configurationFile";
+    public static final String SUPPORT_TASK_LOGDIR = "SUPPORT_TASK_LOGDIR";
 }
