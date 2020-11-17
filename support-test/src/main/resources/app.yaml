@@ -5,10 +5,30 @@ flink:
     name: TestApp
     common:
       queue: root.users.easylife
-
-
-
-
+      parallelism: 2 #并行度
+      restartMode: none #fixed-delay | failure-rate | none  默认fixed-delay
+      restartNum: 3  #重启次数  默认3
+      restartInterval: 30000  #重启延迟  默认30S
+      restartFailMaxNum: 1 #最大重启失败次数
+    batch:
+        sessionTimeout:     #保存作业的中间结果的超时时间 暂未启用
+    stream:
+        timeCharacteristic:    #流处理的事件模式  默认processTime eventTime
+    checkpoint:
+        enable: true       #是否启用检查点
+        interval: 3000         #检查点间隔  单位毫秒
+        timeout: 60000       #检查点超时时间 单位毫秒
+        mode: EXACTLY_ONCE #检查点模式: AT_LEAST_ONCE  EXACTLY_ONCE
+        minInterval: 500 #最小检查点间隔 单位毫秒
+        maxConcurrent: 1   #z最多有多少checkpoint可以在运行
+        externalized:
+          enable: false    #是否开启checkpoint的外部持久化
+          cleanUp: DELETE_ON_CANCELLATION #DELETE_ON_CANCELLATION  自动删除   RETAIN_ON_CANCELLATION 保留
+        onFail: true  #当checkpoint发生错误时,是否认为任务失败 true 失败  false 拒绝checkpoint继续任务
+    stateBackend:
+        type: RocksDB #三种 Memory  FileSystem  RocksDB
+        async: true #仅在配置为Memory FileSystem 时生效 RocksDB默认为异步
+        path:  #支持hdfs路径 或者本地文件路径 hdfs://namenode:40010/flink/checkpoints  file:///data/flink/checkpoints
 
 
 app:
