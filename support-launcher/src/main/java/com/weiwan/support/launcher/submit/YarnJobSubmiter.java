@@ -1,5 +1,6 @@
 package com.weiwan.support.launcher.submit;
 
+import com.weiwan.support.core.constant.SupportConstants;
 import com.weiwan.support.core.constant.SupportKey;
 import com.weiwan.support.launcher.envs.JOBOptions;
 import com.weiwan.support.launcher.envs.JVMOptions;
@@ -92,9 +93,14 @@ public class YarnJobSubmiter implements JobSubmiter {
                 flinkConfiguration.setString(parameterKey, dynamicParameters.get(parameterKey));
             }
             //处理日志配置文件路径动态地址
-            jmVmDynamic.append(" -Dlog.file=" + jobInfo.getLocalLogDir() + File.separator + dynamicParameters.get(SupportKey.JOB_RESOURCES_ID) + "/jobmanager.log");
-            tmVmDynamic.append(" -Dlog.file=" + jobInfo.getLocalLogDir() + File.separator + dynamicParameters.get(SupportKey.JOB_RESOURCES_ID) + "/taskmanager.log");
-            flinkConfiguration.set(JVMOptions.FLINK_LOG_DIR, jobInfo.getLocalLogDir() + File.separator + dynamicParameters.get(SupportKey.JOB_RESOURCES_ID));
+            jmVmDynamic.append(" -D" + JVMOptions.LOG_FILE + "=" + jobInfo.getLocalLogDir()
+                    + File.separator + dynamicParameters.get(SupportKey.JOB_RESOURCES_ID)
+                    + File.separator + SupportConstants.JM_LOG_FILE_NAME);
+            tmVmDynamic.append(" -D" + JVMOptions.LOG_FILE + "=" + jobInfo.getLocalLogDir()
+                    + File.separator + dynamicParameters.get(SupportKey.JOB_RESOURCES_ID)
+                    + File.separator + SupportConstants.TM_LOG_FILE_NAME);
+            flinkConfiguration.set(JVMOptions.FLINK_LOG_DIR, jobInfo.getLocalLogDir()
+                    + File.separator + dynamicParameters.get(SupportKey.JOB_RESOURCES_ID));
         }
 
         flinkConfiguration.set(JVMOptions.FLINK_TM_JVM_OPTIONS, tmVmDynamic.toString());
