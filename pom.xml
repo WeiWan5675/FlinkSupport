@@ -63,7 +63,6 @@
 
     <dependencyManagement>
         <dependencies>
-
             <dependency>
                 <groupId>com.weiwan</groupId>
                 <artifactId>support-common</artifactId>
@@ -75,26 +74,31 @@
                 <artifactId>support-core</artifactId>
                 <version>${support-core.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>com.weiwan</groupId>
                 <artifactId>support-runtime</artifactId>
                 <version>${support-runtime.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>com.weiwan</groupId>
                 <artifactId>support-launcher</artifactId>
                 <version>${support-launcher.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>com.weiwan</groupId>
                 <artifactId>support-etl-framework</artifactId>
                 <version>${support-etl-framework.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>com.weiwan</groupId>
                 <artifactId>etl-framework</artifactId>
                 <version>${support-etl-framework.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>com.weiwan</groupId>
                 <artifactId>etl-plugins</artifactId>
@@ -112,7 +116,6 @@
                 <artifactId>support-utils</artifactId>
                 <version>${support-utils.version}</version>
             </dependency>
-
             <!-- flink-start-->
             <dependency>
                 <groupId>org.apache.flink</groupId>
@@ -126,6 +129,30 @@
                     <exclusion>
                         <groupId>org.slf4j</groupId>
                         <artifactId>slf4j-log4j12</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-core</artifactId>
+                <version>${flink.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>log4j</groupId>
+                        <artifactId>log4j</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-log4j12</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -143,6 +170,10 @@
                         <groupId>org.slf4j</groupId>
                         <artifactId>slf4j-log4j12</artifactId>
                     </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
 
@@ -156,8 +187,8 @@
                 <groupId>org.apache.flink</groupId>
                 <artifactId>flink-streaming-scala_${scala.binary.version}</artifactId>
                 <version>${flink.version}</version>
-                <!-- <scope>provided</scope>-->
             </dependency>
+
             <dependency>
                 <groupId>org.apache.flink</groupId>
                 <artifactId>flink-clients_${scala.binary.version}</artifactId>
@@ -189,9 +220,12 @@
                         <groupId>org.slf4j</groupId>
                         <artifactId>slf4j-log4j12</artifactId>
                     </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
-
 
             <dependency>
                 <groupId>org.apache.flink</groupId>
@@ -289,6 +323,10 @@
                         <groupId>org.slf4j</groupId>
                         <artifactId>slf4j-log4j12</artifactId>
                     </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
             <dependency>
@@ -304,8 +342,13 @@
                         <groupId>org.slf4j</groupId>
                         <artifactId>slf4j-log4j12</artifactId>
                     </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
+
             <dependency>
                 <groupId>org.apache.hadoop</groupId>
                 <artifactId>hadoop-yarn-common</artifactId>
@@ -331,21 +374,22 @@
                 <version>${hadoop.version}</version>
                 <!--                <scope>provided</scope>-->
             </dependency>
-
             <!-- hadoop-end -->
 
-            <!-- 日志 -->
 
+            <!-- 日志 -->
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-core</artifactId>
                 <version>${log4j2.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-api</artifactId>
                 <version>${log4j2.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-slf4j-impl</artifactId>
@@ -355,8 +399,9 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>1.7.25</version>
+                <version>${log4j-over-slf4j.version}</version>
             </dependency>
+            <!--日志end-->
 
             <dependency>
                 <groupId>com.alibaba</groupId>
@@ -387,14 +432,6 @@
                 <version>${snakeyaml.version}</version>
             </dependency>
 
-            <!-- test -->
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-                <scope>test</scope>
-            </dependency>
-
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
@@ -413,14 +450,16 @@
                 <version>${jackson-databind.version}</version>
             </dependency>
 
-
+            <!-- test -->
             <dependency>
-                <groupId>com.google.code.gson</groupId>
-                <artifactId>gson</artifactId>
-                <version>${gson.version}</version>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
             </dependency>
 
 
+            <!-- hive 开始 -->
             <dependency>
                 <groupId>org.apache.hive</groupId>
                 <artifactId>hive-exec</artifactId>
@@ -460,16 +499,20 @@
                     </exclusion>
                 </exclusions>
             </dependency>
+
             <dependency>
                 <groupId>org.apache.hive</groupId>
                 <artifactId>hive-metastore</artifactId>
                 <version>${hive.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.apache.hive</groupId>
                 <artifactId>hive-jdbc</artifactId>
                 <version>${hive.version}</version>
             </dependency>
+            <!-- hive结束 -->
+
             <dependency>
                 <artifactId>parquet-hadoop</artifactId>
                 <groupId>org.apache.parquet</groupId>
@@ -486,6 +529,12 @@
                 <groupId>org.xerial.snappy</groupId>
                 <artifactId>snappy-java</artifactId>
                 <version>${snappy-java.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>${gson.version}</version>
             </dependency>
 
             <!--            <dependency>-->

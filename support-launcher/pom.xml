@@ -14,58 +14,23 @@
 
 
     <dependencies>
-
         <dependency>
-            <groupId>org.apache.flink</groupId>
-            <artifactId>flink-clients_${scala.binary.version}</artifactId>
+            <groupId>com.weiwan</groupId>
+            <artifactId>support-core</artifactId>
+            <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.apache.flink</groupId>
-            <artifactId>flink-yarn_${scala.binary.version}</artifactId>
-        </dependency>
-<!--        -->
-        <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-common</artifactId>
-            <version>${hadoop.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache</groupId>
-                    <artifactId>commons-cli</artifactId>
-                </exclusion>
-            </exclusions>
-            <!--            <scope>provided</scope>-->
-        </dependency>
-        <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-hdfs</artifactId>
-            <version>${hadoop.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache</groupId>
-                    <artifactId>commons-cli</artifactId>
-                </exclusion>
-            </exclusions>
-            <!--<scope>provided</scope>-->
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-yarn-client</artifactId>
-            <version>${hadoop.version}</version>
-        </dependency>
-
-
 
         <dependency>
             <groupId>com.weiwan</groupId>
             <artifactId>support-common</artifactId>
+            <scope>provided</scope>
         </dependency>
+
         <dependency>
-            <groupId>com.weiwan</groupId>
-            <artifactId>support-core</artifactId>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-yarn_${scala.binary.version}</artifactId>
         </dependency>
-        <!-- test -->
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
