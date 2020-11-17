@@ -29,7 +29,7 @@ public class FlinkDefault {
      * 默认状态后端参数
      */
     public static final String BACKEND_TYPE_DEFAULT = "FileSystem";
-    public static final String BACKEND_PATH_DEFAULT = "hdfs://flink/checkpoints";
+    public static final String BACKEND_PATH_DEFAULT = "hdfs:///flink/checkpoints";
     public static final String BACKEND_ASYNC_DEFAULT = "true";
 
 

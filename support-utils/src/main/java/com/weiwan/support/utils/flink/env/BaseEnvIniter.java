@@ -58,7 +58,7 @@ public abstract class BaseEnvIniter {
         }
 
         if (StateBackendEnum.FILESYSTEM_TYPE.getCode().equalsIgnoreCase(backendType)) {
-            stateBackend = new FsStateBackend(backendPath.replace("hdfs://", "file:///tmp"), async);
+            stateBackend = new FsStateBackend(backendPath.replace("hdfs://", "file:///tmp/"), async);
             LOGGER.debug("use {} state backend", StateBackendEnum.FILESYSTEM_TYPE.getMsg());
             return stateBackend;
         }
