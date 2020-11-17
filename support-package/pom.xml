@@ -19,19 +19,43 @@
         <dependency>
             <groupId>com.weiwan</groupId>
             <artifactId>support-core</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>commons-cli</artifactId>
+                    <groupId>commons-cli</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.weiwan</groupId>
             <artifactId>support-runtime</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>commons-cli</artifactId>
+                    <groupId>commons-cli</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.weiwan</groupId>
             <artifactId>etl-framework</artifactId>
             <version>${support-etl-framework.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>commons-cli</artifactId>
+                    <groupId>commons-cli</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.weiwan</groupId>
             <artifactId>support-launcher</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>commons-cli</artifactId>
+                    <groupId>commons-cli</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.weiwan</groupId>
@@ -46,6 +70,12 @@
         <dependency>
             <groupId>com.weiwan</groupId>
             <artifactId>support-utils</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>commons-cli</artifactId>
+                    <groupId>commons-cli</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
     <build>
