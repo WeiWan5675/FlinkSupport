@@ -28,7 +28,7 @@ import java.util.Map;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/7/14 17:09
- * @Package: com.weiwan.support.pub.api
+ * @Package: com.weiwan.support.etl.framework.streaming
  * @ClassName: SupportOutputFormatSink
  * @Description:
  **/

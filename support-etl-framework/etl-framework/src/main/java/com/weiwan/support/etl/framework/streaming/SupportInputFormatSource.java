@@ -30,7 +30,7 @@ import java.util.NoSuchElementException;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/7/14 17:06
- * @Package: com.weiwan.support.pub.api
+ * @Package: com.weiwan.support.etl.framework.streaming
  * @ClassName: SupportInputFormatSource
  * @Description:
  **/

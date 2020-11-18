@@ -16,7 +16,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/7/14 17:02
- * @Package: com.weiwan.support.pub.api
+ * @Package: com.weiwan.support.etl.framework.api.reader
  * @ClassName: ReaderBase
  * @Description:
  **/

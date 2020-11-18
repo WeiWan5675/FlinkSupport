@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/7/14 17:23
- * @Package: com.weiwan.support.pub.api
+ * @Package: com.weiwan.support.etl.framework.api.writer
  * @ClassName: BaseRichOutputFormat
  * @Description: BaseRichOutputFormat 负责处理数据,维护状态,调用子类处理数据的方法, 提供Sink调用的方法
  **/

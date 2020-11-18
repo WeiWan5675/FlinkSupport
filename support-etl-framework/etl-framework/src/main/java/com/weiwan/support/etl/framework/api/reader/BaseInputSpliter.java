@@ -5,7 +5,7 @@ import org.apache.flink.core.io.GenericInputSplit;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/7/14 17:53
- * @Package: com.weiwan.support.pub.api
+ * @Package: com.weiwan.support.etl.framework.api.reader
  * @ClassName: BaseInputSpliter
  * @Description:
  **/
