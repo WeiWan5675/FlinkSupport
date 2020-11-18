@@ -2,7 +2,7 @@
 
 source "$(cd "`dirname "$0"`"/..; pwd)"/bin/support-env
 
-"$SUPPORT_BIN"/flink-support run $@
+"$SUPPORT_BIN_DIR"/flink-support run $@
 
 exit $?
 
