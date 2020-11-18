@@ -22,7 +22,7 @@ package com.weiwan.support.common.cla;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/7/20 14:18
- * @Package: org.weiwan.argus.core
+ * @Package: com.weiwan.support.core
  * @ClassName: ClassLoaderSupplier
  * @Description:
  **/

@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/8/3 11:21
- * @Package: org.weiwan.argus.writer.hive
+ * @Package: com.weiwan.support.writer.hive
  * @ClassName: WriteMode
  * @Description:
  **/

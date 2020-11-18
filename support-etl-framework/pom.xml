@@ -15,6 +15,7 @@
         <module>etl-plugins</module>
         <module>etl-plugins/mysql-plugin</module>
         <module>etl-plugins/jdbc-plugin</module>
+        <module>etl-plugins/example_plugin</module>
     </modules>
 
     <dependencies>
@@ -38,6 +39,11 @@
             <dependency>
                 <groupId>com.weiwan</groupId>
                 <artifactId>jdbc-plugin</artifactId>
+                <version>1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.weiwan</groupId>
+                <artifactId>example-plugin</artifactId>
                 <version>1.0</version>
             </dependency>
         </dependencies>

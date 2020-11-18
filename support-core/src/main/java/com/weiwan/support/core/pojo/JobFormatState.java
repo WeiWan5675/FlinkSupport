@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/7/21 15:06
- * @Package: org.weiwan.argus.core.pub.api
+ * @Package: com.weiwan.support.core.pub.api
  * @ClassName: JobFormatState
  * @Description:
  **/

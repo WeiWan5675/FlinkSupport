@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/7/27 17:22
- * @Package: org.weiwan.argus.core.pub.pojo
+ * @Package: com.weiwan.support.core.pub.pojo
  * @ClassName: DataField
  * @Description:
  **/

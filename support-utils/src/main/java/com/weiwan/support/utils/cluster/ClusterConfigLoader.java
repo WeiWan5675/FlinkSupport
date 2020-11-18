@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/7/31 10:09
- * @Package: org.weiwan.argus.core.utils
+ * @Package: com.weiwan.support.core.utils
  * @ClassName: HadoopConfigLoader
  * @Description: 集群配置文件加载
  **/

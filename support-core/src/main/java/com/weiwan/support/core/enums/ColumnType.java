@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/8/7 10:54
- * @Package: org.weiwan.argus.core.pub.output.hdfs
+ * @Package: com.weiwan.support.core.pub.output.hdfs
  * @ClassName: ColumnType
  * @Description:
  **/

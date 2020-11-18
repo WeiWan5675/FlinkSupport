@@ -9,7 +9,7 @@ import com.weiwan.support.plugins.jdbc.SqlGeneratorForMysql;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/7/14 17:51
- * @Package: org.weiwan.argus.reader.mysql.input
+ * @Package: com.weiwan.support.reader.mysql.input
  * @ClassName: MysqlInputFormat
  * @Description:
  **/

@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/7/22 15:42
- * @Package: org.weiwan.argus.core.pub.api
+ * @Package: com.weiwan.support.core.pub.api
  * @ClassName: JdbcInputFormat
  * @Description:
  **/

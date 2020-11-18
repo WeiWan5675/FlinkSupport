@@ -13,7 +13,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/7/14 17:03
- * @Package: org.weiwan.argus.pub.api
+ * @Package: com.weiwan.support.pub.api
  * @ClassName: BaseWriter
  * @Description:
  **/
@@ -40,13 +40,13 @@ public abstract class BaseWriter<T extends DataRecord> implements Writer<T> {
         this.context = context;
         this.jobConfig = context.getJobConfig();
         this.writerConfig = context.getJobConfig().getWriterConfig();
-        this.writerName = writerConfig.getStringVal(KEY_WRITER_NAME, "argusWriter");
+        this.writerName = writerConfig.getStringVal(KEY_WRITER_NAME, "SupportWriter");
         this.writerClassName = writerConfig.getStringVal(KEY_WRITER_CLASS_NAME);
         this.writerType = writerConfig.getStringVal(KEY_WRITER_TYPE);
         this.writerParallelism = writerConfig.getIntVal(KEY_WRITER_PARALLELISM, 1);
     }
 
-    public abstract BaseOutputFormat<T> getOutputFormat(SupportAppContext argusContext);
+    public abstract BaseOutputFormat<T> getOutputFormat(SupportAppContext context);
 
     /**
      * 为什么要在这里有这个方法呢,output是并行得,但是有些前置条件要再并行任务执行前处理,所以提供这个方法

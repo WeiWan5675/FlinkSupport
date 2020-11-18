@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/7/14 17:52
- * @Package: org.weiwan.argus.reader.mysql.input
+ * @Package: com.weiwan.support.reader.mysql.input
  * @ClassName: DataRecord
  * @Description:
  **/

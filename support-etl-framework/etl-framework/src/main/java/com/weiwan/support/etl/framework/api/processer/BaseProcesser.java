@@ -11,7 +11,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/7/19 20:13
- * @Package: org.weiwan.argus.core
+ * @Package: com.weiwan.support.core
  * @ClassName: BaseChannel
  * @Description:
  **/
@@ -30,7 +30,7 @@ public abstract class BaseProcesser<IN extends DataRecord, OUT extends DataRecor
         this.channelName = processerConfig.getChannleName();
     }
 
-    public abstract BaseProcessHandler<IN, OUT> getProcessHandler(SupportAppContext argusContext);
+    public abstract BaseProcessHandler<IN, OUT> getProcessHandler(SupportAppContext context);
 
     @Override
     public DataStream<OUT> process(DataStream<IN> stream, SupportAppContext context) {

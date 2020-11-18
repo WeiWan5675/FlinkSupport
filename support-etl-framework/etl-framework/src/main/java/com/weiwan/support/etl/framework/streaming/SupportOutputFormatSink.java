@@ -28,8 +28,8 @@ import java.util.Map;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/7/14 17:09
- * @Package: org.weiwan.argus.pub.api
- * @ClassName: ArgusOutputFormatSink
+ * @Package: com.weiwan.support.pub.api
+ * @ClassName: SupportOutputFormatSink
  * @Description:
  **/
 public class SupportOutputFormatSink<T> extends RichSinkFunction<T> implements InputTypeConfigurable, CheckpointedFunction, CheckpointListener {
@@ -43,7 +43,7 @@ public class SupportOutputFormatSink<T> extends RichSinkFunction<T> implements I
     private ListState<JobFormatState> listState;
     private Map<Integer, JobFormatState> cacheMapStates;
     private boolean isRestore;
-    private SupportAppContext argusContext;
+    private SupportAppContext context;
     private long currentCheckpointIndex;
 
     public SupportOutputFormatSink(OutputFormat<T> format) {
@@ -57,7 +57,7 @@ public class SupportOutputFormatSink<T> extends RichSinkFunction<T> implements I
         int indexInSubtaskGroup = context.getIndexOfThisSubtask();
         int currentNumberOfSubtasks = context.getNumberOfParallelSubtasks();
 
-        //在启动时,配置argusContext | formatstate
+        //在启动时,配置context | formatstate
         if (format instanceof BaseOutputFormat) {
             BaseOutputFormat outputFormat = ((BaseOutputFormat) format);
             if (isRestore) {

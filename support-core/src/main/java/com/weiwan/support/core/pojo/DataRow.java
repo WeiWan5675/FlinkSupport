@@ -9,7 +9,7 @@ import java.util.Arrays;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/8/10 10:21
- * @Package: org.weiwan.argus.core.pub.pojo
+ * @Package: com.weiwan.support.core.pub.pojo
  * @ClassName: DataRow
  * @Description:
  **/

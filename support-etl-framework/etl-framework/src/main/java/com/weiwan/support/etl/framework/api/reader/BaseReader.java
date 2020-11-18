@@ -16,7 +16,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/7/14 17:02
- * @Package: org.weiwan.argus.pub.api
+ * @Package: com.weiwan.support.pub.api
  * @ClassName: ReaderBase
  * @Description:
  **/
@@ -56,8 +56,8 @@ public abstract class BaseReader<OUT extends DataRecord> implements Reader<OUT> 
     public DataStream<OUT> read(StreamExecutionEnvironment env, SupportAppContext context) {
         BaseInputFormat<OUT, BaseInputSpliter> inputFormat = getInputFormat(context);
         TypeInformation<OUT> inputFormatTypes = TypeExtractor.getInputFormatTypes(inputFormat);
-        SupportInputFormatSource<OUT> tArgusInputFormatSource = new SupportInputFormatSource<>(inputFormat, inputFormatTypes);
-        DataStreamSource<OUT> stream = env.addSource(tArgusInputFormatSource, readerName, inputFormatTypes);
+        SupportInputFormatSource<OUT> supportInputFormatSource = new SupportInputFormatSource<>(inputFormat, inputFormatTypes);
+        DataStreamSource<OUT> stream = env.addSource(supportInputFormatSource, readerName, inputFormatTypes);
         //单独设置Source的并行度,默认Reader的并行度都是1 env的并行度并不会影响reader的并行度
         DataStreamSource<OUT> streamSource = stream.setParallelism(readerParallelism);
         //进行reading后处理,保留口子,如果需要处理可以重写该方法

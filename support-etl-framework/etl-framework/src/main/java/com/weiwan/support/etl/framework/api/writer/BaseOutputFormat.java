@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/7/14 17:23
- * @Package: org.weiwan.argus.pub.api
+ * @Package: com.weiwan.support.pub.api
  * @ClassName: BaseRichOutputFormat
  * @Description: BaseRichOutputFormat 负责处理数据,维护状态,调用子类处理数据的方法, 提供Sink调用的方法
  **/
@@ -48,7 +48,7 @@ public abstract class BaseOutputFormat<T extends DataRecord> extends RichOutputF
      *
      * @param taskNumber   当前task的并行索引
      * @param numTasks     task并行度
-     * @param argusContext argus上下文
+     * @param SupportContext Support上下文
      */
     public abstract void openOutput(int taskNumber, int numTasks, SupportAppContext context);
 

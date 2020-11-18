@@ -30,8 +30,8 @@ import java.util.NoSuchElementException;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/7/14 17:06
- * @Package: org.weiwan.argus.pub.api
- * @ClassName: ArgusInputFormatSource
+ * @Package: com.weiwan.support.pub.api
+ * @ClassName: SupportInputFormatSource
  * @Description:
  **/
 public class SupportInputFormatSource<OUT> extends InputFormatSourceFunction<OUT> implements CheckpointedFunction, CheckpointListener {
@@ -50,7 +50,7 @@ public class SupportInputFormatSource<OUT> extends InputFormatSourceFunction<OUT
     private ListState<JobFormatState> listState;
     private Map<Integer, JobFormatState> cacheMapStates;
     private boolean isRestore;
-    private SupportAppContext argusContext;
+    private SupportAppContext context;
 
     private volatile boolean isRunning = true;
 
@@ -71,7 +71,7 @@ public class SupportInputFormatSource<OUT> extends InputFormatSourceFunction<OUT
             ((RichInputFormat) format).setRuntimeContext(context);
         }
 
-        //在启动时,配置argusContext | formatstate
+        //在启动时,配置SupportContext | formatstate
         if (format instanceof BaseInputFormat) {
             BaseInputFormat inputFormat = ((BaseInputFormat) format);
             if (isRestore) {
@@ -240,12 +240,12 @@ public class SupportInputFormatSource<OUT> extends InputFormatSourceFunction<OUT
     }
 
 
-    public SupportAppContext getArgusContext() {
-        return argusContext;
+    public SupportAppContext getSupportContext() {
+        return context;
     }
 
-    public void setArgusContext(SupportAppContext argusContext) {
-        this.argusContext = argusContext;
+    public void setSupportContext(SupportAppContext context) {
+        this.context = context;
     }
 
 

@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/7/14 17:23
- * @Package: org.weiwan.argus.pub.api
+ * @Package: com.weiwan.support.pub.api
  * @ClassName: BaseInputFormat
  * @Description:
  **/
@@ -70,8 +70,8 @@ public abstract class BaseInputFormat<OT, T extends InputSplit> extends RichInpu
 
     /**
      * 返回一条记录
-     * 当数据处理结束后,需要手动调用{@link BaseRichInputFormat#isComplete} }
-     * 如果不想使用isComplete 需要重写{@link BaseRichInputFormat#reachedEnd()}
+     * 当数据处理结束后,需要手动调用{@link BaseInputFormat#isComplete} }
+     * 如果不想使用isComplete 需要重写{@link BaseInputFormat#reachedEnd()}
      *
      * @return 数据
      */
@@ -168,7 +168,7 @@ public abstract class BaseInputFormat<OT, T extends InputSplit> extends RichInpu
         this.formatState = jobFormatState;
     }
 
-    public void setArgusContext(SupportAppContext context) {
+    public void setSupportContext(SupportAppContext context) {
         this.context = context;
     }
 

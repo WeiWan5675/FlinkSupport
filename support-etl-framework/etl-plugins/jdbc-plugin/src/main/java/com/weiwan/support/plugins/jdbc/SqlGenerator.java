@@ -6,7 +6,7 @@ import com.weiwan.support.core.pojo.SqlInfo;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/7/23 18:19
- * @Package: org.weiwan.argus.core.pub.api
+ * @Package: com.weiwan.support.core.pub.api
  * @ClassName: SqlGenerator
  * @Description:
  **/

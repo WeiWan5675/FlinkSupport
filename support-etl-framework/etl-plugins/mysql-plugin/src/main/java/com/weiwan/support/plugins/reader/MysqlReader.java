@@ -12,15 +12,15 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/7/14 17:49
- * @Package: org.weiwan.argus.reader.mysql
+ * @Package: com.weiwan.support.reader.mysql
  * @ClassName: MysqlReader
  * @Description:
  **/
 public class MysqlReader extends BaseReader<DataRecord<DataRow>> {
 
 
-    public MysqlReader(StreamExecutionEnvironment env, SupportAppContext argusContext) {
-        super(env, argusContext);
+    public MysqlReader(StreamExecutionEnvironment env, SupportAppContext context) {
+        super(env, context);
     }
 
 

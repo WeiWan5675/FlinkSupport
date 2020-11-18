@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/7/23 11:27
- * @Package: org.weiwan.argus.core.pub.api
+ * @Package: com.weiwan.support.core.pub.api
  * @ClassName: SqlGenerator
  * @Description: mysql的sql生成器, 同时也适用大多数可以使用jdbc的数据库
  **/

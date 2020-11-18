@@ -182,8 +182,8 @@ public abstract class ApplicationEnv implements EnvProcess {
         }
         if (StringUtils.isEmpty(myHome)) {
             LOGGER.warn("the FLINK_SUPPORT_HOME environment variable was not found, use the launcher root directory!");
-            LOGGER.warn("use the path of the startup class path as ARGUS_HOME");
-            //获得当前启动类jar包得实际地址 $ARGUS_`HOME/lib
+            LOGGER.warn("use the path of the startup class path as FLINK_SUPPORT_HOME");
+            //获得当前启动类jar包得实际地址 $FLINK_SUPPORT_HOME/lib
             String appPath = CommonUtil.getAppPath(SupportAppClient.class);
             File file = new File(appPath);
             myHome = file.getParent();

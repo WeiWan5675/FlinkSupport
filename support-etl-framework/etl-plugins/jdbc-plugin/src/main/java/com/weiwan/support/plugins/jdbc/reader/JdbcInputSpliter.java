@@ -6,7 +6,7 @@ import com.weiwan.support.etl.framework.api.reader.BaseInputSpliter;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/7/22 15:43
- * @Package: org.weiwan.argus.core.pub.api
+ * @Package: com.weiwan.support.core.pub.api
  * @ClassName: JdbcInputSpliter
  * @Description:
  **/
