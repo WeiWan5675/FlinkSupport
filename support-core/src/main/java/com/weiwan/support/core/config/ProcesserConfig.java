@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/7/17 16:38
- * @Package: com.weiwan.core.pub.config
+ * @Package: com.weiwan.support.core.pub.config
  * @ClassName: ProcesserConfig
  * @Description:
  **/

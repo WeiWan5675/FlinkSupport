@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/7/19 19:50
- * @Package: com.weiwan.core.pub.config
+ * @Package: com.weiwan.support.core.pub.config
  * @ClassName: FlinkEnvConfig
  * @Description:
  **/
