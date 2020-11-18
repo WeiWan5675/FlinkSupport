@@ -53,5 +53,19 @@ else
   fi
 fi
 
+
+CPSP=":"
+CLASS_PATH=".$CPSP$JAVA_HOME/lib$CPSP$JAVA_HOME/lib/dt.jar$CPSP$JAVA_HOME/lib/tools.jar"
+for jar in $SUPPORT_LIB_DIR/*.jar
+do
+CLASS_PATH="$CLASS_PATH$CPSP$jar"
+done
+
+for jar in $SUPPORT_PLUGINS_DIR/*.jar
+do
+  CLASS_PATH="$CLASS_PATH$CPSP$jar"
+done
+
+export CLASS_PATH="$CLASS_PATH"
 export JAVA_RUN="${JAVA_RUN}"
 

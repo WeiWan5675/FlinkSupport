@@ -50,7 +50,7 @@
         <fileSet>
             <directory>${basedir}/../bin</directory>
             <outputDirectory>bin</outputDirectory>
-            <fileMode>0775</fileMode>
+            <fileMode>0777</fileMode>
         </fileSet>
         <fileSet>
             <directory>${basedir}/../doc</directory>
