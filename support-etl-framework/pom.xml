@@ -18,17 +18,6 @@
         <module>etl-plugins/example_plugin</module>
     </modules>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.weiwan</groupId>
-            <artifactId>support-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.weiwan</groupId>
-            <artifactId>etl-framework</artifactId>
-        </dependency>
-    </dependencies>
-
     <dependencyManagement>
         <dependencies>
             <dependency>

@@ -15,7 +15,6 @@
     <dependency>
         <groupId>com.weiwan</groupId>
         <artifactId>support-core</artifactId>
-        <scope>provided</scope>
     </dependency>
 </dependencies>
 

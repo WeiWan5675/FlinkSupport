@@ -12,5 +12,11 @@
 
     <artifactId>example_plugin</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.weiwan</groupId>
+            <artifactId>etl-framework</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

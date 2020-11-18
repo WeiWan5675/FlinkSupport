@@ -16,6 +16,10 @@
             <groupId>com.weiwan</groupId>
             <artifactId>jdbc-plugin</artifactId>
         </dependency>
+            <dependency>
+                <groupId>com.weiwan</groupId>
+                <artifactId>etl-framework</artifactId>
+            </dependency>
     </dependencies>
 
 </project>
