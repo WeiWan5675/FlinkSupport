@@ -1,4 +1,4 @@
-package com.weiwan.support.etl.framework.app;
+package com.weiwan.support.etl.framework;
 
 import com.weiwan.support.core.StreamAppSupport;
 import com.weiwan.support.core.SupportAppContext;
@@ -14,8 +14,8 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  * @ClassName: StreamETLBaseAPP
  * @Description:
  **/
-public class StreamETLBaseApp extends StreamAppSupport<DataRecord, DataRecord> {
 
+public class StreamETLBaseApp extends StreamAppSupport<DataRecord, DataRecord> {
 
     @Override
     public DataStream<DataRecord> open(StreamExecutionEnvironment env, SupportAppContext context) {

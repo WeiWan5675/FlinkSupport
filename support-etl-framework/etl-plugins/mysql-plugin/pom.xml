@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>com.weiwan</groupId>
-            <artifactId>support-core</artifactId>
+            <artifactId>jdbc-plugin</artifactId>
         </dependency>
     </dependencies>
 

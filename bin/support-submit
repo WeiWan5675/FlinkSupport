@@ -2,8 +2,7 @@
 
 source "$(cd "`dirname "$0"`"/..; pwd)"/bin/support-env
 
-echo "Submit Job With $@"
-$SUPPORT_BIN/flink-support run $@
+"$SUPPORT_BIN"/flink-support run $@
 
-exit 0
+exit $?
 

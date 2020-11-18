@@ -5,7 +5,7 @@ import com.weiwan.support.core.api.Processer;
 import com.weiwan.support.core.api.Reader;
 import com.weiwan.support.core.api.SupportDataFlow;
 import com.weiwan.support.core.api.Writer;
-import com.weiwan.support.core.config.ChannelConfig;
+import com.weiwan.support.core.config.ProcesserConfig;
 import com.weiwan.support.core.config.JobConfig;
 import com.weiwan.support.core.config.ReaderConfig;
 import com.weiwan.support.core.config.WriterConfig;
@@ -33,7 +33,7 @@ public class EtlCoprocessor extends SupportCoprocessor {
 
         JobConfig jobConfig = context.getJobConfig();
         ReaderConfig readerConfig = jobConfig.getReaderConfig();
-        ChannelConfig channelConfig = jobConfig.getChannelConfig();
+        ProcesserConfig processerConfig = jobConfig.getProcesserConfig();
         WriterConfig writerConfig = jobConfig.getWriterConfig();
 
         String readerClassName = readerConfig.getStringVal("reader.class");
@@ -43,7 +43,7 @@ public class EtlCoprocessor extends SupportCoprocessor {
         DataStream<S1> s1 = reader.read((StreamExecutionEnvironment) env, context);
 
 
-        String processerClassName = channelConfig.getStringVal("processer.class");
+        String processerClassName = processerConfig.getStringVal("processer.class");
         Class<?> processerClass = Class.forName(processerClassName);
         Constructor<?> processerConstructor = processerClass.getConstructor(env.getClass(), SupportAppContext.class);
         Processer<S1, S2> processer = (Processer<S1, S2>) processerConstructor.newInstance(env, context);

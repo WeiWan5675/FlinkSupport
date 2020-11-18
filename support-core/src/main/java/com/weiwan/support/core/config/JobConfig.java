@@ -23,13 +23,13 @@ public class JobConfig extends AbstractConfig {
 
     private WriterConfig writerConfig;
 
-    private ChannelConfig channelConfig;
+    private ProcesserConfig processerConfig;
 
     public JobConfig(Map<String, Object> map) {
         super(map);
         this.readerConfig = new ReaderConfig(new HashMap<>());
         this.writerConfig = new WriterConfig(new HashMap<>());
-        this.channelConfig = new ChannelConfig(new HashMap<>());
+        this.processerConfig = new ProcesserConfig(new HashMap<>());
         for (String key : map.keySet()) {
             Object value = map.get(key);
             if (key.startsWith("reader")) {
@@ -37,7 +37,7 @@ public class JobConfig extends AbstractConfig {
             } else if (key.startsWith("writer")) {
                 writerConfig.setVal(key, value);
             } else if (key.startsWith("channel")) {
-                channelConfig.setVal(key, value);
+                processerConfig.setVal(key, value);
             } else {
                 this.setVal(key, value);
             }
@@ -62,11 +62,11 @@ public class JobConfig extends AbstractConfig {
     }
 
 
-    public ChannelConfig getChannelConfig() {
-        return channelConfig;
+    public ProcesserConfig getProcesserConfig() {
+        return processerConfig;
     }
 
-    public void setChannelConfig(ChannelConfig channelConfig) {
-        this.channelConfig = channelConfig;
+    public void setProcesserConfig(ProcesserConfig processerConfig) {
+        this.processerConfig = processerConfig;
     }
 }

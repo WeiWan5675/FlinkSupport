@@ -2,42 +2,41 @@
 
 source "$(cd "`dirname "$0"`"/..; pwd)"/bin/support-env
 
-CPSP=":"
-echo "--------------[Support App Env]--------------"
-echo "SUPPORT_HOME: "$SUPPORT_HOME
-echo "SUPPORT_CONF_DIR: "$SUPPORT_CONF_DIR
-echo "SUPPORT_LIB_DIR: "$SUPPORT_LIB_DIR
-echo "SUPPORT_EXTLIB_DIR: "$SUPPORT_EXTLIB_DIR
-echo "SUPPORT_PLUGINS_DIR: "$SUPPORT_PLUGINS_DIR
-echo "SUPPORT_LOG_DIR: "$SUPPORT_LOG_DIR
-echo "---------------------------------------------"
-USAGE="Usage: flink-support (run|stop|cancel|list|savepoint) [args]"
+
+echo "-------------------[Support App Env]-------------------"
+echo "    SUPPORT_HOME: "$SUPPORT_HOME
+echo "    SUPPORT_CONF_DIR: "$SUPPORT_CONF_DIR
+echo "    SUPPORT_LIB_DIR: "$SUPPORT_LIB_DIR
+echo "    SUPPORT_EXTLIB_DIR: "$SUPPORT_EXTLIB_DIR
+echo "    SUPPORT_PLUGINS_DIR: "$SUPPORT_PLUGINS_DIR
+echo "    SUPPORT_LOG_DIR: "$SUPPORT_LOG_DIR
+echo "----------------------------------------------------------"
+
+
 JAVA_RUN="$JAVA_RUN -Dlog.file=${SUPPORT_LOG_DIR}/flink-support.log -Dlog4j.configurationFile=${SUPPORT_CONF_DIR}/log4j-support.properties"
 ENTER_CLASS_NAME=com.weiwan.support.launcher.SupportAppClient
-
-
+RUN_CMD="$JAVA_RUN -classpath $CLASS_PATH $ENTER_CLASS_NAME"
 
 CMD=$(echo "${1}" | tr 'a-z' 'A-Z')
-RUN_CMD="$JAVA_RUN -classpath $CLASS_PATH $ENTER_CLASS_NAME"
 ARGS=("${@:2}")
 case $CMD in
 	(RUN)
-	  RUN_CMD="$RUN_CMD -cmd run "
+	  RUN_CMD="$RUN_CMD -cmd run"
     ;;
 	(STOP)
-		RUN_CMD="$RUN_CMD -cmd stop "
+		RUN_CMD="$RUN_CMD -cmd stop"
     ;;
 	(CANCEL)
-		RUN_CMD="$RUN_CMD -cmd cancel "
+		RUN_CMD="$RUN_CMD -cmd cancel"
     ;;
 	(SAVEPOINT)
-	  RUN_CMD="$RUN_CMD -cmd savepoint "
+	  RUN_CMD="$RUN_CMD -cmd savepoint"
     ;;
 	(LIST)
-    RUN_CMD="$RUN_CMD -cmd list "
+    RUN_CMD="$RUN_CMD -cmd list"
     ;;
 	(*)
-		echo "Unknown service '${CMD}'. $USAGE."
+		echo "Unknown service '${CMD}'. Usage: flink-support (run|stop|cancel|list|savepoint) [args]."
     exit 1
     ;;
 esac
@@ -45,5 +44,7 @@ esac
 RUN_CMD="$RUN_CMD ${ARGS[@]}"
 echo "Starting FlinkSupport ApplicationClient With CMD: $RUN_CMD ."
 echo "Client Running pid: $$"
+exec $RUN_CMD
 
-exec $RUN_CMD "${ARGS[@]}"
+
+exit $?
