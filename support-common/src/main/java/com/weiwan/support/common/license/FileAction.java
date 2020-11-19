@@ -18,7 +18,7 @@ package com.weiwan.support.common.license;
 import java.io.File;
 
 /**
- * @author jiang wenzhong
+ * @author xiaozhennan
  * @date 2019-07-23
  */
 public interface FileAction {

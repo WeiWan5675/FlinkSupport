@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 /**
- * @author jiang wenzhong
+ * @author xiaozhennan
  * @date 2019-07-23
  */
 public class AddLicenseWithFileFileAction implements FileAction {

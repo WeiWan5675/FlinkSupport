@@ -26,13 +26,7 @@ public class Base64Util {
     //    private static final String charset = "utf-8";
     private static final String charset = "utf-8";
 
-    /**
-     * 解密
-     *
-     * @param data
-     * @return
-     * @author fanddong
-     */
+
     public static String decode(String data) {
         try {
             if (null == data) {
@@ -48,13 +42,7 @@ public class Base64Util {
         return null;
     }
 
-    /**
-     * 加密
-     *
-     * @param data
-     * @return
-     * @author fanddong
-     */
+
     public static String encode(String data) {
         try {
             if (null == data) {

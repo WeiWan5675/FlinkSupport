@@ -21,10 +21,7 @@ import org.slf4j.LoggerFactory;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-/**
- * @author jiangbo
- * @date 2019/8/17
- */
+
 public class ExceptionUtil {
 
     private static Logger logger = LoggerFactory.getLogger(ExceptionUtil.class);

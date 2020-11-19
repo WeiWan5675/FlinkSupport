@@ -30,7 +30,7 @@ import java.security.SecureRandom;
 /**
  * AES加密和解密工具类
  *
- * @author houlei
+ * @author xiaozhennan
  */
 public class AESUtil {
     private static final Logger logger = LoggerFactory.getLogger(AESUtil.class);

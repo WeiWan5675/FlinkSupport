@@ -17,10 +17,7 @@ package com.weiwan.support.common.utils;
 
 import java.util.Objects;
 
-/**
- * @author jiangbo
- * @date 2019/9/2
- */
+
 public class ColumnTypeUtil {
 
     private static final String TYPE_NAME = "decimal";

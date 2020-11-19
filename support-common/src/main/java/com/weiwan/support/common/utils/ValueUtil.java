@@ -19,12 +19,7 @@ package com.weiwan.support.common.utils;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-/**
- * Utilities for Type conversion
- *
- * Company: www.dtstack.com
- * @author huyifan.zju@163.com
- */
+
 public class ValueUtil {
 
     public static Integer getInt(Object obj) {

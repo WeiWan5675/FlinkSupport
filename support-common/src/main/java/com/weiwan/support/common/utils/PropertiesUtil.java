@@ -50,7 +50,7 @@ public class PropertiesUtil {
      * @param filePath 文件路径
      * @return config 返回Config 对象
      * @Title: load
-     * @author wangkang
+     * @author xiaozhennan
      */
     public static PropertiesUtil load(String filePath) {
         if (map.containsKey(filePath)) {

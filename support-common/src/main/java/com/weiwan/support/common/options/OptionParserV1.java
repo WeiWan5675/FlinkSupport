@@ -23,13 +23,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * The Parser of Launcher commandline options
- * <p>
- * Company: www.dtstack.com
- *
- * @author huyifan.zju@163.com
- */
+
 public class OptionParserV1 {
 
 //    private Options options = new Options();
