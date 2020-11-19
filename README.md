@@ -244,11 +244,12 @@
 
 　　FlinkSupport支持注解主要集中自动化接入数据方面，详见FlinkSupport[注解说明](docs/Annotations,md)
 
-## License
-Apache License 2.0, see [LICENSE](LICENSE).
-
-## 其它
+## 关于FlinkSupport
 
 　　关于该框架以后的维护，主要考虑从几个方向进行，框架代码优化、数据插件、注解支持、监控及控制台支持Flink1.9+等。
 
 　　在开发这个框架过程中，由于能力有限，代码写的比较简陋，我会继续努力，如果有大佬可以指点下，万分感激。
+
+## License
+Apache License 2.0, see [LICENSE](LICENSE).
+
