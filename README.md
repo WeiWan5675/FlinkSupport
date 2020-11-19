@@ -1,14 +1,6 @@
 # FkinkSupport
 
-
-
-目录
-
-
-
-```
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
-```
 
 ## 交流
 
@@ -18,11 +10,11 @@
 
 ## 简介
 
-​	FlinkSupport是一个基于Flink框架，采用Java语言进行开发的支持类框架，框架主要分为几个模块，包含快速开发模块、数据ETL模块、FlinkSql交互式任务模块、FlinkUtils模块，通过对日常工作中Flink框架常用场景进行封装，能够提高框架使用的便利性，提供插件化的Flink开发能力。
+　　FlinkSupport是一个基于Flink框架，采用Java语言进行开发的支持类框架，框架主要分为几个模块，包含快速开发模块、数据ETL模块、FlinkSql交互式任务模块、FlinkUtils模块，通过对日常工作中Flink框架常用场景进行封装，能够提高框架使用的便利性，提供插件化的Flink开发能力。
 
-​	FlinkSupport提供了一些快速开发的注解，能够帮助开发者快速进行程序开发，极大的降低了开发成本。框架提供了ETL数据插件的相关接口，使用ETL模块，能够快速将数据ETL任务通过配置文件+ETL插件的形式进行落地。
+　　FlinkSupport提供了一些快速开发的注解，能够帮助开发者快速进行程序开发，极大的降低了开发成本。框架提供了ETL数据插件的相关接口，使用ETL模块，能够快速将数据ETL任务通过配置文件+ETL插件的形式进行落地。
 
-​	目前FlinkSupport仅支持Flink-1.11.1以上版本，后期会支持Flink1.9+
+　　目前FlinkSupport仅支持Flink-1.11.1以上版本，后期会支持Flink1.9+
 
 ## 快速开始
 
@@ -206,13 +198,13 @@
 
 - 其它
 
-  ​	配置文件由三部分组成，Flink配置、Application配置、ETL模块配置，关于配置文件详细的内容以及支持的参数等可以查看[应用配置文档](docs/AppConfig.md)。
+  　　配置文件由三部分组成，Flink配置、Application配置、ETL模块配置，关于配置文件详细的内容以及支持的参数等可以查看[应用配置文档](docs/AppConfig.md)。
 
 # ETL模式
 
-​	ETL模式，通过对Flink相关能力进行封装，基于InputFormatSource、OutputFormatSink、MapFunction 抽象出三大数据插件 Reader、Processer、Writer。
+　　ETL模式，通过对Flink相关能力进行封装，基于InputFormatSource、OutputFormatSink、MapFunction 抽象出三大数据插件 Reader、Processer、Writer。
 
-通过插件化，可以快速的在异构数据源中进行数据同步，数据处理等操作。
+　　通过插件化，可以快速的在异构数据源中进行数据同步，数据处理等操作。
 
  - 现阶段计划支持的插件
 
@@ -235,28 +227,28 @@
 
 # 模块
 
-​	FlinkSupport模块划分主要分为两部分，既面向用户的以及FlinkSupport自身使用的
+　　FlinkSupport模块划分主要分为两部分，既面向用户的以及FlinkSupport自身使用的
 
  - 面向用户(协助开发)
 
   - support-core 
   - support-etl-framework
-   	- support-utils
+      	- support-utils
 
  - FlinkSupport
 
   - support-runtime
   - support-launcher
-   	- support-monitor
+      	- support-monitor
 
-   具体的模块说明及相关的设计文档请查看[设计文档](docs/FlinkSupportDesign.md)
+　　具体的模块说明及相关的设计文档请查看[设计文档](docs/FlinkSupportDesign.md)
 
 # 注解支持
 
-​	FlinkSupport支持注解主要集中自动化接入数据方面，详见FlinkSupport[注解说明](docs/Annotations,md)
+　　FlinkSupport支持注解主要集中自动化接入数据方面，详见FlinkSupport[注解说明](docs/Annotations,md)
 
 ## 其它
 
-​	关于该框架以后的维护，主要考虑从三个方向进行，监控及控制台、数据插件、框架代码优化及支持1.9等版本。
+　　关于该框架以后的维护，主要考虑从三个方向进行，监控及控制台、数据插件、框架代码优化及支持1.9等版本。
 
 ​	在开发这个框架过程中，由于能力有限，代码写的比较简陋，作为一个弱弱目前能力所及，我会继续努力，如果有大佬可以指点下，万分感激。
