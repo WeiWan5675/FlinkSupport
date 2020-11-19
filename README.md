@@ -10,7 +10,7 @@
 
 ## 简介
 
-　　FlinkSupport是一个基于Flink框架，采用Java语言进行开发的支持类框架，框架主要分为几个模块，包含快速开发模块、数据ETL模块、FlinkSql交互式任务模块、FlinkUtils模块，通过对日常工作中Flink框架常用场景进行封装，能够提高框架使用的便利性，提供插件化的Flink开发能力。
+　　FlinkSupport是一个基于Flink框架，采用Java语言进行开发的支持类框架，框架主要分为几个模块，包含快速开发模块、数据ETL模块、FlinkSql交互式任务模块、FlinkUtils模块，通过对日常工作中Flink常用场景进行封装，提高Flink开发的便利性，提供插件化的Flink开发能力。
 
 　　FlinkSupport提供了一些快速开发的能力，能够帮助开发者快速进行程序开发，极大的降低了开发成本。并且框架提供了ETL数据插件的相关接口，使用ETL模块，能够快速将数据ETL任务通过配置文件+ETL插件的形式进行数据落地。
 

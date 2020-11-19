@@ -50,6 +50,9 @@ case $CMD in
 	(LIST)
     RUN_CMD="$RUN_CMD -cmd list"
     ;;
+  (INIT)
+  RUN_CMD="$RUN_CMD -m init"
+  ;;
 	(*)
 		echo "Unknown service '${CMD}'. Usage: flink-support (run|stop|cancel|list|savepoint) [args]."
     exit 1

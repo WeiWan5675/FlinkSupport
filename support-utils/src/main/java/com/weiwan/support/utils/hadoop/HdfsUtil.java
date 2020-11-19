@@ -54,13 +54,24 @@ public class HdfsUtil {
     }
 
 
-    public static void mkdir(String userResourceDir, boolean... overwrite) {
-        if (overwrite.length == 1) {
+    public static void mkdir(FileSystem fileSystem, Path dir, boolean... overwrite) {
+        if (overwrite.length == 1 && overwrite[0] == true) {
             //需要重载
-        } else {
-            //直接创建
+            try {
+                if (fileSystem.exists(dir)) {
+                    fileSystem.delete(dir, true);
+                    fileSystem.mkdirs(dir);
+                    return;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-
+        try {
+            fileSystem.mkdirs(dir);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static boolean dirIsEmpty(FileSystem fileSystem, Path path) {

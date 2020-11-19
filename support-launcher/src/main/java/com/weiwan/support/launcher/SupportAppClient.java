@@ -19,7 +19,9 @@ package com.weiwan.support.launcher;
 import com.weiwan.support.common.exception.SupportException;
 import com.weiwan.support.common.options.OptionParser;
 import com.weiwan.support.launcher.envs.ApplicationEnv;
+import com.weiwan.support.launcher.envs.processer.InitProcesser;
 import com.weiwan.support.launcher.envs.processer.JobApplicationProcessor;
+import com.weiwan.support.launcher.envs.processer.LocalApplicationProcesser;
 import com.weiwan.support.launcher.envs.processer.ReplApplicationProcessor;
 import com.weiwan.support.launcher.hook.ShutdownHook;
 import com.weiwan.support.launcher.options.GenericRunOption;
@@ -69,6 +71,11 @@ public class SupportAppClient {
                     applicationEnv = new ReplApplicationProcessor(args);
                     logger.debug("running repl env mode");
                     break;
+                case LOCAL:
+                    applicationEnv = new LocalApplicationProcesser(args);
+                    break;
+                case INIT:
+                    applicationEnv = new InitProcesser(args);
                 default:
                     throw new SupportException("unsupported client environment");
             }
