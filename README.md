@@ -4,7 +4,7 @@
 
 ## 交流
 
-​	有想一起交流的同学可以扫下面的二维码添加我的微信，一起学习~~需要人一起写~~，谢谢！ 。
+<center>有想一起交流的同学可以扫下面的二维码添加我的微信，一起学习~~需要人一起写~~，谢谢！ 。</center>
 <div align="center"><img width="150" height="150" src="https://github.com/WeiWan5675/FlinkSupport/blob/master/docs/pictures/wx.jpg"/></div>
 
 ## 简介
