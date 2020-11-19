@@ -248,7 +248,7 @@
   　　配置文件由三部分组成，Flink配置、Application配置、ETL模块配置，关于配置文件详细的内容以及支持的参数等可以查看[应用配置文档](docs/AppConfig.md)。
 
 
-# 注解支持
+## 注解支持
 
 　　FlinkSupport支持注解主要集中自动化接入数据方面，详见FlinkSupport[注解说明](docs/Annotations,md)
 
