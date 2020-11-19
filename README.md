@@ -96,6 +96,21 @@
 
   FlinkSupport支持相关运行命令请查看[命令手册](docs/Commands.md)
 
+# 模块
+
+　　FlinkSupport模块划分主要分为两部分，包括面向用户快速开发模块以及FlinkSupport自身的运行时模块。
+
+ - **面向用户(快速开发模块)**
+    - support-core 
+    - support-etl-framework
+    - support-utils
+ - **FlinkSupport(运行时模块)**
+    - support-runtime
+    - support-launcher
+    - support-monitor
+
+　　具体的模块说明及相关的设计文档请查看[设计文档](docs/FlinkSupportDesign.md)
+
 # ETL模式
 
 　　ETL模式，通过对Flink相关能力进行封装，基于InputFormatSource、OutputFormatSink、MapFunction 抽象出三大数据插件 Reader、Processer、Writer。
@@ -121,20 +136,6 @@
 
    由于插件开发比较费时间，所以插件的支持是一个长期且耗时的事情，关于自定义插件请查看[插件开发说明](docs/PluginDeveloper.md)
 
-# 模块
-
-　　FlinkSupport模块划分主要分为两部分，包括面向用户快速开发模块以及FlinkSupport自身的运行时模块。
-
- - **面向用户(快速开发模块)**
-    - support-core 
-    - support-etl-framework
-    - support-utils
- - **FlinkSupport(运行时模块)**
-    - support-runtime
-    - support-launcher
-    - support-monitor
-
-　　具体的模块说明及相关的设计文档请查看[设计文档](docs/FlinkSupportDesign.md)
 
 ## 应用配置
 
