@@ -34,12 +34,12 @@
 - **打包**
 
   ```shell
-  clean package install -Dmaven.test.skip=true -f pom.xml
+  mvn clean package install -Dmaven.test.skip=true -f pom.xml
   ```
 
 - **解压**
 
-  ```
+  ```shell
   tar -zxvf FlinkSupport-1.0.tar.gz -C FlinkSupport-1.0
   ```
 
