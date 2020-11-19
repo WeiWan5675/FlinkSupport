@@ -1,36 +1,33 @@
-# etl默认配置文件
+###########################################
+# FlinkSupport-Etl模式模式配置文件
+# 1. 定义插件
+# 2. 重写默认应用配置文件
+###########################################
 flink:
-  task:
+  task: #Flink相关任务配置
     type: stream
 
-
-app:
-  name: FlinkSupportEtl
+app: #应用相关配置
+  name: SupportEtlApplication
   etlMode: true
   sqlMode: false
 
-
-
 etl:
   reader:
-    name: examplereader
-    class:
+    name: ExampleReader #Reader插件
+    class: com.weiwan.support.plugins.reader.ExampleReader
     parallelism: 1
     example:
-      endIndex: 1000
-
+      readereVar: 1000
   processer:
-    name: examplechannle
-    class:
+    name: ExampleProcesser #Processer插件
+    class: com.weiwan.support.plugins.processer.ExampleProcesser
     parallelism: 1
     example:
       channelVar: channel_var
-
   writer:
-    name: examplewriter
-    class:
+    name: ExampleWriter #Writer插件
+    class: com.weiwan.support.plugins.writer.ExampleWriter
     parallelism: 1
-    batchWriteMode: false #写出模式,是批量写出 还是逐条写出
-    batchWriteSize: 100 #批量写出的大小
     example:
       writerVar: writer_var

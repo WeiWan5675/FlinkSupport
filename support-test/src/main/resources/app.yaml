@@ -33,5 +33,5 @@ flink:
 
 app:
   appName: TestApp
-  appClass: com.weiwan.tester.run.TasterApp
+  appClass: com.weiwan.tester.run.TesterApp
   appType: stream

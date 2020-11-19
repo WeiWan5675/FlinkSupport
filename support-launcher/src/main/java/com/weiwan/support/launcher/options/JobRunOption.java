@@ -15,7 +15,7 @@ public class JobRunOption extends GenericRunOption {
     @Parameter(names = {"-cmd"}, converter = RumCmdEnumConverter.class, description = "The command to be executed, the optional commands are [run|stop|canal|info|list]")
     private RunCmd cmd;
 
-    @Parameter(names = {"-jc", "-jobConf"}, description = "Task description file, supports local path and HDFS path, HDFS path defaults to the corresponding application folder under resources")
+    @Parameter(names = {"-c", "-conf"}, description = "Task description file, supports local path and HDFS path, HDFS path defaults to the corresponding application folder under resources")
     private String jobConf;
 
     @Parameter(names = "-resources", description = "User resource path, support hdfs and local, default is hdfs://flink_support/resources/support_${appName}_${appResourcesMD5}_job")

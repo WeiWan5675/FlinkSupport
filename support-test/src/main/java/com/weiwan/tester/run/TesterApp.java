@@ -5,12 +5,10 @@ import com.weiwan.support.core.SupportAppContext;
 import com.weiwan.support.core.annotation.*;
 import com.weiwan.support.core.pojo.DataRecord;
 import org.apache.flink.api.common.functions.MapFunction;
-import org.apache.flink.streaming.api.checkpoint.CheckpointedFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSink;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
-import org.apache.flink.streaming.api.functions.source.RichSourceFunction;
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,17 +16,17 @@ import org.slf4j.LoggerFactory;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/11/5 14:43
- * @Package: com.weiwan.tester.run.TasterApp
- * @ClassName: TasterApp
+ * @Package: com.weiwan.tester.run.TesterApp
+ * @ClassName: TesterApp
  * @Description:
  **/
 @PrintToLog
 @Support
 @Checkpoint
 @Parallelism
-public class TasterApp extends StreamAppSupport<DataRecord<String>, DataRecord<String>> {
+public class TesterApp extends StreamAppSupport<DataRecord<String>, DataRecord<String>> {
 
-    private static final Logger logger = LoggerFactory.getLogger(TasterApp.class);
+    private static final Logger logger = LoggerFactory.getLogger(TesterApp.class);
 
     @Override
     @SupportKafkaSource
