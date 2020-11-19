@@ -4,8 +4,9 @@
 
 ## 交流
 
-​	有想一起交流的同学可以扫下面的二维码添加我的微信，一起学习~~ 需要人一起写 ~~，谢谢！ 。
+​	有想一起交流的同学可以扫下面的二维码添加我的微信，一起学习~~需要人一起写~~，谢谢！ 。
 <div align="center"><img width="150" height="150" src="https://github.com/WeiWan5675/FlinkSupport/blob/master/docs/pictures/wx.jpg"/></div>
+
 ## 简介
 
 　　FlinkSupport是一个基于Flink框架，采用Java语言进行开发的支持类框架，框架主要分为几个模块，包含快速开发模块、数据ETL模块、FlinkSql交互式任务模块、FlinkUtils模块，通过对日常工作中Flink框架常用场景进行封装，能够提高框架使用的便利性，提供插件化的Flink开发能力。
