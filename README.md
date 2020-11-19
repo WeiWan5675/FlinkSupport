@@ -1,10 +1,11 @@
-# FkinkSupport
+# Fkink Support
 
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 ## 交流
 
-<center>有想一起交流的同学可以扫下面的二维码添加我的微信，一起学习~~需要人一起写~~，谢谢！ 。</center>
+　　有想一起交流的同学可以扫下面的二维码添加我的微信，一起学习~~一起写代码~~谢谢！。
+
 <div align="center"><img width="150" height="150" src="https://github.com/WeiWan5675/FlinkSupport/blob/master/docs/pictures/wx.jpg"/></div>
 
 ## 简介
@@ -242,6 +243,9 @@
 # 注解支持
 
 　　FlinkSupport支持注解主要集中自动化接入数据方面，详见FlinkSupport[注解说明](docs/Annotations,md)
+
+## License
+Apache License 2.0, see [LICENSE](LICENSE).
 
 ## 其它
 
