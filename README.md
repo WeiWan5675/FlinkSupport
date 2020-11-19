@@ -4,10 +4,8 @@
 
 ## 交流
 
-​	有想一起交流的小伙伴可以扫下面的二维码添加我的微信，一起进步成长，谢谢。
-
-![avatar](docs/pictures/wx.jpg)
-
+​	有想一起交流的同学可以扫下面的二维码添加我的微信，一起学习~~(需要人一起写)~~，谢谢！ 。
+<div align="center"><img width="150" height="150" src="https://github.com/WeiWan5675/FlinkSupport/blob/master/docs/pictures/wx.jpg"/></div>
 ## 简介
 
 　　FlinkSupport是一个基于Flink框架，采用Java语言进行开发的支持类框架，框架主要分为几个模块，包含快速开发模块、数据ETL模块、FlinkSql交互式任务模块、FlinkUtils模块，通过对日常工作中Flink框架常用场景进行封装，能够提高框架使用的便利性，提供插件化的Flink开发能力。
@@ -18,26 +16,26 @@
 
 ## 快速开始
 
-- 要求
+- **要求**
 
   - hadoop相关环境（运行） 2.6+ 
   - flink (运行) 1.9+
   - jdk 1.8+
   - maven 3.4.5+
 
-- 打包
+- **打包**
 
   ```shell
   clean package install -Dmaven.test.skip=true -f pom.xml
   ```
 
-- 解压
+- **解压**
 
   ```
   tar -zxvf FlinkSupport-1.0.tar.gz -C FlinkSupport-1.0
   ```
 
-- 部署运行
+- **部署运行**
 
   - 初始化
 
@@ -59,13 +57,13 @@
     $FLINK_SUPPORT_HOME/bin/flink-support stop jobId
     ```
 
-- 程序开发
+- **程序开发**
 
   - 引入依赖
 
     ```xml
         <dependency>
-       	 	<groupId>com.weiwan</groupId>
+    		<groupId>com.weiwan</groupId>
         	<artifactId>support-core</artifactId>
         </dependency>
         <dependency>
@@ -78,13 +76,13 @@
         </dependency>
     ```
 
-  - 程序开发
+  - 开发
 
     具体的程序开发相关说明请查看快速开发[说明文档](docs/ApplicationDeveloper.md)
 
-    ​	[普通Flink程序Demo](support-test/src/main/java/com/weiwan/tester/run/TesterApp.java)
+    　　[普通Flink程序Demo](support-test/src/main/java/com/weiwan/tester/run/TesterApp.java)
 
-    ​	[ETL插件](support-etl-framework/etl-plugins/example_plugin/src/main/java/com/weiwan/support/plugins/reader/ExampleReader.java)
+    　　[ETL插件](support-etl-framework/etl-plugins/example_plugin/src/main/java/com/weiwan/support/plugins/reader/ExampleReader.java)
 
 - 其它
 
@@ -92,7 +90,7 @@
 
 ## 应用配置
 
-- 默认配置
+- **默认配置**
 
   ```yml
   ##########################################################
@@ -156,7 +154,7 @@
 
   
 
-- ETL配置
+- **ETL配置**
 
   ```yaml
   ###########################################
@@ -196,7 +194,7 @@
 
   
 
-- 其它
+- **其它**
 
   　　配置文件由三部分组成，Flink配置、Application配置、ETL模块配置，关于配置文件详细的内容以及支持的参数等可以查看[应用配置文档](docs/AppConfig.md)。
 
@@ -206,7 +204,7 @@
 
 　　通过插件化，可以快速的在异构数据源中进行数据同步，数据处理等操作。
 
- - 现阶段计划支持的插件
+ - **现阶段计划支持的插件**
 
    | 数据源类型    | 说明文档                               | 备注            |
    | ------------- | -------------------------------------- | --------------- |
@@ -227,19 +225,16 @@
 
 # 模块
 
-　　FlinkSupport模块划分主要分为两部分，既面向用户的以及FlinkSupport自身使用的
+　　FlinkSupport模块划分主要分为两部分，包括面向用户快速开发模块以及FlinkSupport自身的运行时模块。
 
- - 面向用户(协助开发)
-
-  - support-core 
-  - support-etl-framework
-      	- support-utils
-
- - FlinkSupport
-
-  - support-runtime
-  - support-launcher
-      	- support-monitor
+ - **面向用户(快速开发模块)**
+    - support-core 
+    - support-etl-framework
+    - support-utils
+ - **FlinkSupport(运行时模块)**
+    - support-runtime
+    - support-launcher
+    - support-monitor
 
 　　具体的模块说明及相关的设计文档请查看[设计文档](docs/FlinkSupportDesign.md)
 
@@ -249,6 +244,6 @@
 
 ## 其它
 
-　　关于该框架以后的维护，主要考虑从三个方向进行，监控及控制台、数据插件、框架代码优化及支持1.9等版本。
+　　关于该框架以后的维护，主要考虑从几个方向进行，框架代码优化、数据插件、注解支持、监控及控制台支持Flink1.9+等。
 
-​	在开发这个框架过程中，由于能力有限，代码写的比较简陋，作为一个弱弱目前能力所及，我会继续努力，如果有大佬可以指点下，万分感激。
+　　在开发这个框架过程中，由于能力有限，代码写的比较简陋，我会继续努力，如果有大佬可以指点下，万分感激。
