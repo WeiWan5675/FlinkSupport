@@ -25,6 +25,12 @@
   - jdk 1.8+
   - maven 3.4.5+
 
+- **Clone本项目**
+
+  ```shell
+  git clone git@github.com:WeiWan5675/FlinkSupport.git
+  ```
+
 - **打包**
 
   ```shell
