@@ -71,7 +71,7 @@
 
     ```xml
         <dependency>
-    		<groupId>com.weiwan</groupId>
+        	<groupId>com.weiwan</groupId>
         	<artifactId>support-core</artifactId>
         </dependency>
         <dependency>
