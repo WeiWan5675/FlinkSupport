@@ -96,6 +96,46 @@
 
   FlinkSupport支持相关运行命令请查看[命令手册](docs/Commands.md)
 
+# ETL模式
+
+　　ETL模式，通过对Flink相关能力进行封装，基于InputFormatSource、OutputFormatSink、MapFunction 抽象出三大数据插件 Reader、Processer、Writer。
+
+　　通过插件化，可以快速的在异构数据源中进行数据同步，数据处理等操作。
+
+ - **现阶段计划支持的插件**
+
+   | 数据源类型    | 说明文档                               | 备注            |
+   | ------------- | -------------------------------------- | --------------- |
+   | MySql         | [Reader]()    [Writer]()    [BinLog]() | 支持Binlog      |
+   | Mongo         | [Reader]()    [Writer]()    [Oplog]()  | 支持Oplog       |
+   | File          | [Reader]()    [Writer]()               | 支持断点续传    |
+   | HDFS          | [Reader]()    [Writer]()               |                 |
+   | FTP           | [Reader]()    [Writer]()               |                 |
+   | Hbase         | [Reader]()    [Writer]()               | 支持Bulkload    |
+   | Kafka         | [Reader]()    [Writer]()               | 支持1对1，多对1 |
+   | JDBC          | [Reader]()    [Writer]()               | 通用JDBC        |
+   | Hive          | [Reader]()    [Writer]()               | 自动创建表      |
+   | Oracle        | [Reader]()    [Writer]()               |                 |
+   | ElasticSearch | [Reader]()    [Writer]()               |                 |
+   | ClickHouse    | [Reader]()    [Writer]()               |                 |
+
+   由于插件开发比较费时间，所以插件的支持是一个长期且耗时的事情，关于自定义插件请查看[插件开发说明](docs/PluginDeveloper.md)
+
+# 模块
+
+　　FlinkSupport模块划分主要分为两部分，包括面向用户快速开发模块以及FlinkSupport自身的运行时模块。
+
+ - **面向用户(快速开发模块)**
+    - support-core 
+    - support-etl-framework
+    - support-utils
+ - **FlinkSupport(运行时模块)**
+    - support-runtime
+    - support-launcher
+    - support-monitor
+
+　　具体的模块说明及相关的设计文档请查看[设计文档](docs/FlinkSupportDesign.md)
+
 ## 应用配置
 
 - **默认配置**
@@ -206,45 +246,6 @@
 
   　　配置文件由三部分组成，Flink配置、Application配置、ETL模块配置，关于配置文件详细的内容以及支持的参数等可以查看[应用配置文档](docs/AppConfig.md)。
 
-# ETL模式
-
-　　ETL模式，通过对Flink相关能力进行封装，基于InputFormatSource、OutputFormatSink、MapFunction 抽象出三大数据插件 Reader、Processer、Writer。
-
-　　通过插件化，可以快速的在异构数据源中进行数据同步，数据处理等操作。
-
- - **现阶段计划支持的插件**
-
-   | 数据源类型    | 说明文档                               | 备注            |
-   | ------------- | -------------------------------------- | --------------- |
-   | MySql         | [Reader]()    [Writer]()    [BinLog]() | 支持Binlog      |
-   | Mongo         | [Reader]()    [Writer]()    [Oplog]()  | 支持Oplog       |
-   | File          | [Reader]()    [Writer]()               | 支持断点续传    |
-   | HDFS          | [Reader]()    [Writer]()               |                 |
-   | FTP           | [Reader]()    [Writer]()               |                 |
-   | Hbase         | [Reader]()    [Writer]()               | 支持Bulkload    |
-   | Kafka         | [Reader]()    [Writer]()               | 支持1对1，多对1 |
-   | JDBC          | [Reader]()    [Writer]()               | 通用JDBC        |
-   | Hive          | [Reader]()    [Writer]()               | 自动创建表      |
-   | Oracle        | [Reader]()    [Writer]()               |                 |
-   | ElasticSearch | [Reader]()    [Writer]()               |                 |
-   | ClickHouse    | [Reader]()    [Writer]()               |                 |
-
-   由于插件开发比较费时间，所以插件的支持是一个长期且耗时的事情，关于自定义插件请查看[插件开发说明](docs/PluginDeveloper.md)
-
-# 模块
-
-　　FlinkSupport模块划分主要分为两部分，包括面向用户快速开发模块以及FlinkSupport自身的运行时模块。
-
- - **面向用户(快速开发模块)**
-    - support-core 
-    - support-etl-framework
-    - support-utils
- - **FlinkSupport(运行时模块)**
-    - support-runtime
-    - support-launcher
-    - support-monitor
-
-　　具体的模块说明及相关的设计文档请查看[设计文档](docs/FlinkSupportDesign.md)
 
 # 注解支持
 
