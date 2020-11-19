@@ -76,6 +76,7 @@ public class SupportAppClient {
                     break;
                 case INIT:
                     applicationEnv = new InitProcesser(args);
+                    break;
                 default:
                     throw new SupportException("unsupported client environment");
             }
