@@ -134,7 +134,7 @@
    | ElasticSearch | [Reader]()    [Writer]()               |                 |
    | ClickHouse    | [Reader]()    [Writer]()               |                 |
 
-   由于插件开发比较费时间，所以插件的支持是一个长期且耗时的事情，关于自定义插件请查看[插件开发说明](docs/PluginDeveloper.md)
+   由于插件开发比较费时间，所以插件的支持是一个长期且耗时的事情，关于自定义插件请查看[插件开发说明](docs/plugins/PluginDeveloper.md)
 
 
 ## 应用配置

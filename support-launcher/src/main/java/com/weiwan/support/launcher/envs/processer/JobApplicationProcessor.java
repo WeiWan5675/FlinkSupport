@@ -492,6 +492,12 @@ public class JobApplicationProcessor extends ApplicationEnv {
             throw new SupportException("Unsupported profile protocol!");
         }
 
+        if (!FileUtil.checkFileSuffix(jobRunOption.getJobConf(),
+                Constans.YAML_FILE_SUFFIX,
+                Constans.YML_FILE_SUFFIX,
+                Constans.PROPERTIES_FILE_SUFFIX)) {
+            throw new SupportException("Illegal configuration file, only supports {.yml | .yaml | .properties}");
+        }
 
     }
 
