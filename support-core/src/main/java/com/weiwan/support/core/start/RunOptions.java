@@ -35,26 +35,16 @@ public class RunOptions extends CommonOptions {
     private boolean batch;
 
     @Parameter(names = {"-t", "-table"}, description = "stream table mode")
-    private boolean table;
+    private boolean table = false;
 
     @Parameter(names = {"-e", "-etl", "-etlMode"}, description = "running etl mode")
-    private boolean etl;
+    private boolean etl = false;
 
     @Parameter(names = {"-logLevel"}, description = "setting log level")
     private String logLevel;
 
     @Parameter(names = {"-jobConf", "-jc"}, description = "job desc json content")
     private String jobDescJson;
-
-    private boolean enableAnnotation;
-
-    public boolean isEnableAnnotation() {
-        return enableAnnotation;
-    }
-
-    public void setEnableAnnotation(boolean enableAnnotation) {
-        this.enableAnnotation = enableAnnotation;
-    }
 
     public boolean isBatch() {
         return batch;

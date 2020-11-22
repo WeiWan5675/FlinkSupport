@@ -108,12 +108,6 @@ public class SupportAppEnter {
                 throw new SupportException("Unsupported application mode, please check the operating parameters");
             }
 
-
-            Class<? extends FlinkSupport> aClass = flinkSupport.getClass();
-            Support annotation = aClass.getDeclaredAnnotation(Support.class);
-            if(annotation != null){
-                options.setEnableAnnotation(true);
-            }
             flinkSupport.initEnv(env, context, options);
             Method submit = ReflectUtil.getDeclaredMethod(flinkSupport, "submit");
             TaskResult taskResult = (TaskResult) submit.invoke(flinkSupport);
@@ -145,15 +139,9 @@ public class SupportAppEnter {
 
     private static SupportAppContext convertOptionsToContext(RunOptions options, Map<String, Object> taskObj) {
         SupportAppContext supportAppContext = new SupportAppContext(options);
-        FlinkEnvConfig flinkEnvConfig = new FlinkEnvConfig(new HashMap<>());
+        FlinkEnvConfig flinkEnvConfig = new FlinkEnvConfig();
+        flinkEnvConfig.addFlinkTaskConfig(taskObj);
         JobConfig jobConfig = new JobConfig(taskObj);
-
-        for (String taskKey : taskObj.keySet()) {
-            if (taskKey.startsWith("flink.task")) {
-                //flink的配置
-                flinkEnvConfig.setVal(taskKey, taskObj.get(taskKey));
-            }
-        }
         supportAppContext.setFlinkEnvConfig(flinkEnvConfig);
         supportAppContext.setJobConfig(jobConfig);
         return supportAppContext;

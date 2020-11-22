@@ -33,4 +33,14 @@ public class FlinkEnvConfig extends AbstractConfig {
     public FlinkEnvConfig() {
         super();
     }
+
+
+    public void addFlinkTaskConfig(Map<String,Object> varMap){
+        for (String taskKey : varMap.keySet()) {
+            if (taskKey.startsWith("flink.task")) {
+                //flink的配置
+                this.setVal(taskKey, varMap.get(taskKey));
+            }
+        }
+    }
 }
