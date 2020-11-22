@@ -17,6 +17,7 @@ package com.weiwan.support.launcher.submit;
 
 import com.weiwan.support.core.constant.SupportConstants;
 import com.weiwan.support.core.constant.SupportKey;
+import com.weiwan.support.launcher.cluster.ClusterJobUtil;
 import com.weiwan.support.launcher.envs.JOBOptions;
 import com.weiwan.support.launcher.envs.JVMOptions;
 import org.apache.commons.lang3.StringUtils;
@@ -31,8 +32,13 @@ import org.apache.flink.yarn.YarnClusterInformationRetriever;
 import org.apache.flink.yarn.configuration.YarnDeploymentTarget;
 import org.apache.hadoop.yarn.api.records.ApplicationId;
 import org.apache.hadoop.yarn.client.api.YarnClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,6 +49,8 @@ import java.util.Map;
  * @Description:
  **/
 public class YarnJobSubmiter implements JobSubmiter {
+
+    private static final Logger logger = LoggerFactory.getLogger(YarnJobSubmiter.class);
 
     private YarnClient yarnClient;
 
@@ -135,6 +143,8 @@ public class YarnJobSubmiter implements JobSubmiter {
                 true);
         ClusterClientProvider<ApplicationId> clusterClientProvider = null;
 
+        printJobSubmitInfo(jobInfo);
+
         try {
             clusterClientProvider = yarnClusterDescriptor.deployApplicationCluster(jobInfo.getClusterSpecification(), appConfig);
         } catch (ClusterDeploymentException e) {
@@ -143,8 +153,27 @@ public class YarnJobSubmiter implements JobSubmiter {
 
         ClusterClient<ApplicationId> clusterClient = clusterClientProvider.getClusterClient();
         ApplicationId applicationId = clusterClient.getClusterId();
-        System.out.println(applicationId);
         return applicationId;
+    }
+
+
+    public static void printJobSubmitInfo(JobSubmitInfo info) {
+        logger.info("Task Submission Information");
+        logger.info("===============================================");
+        logger.info("Job Name: {}", info.getAppName());
+        logger.info("Job Args: {}", info.getAppArgs());
+        logger.info("Job Class: {}", info.getAppClassName());
+        logger.info("Job Type: {}", info.getAppType());
+        logger.info("Job Queue: {}", info.getYarnQueue());
+        logger.info("Job ClusterInfo: \n\t{}", info.getClusterSpecification());
+        logger.info("Job Jar: {}", info.getUserJars());
+        logger.info("Job Classpath: {}", info.getUserClasspath());
+        logger.info("Job Id: {}", info.getJobResourceId());
+        logger.info("Job SavePoint: {}", info.getSavePointPath() == null ? info.getSavePointPath() : "不适用");
+        logger.info("Flink DistJar: {}", info.getFlinkDistJar());
+        logger.info("Job Dynamic Parameters: \n\t{}", info.getDynamicParameters());
+        logger.info("===============================================");
+
     }
 
     @Override
@@ -155,5 +184,26 @@ public class YarnJobSubmiter implements JobSubmiter {
     @Override
     public Object getClusterClientForAppId(JobSubmitInfo jobInfo) {
         return null;
+    }
+
+    public static void main(String[] args) {
+        ArrayList<String> classPath = new ArrayList<>();
+        classPath.add("/flink_support/resources/1829dw9aijdadkauhdkadu");
+        ArrayList<String> userJars = new ArrayList<>();
+        userJars.add("/flink_support/lib/support-runtime-1.0.jar");
+        JobSubmitInfo build = JobSubmitInfo.newBuilder().appArgs(new String[]{"-logLevel", "Info", "-x", "-jobConf", "waduhawkjdhakiwdjhnwaiudhuiakwuwjhdn"})
+                .appClassName("com.weiwan.Tester")
+                .appName("TestApp")
+                .appType("Support Stream Application")
+                .clusterSpecification(ClusterJobUtil.createClusterSpecification(new HashMap<>()))
+                .dynamicParameters(new HashMap<>())
+                .flinkDistJar("/flink_support/flinks/1.11.1/lib/flink-dist.jar")
+                .jobResourceId("1829dw9aijdadkauhdkadu")
+                .yarnQueue("root.users.easylife")
+                .userClasspath(classPath)
+                .userJars(userJars)
+                .build();
+
+        printJobSubmitInfo(build);
     }
 }

@@ -407,15 +407,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
                 .localLogDir(supportCoreConf.getStringVal(SupportKey.SUPPORT_TASK_LOGDIR, SupportConstants.DEFAULT_SUPPORT_TASK_LOGDIR))
                 .dynamicParameters(params)
                 .build();
-
-        StringBuffer sb = new StringBuffer();
-        for (String arg : args) {
-            sb.append(arg);
-            sb.append("\n");
-        }
-        logger.info("启动参数: {}", sb.toString());
         JobSubmiter submiter = JobSubmiterFactory.createYarnSubmiter(ClusterJobUtil.getYarnClient(yarnConfiguration));
-
         try {
             submiter.submitJob(submitInfo);
         } catch (Exception e) {
@@ -424,6 +416,7 @@ public class JobApplicationProcessor extends ApplicationEnv {
         logger.info("The job handler is processed and the job has been submitted!");
         return true;
     }
+
 
     private Map<String, Object> mergeConfigToAll() {
         Map<String, Object> all = supportCoreConf.getAll();
