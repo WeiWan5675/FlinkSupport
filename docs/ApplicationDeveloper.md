@@ -18,9 +18,9 @@ FlinkSupport对Flink程序开发中一些重复性的工作进行了简单的封
 
   FlinkStream程序的Base类，在用户开发自己的Flink程序时，需要继承该类，并实现该类的三个抽象方法
 
-  	- open
-  	- process
-  	- output
+    - open
+    - process
+    - output
 
 - BatchAppSupport
 
@@ -30,9 +30,43 @@ FlinkSupport对Flink程序开发中一些重复性的工作进行了简单的封
 
   FlinkSupport程序的上下文环境。
 
-  	- JobConfig
-  	- FlinkEnvConfig
-  	- RunOptions
+   - JobConfig
+   - FlinkEnvConfig
+   - RunOptions
+
+
+
+## 开发
+
+- 引入依赖
+
+  ```xml
+  <dependency>
+      <groupId>com.weiwan</groupId>
+      <artifactId>support-core</artifactId>
+      <version>1.0</version>
+      <scope>provided</scope> <!-- 打包时需要修改为provided -->
+  </dependency>
+  ```
+
+- 实现脚手架抽象方法
+
+  ```java
+  public class TestSupportApp extends StreamAppSupport<String, String> {
+  
+      public DataStream<String> open(StreamExecutionEnvironment env, SupportAppContext context) {
+          return env.readTextFile("support-app.yaml");
+      }
+  
+      public DataStream<String> process(DataStream<String> stream, SupportAppContext context) {
+          return stream;
+      }
+  
+      public DataStreamSink output(DataStream<String> stream, SupportAppContext context) {
+          return stream.print();
+      }
+  }
+  ```
 
 ## 调试
 
@@ -60,7 +94,29 @@ public class TestSupportApp extends StreamAppSupport<String, String> {
 }
 ```
 
+## 打包
 
+下面为FlinkSupport程序打包最佳打包方式，由于FlinkSupport程序在提交时会将Flink相关的依赖提前准备好，所以用户程序在打包时，应将support-core、support-utils等依赖作用域调整为provided，避免打包出来体积过大。
+
+```xml
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-shade-plugin</artifactId>
+    <version>3.2.0</version>
+    <executions>
+        <execution>
+            <phase>package</phase>
+            <goals>
+                <goal>shade</goal>
+            </goals>
+            <configuration>
+                <shadedClassifierName>shaded</shadedClassifierName>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+```
 
 ## 其它
-
+ 暂无
+ 
