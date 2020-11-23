@@ -113,7 +113,7 @@ public class InitProcesser extends ApplicationEnv {
             File localPluginsDir = new File(_localPluginsDir);
             if (localPluginsDir.exists() && localPluginsDir.isDirectory()) {
                 //获取下边所有的jar, 然后做过滤 , 然后上传
-                Path remotePluginsDir = new Path(SupportConstants.SUPPORT_HDFS_CONF_DIR);
+                Path remotePluginsDir = new Path(SupportConstants.SUPPORT_HDFS_PLUGINS_DIR);
                 HdfsUtil.uploadFiles(fileSystem, localPluginsDir.getAbsolutePath(), remotePluginsDir);
                 logger.info("Upload Flink Support local plugin directory to remote Support Plugins directory: {}", remotePluginsDir.toUri());
             }

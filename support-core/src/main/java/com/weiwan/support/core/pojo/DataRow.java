@@ -19,6 +19,7 @@ import org.apache.flink.annotation.PublicEvolving;
 import org.apache.flink.util.StringUtils;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
 /**
@@ -29,14 +30,14 @@ import java.util.Arrays;
  * @Description:
  **/
 @PublicEvolving
-public class DataRow implements Serializable {
+public class DataRow<T> implements Serializable {
 
 
-    private final DataField[] fields;
+    private final T[] fields;
 
 
-    public DataRow(int arity) {
-        this.fields = new DataField[arity];
+    public DataRow(Class<T> tClass, int arity) {
+        this.fields = (T[]) Array.newInstance(tClass, arity);
     }
 
 
@@ -45,12 +46,12 @@ public class DataRow implements Serializable {
     }
 
 
-    public DataField getField(int pos) {
-        return fields[pos];
+    public T getField(int pos) {
+        return (T) fields[pos];
     }
 
 
-    public void setField(int pos, DataField value) {
+    public void setField(int pos, T value) {
         fields[pos] = value;
     }
 
@@ -74,8 +75,8 @@ public class DataRow implements Serializable {
     }
 
 
-    public static DataRow of(DataField... values) {
-        DataRow row = new DataRow(values.length);
+    public static DataRow of(Object... values) {
+        DataRow row = new DataRow(Object.class, values.length);
         for (int i = 0; i < values.length; i++) {
             row.setField(i, values[i]);
         }
@@ -83,14 +84,14 @@ public class DataRow implements Serializable {
     }
 
     public static DataRow copy(DataRow row) {
-        final DataRow newRow = new DataRow(row.fields.length);
+        final DataRow newRow = new DataRow(Object.class, row.fields.length);
         System.arraycopy(row.fields, 0, newRow.fields, 0, row.fields.length);
         return newRow;
     }
 
 
     public static DataRow project(DataRow row, int[] fields) {
-        final DataRow newRow = new DataRow(fields.length);
+        final DataRow newRow = new DataRow(Object.class, fields.length);
         for (int i = 0; i < fields.length; i++) {
             newRow.fields[i] = row.fields[fields[i]];
         }
@@ -104,7 +105,7 @@ public class DataRow implements Serializable {
                 '}';
     }
 
-    public DataField[] getFields() {
+    public T[] getFields() {
         return fields;
     }
 }

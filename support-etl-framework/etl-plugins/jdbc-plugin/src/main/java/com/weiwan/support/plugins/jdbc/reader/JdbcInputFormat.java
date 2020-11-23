@@ -256,7 +256,7 @@ public abstract class JdbcInputFormat extends BaseInputFormat<DataRecord<DataRow
         rowDataRecord.setSchemaName(dbSchema);
         rowDataRecord.setTimestamp(DateUtils.getDateStr(new java.util.Date()));
         try {
-            DataRow currentRow = new DataRow(columnCount);
+            DataRow currentRow = new DataRow(DataField.class, columnCount);
             rowDataRecord.setData(currentRow);
             if (!isComplete()) {
                 for (int i = 0; i < columnCount; i++) {
