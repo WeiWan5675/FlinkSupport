@@ -29,16 +29,15 @@ import java.util.Arrays;
  * @Description:
  **/
 @PublicEvolving
-public class DataRow<T> implements Serializable {
+public class DataRow implements Serializable {
 
 
-    private final T[] fields;
+    private final DataField[] fields;
 
 
     public DataRow(int arity) {
-        this.fields = (T[]) new Object[arity];
+        this.fields = new DataField[arity];
     }
-
 
 
     public int getArity() {
@@ -46,25 +45,13 @@ public class DataRow<T> implements Serializable {
     }
 
 
-    public T getField(int pos) {
+    public DataField getField(int pos) {
         return fields[pos];
     }
 
 
-    public void setField(int pos, T value) {
+    public void setField(int pos, DataField value) {
         fields[pos] = value;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < fields.length; i++) {
-            if (i > 0) {
-                sb.append(",");
-            }
-            sb.append(StringUtils.arrayAwareToString(fields[i]));
-        }
-        return sb.toString();
     }
 
     @Override
@@ -110,8 +97,14 @@ public class DataRow<T> implements Serializable {
         return newRow;
     }
 
+    @Override
+    public String toString() {
+        return "DataRow{" +
+                "fields=" + Arrays.toString(fields) +
+                '}';
+    }
 
-    public T[] getFields() {
+    public DataField[] getFields() {
         return fields;
     }
 }

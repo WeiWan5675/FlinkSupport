@@ -6,6 +6,7 @@ import com.weiwan.support.common.utils.FileUtil;
 import com.weiwan.support.core.constant.SupportConstants;
 import com.weiwan.support.launcher.envs.ApplicationEnv;
 import com.weiwan.support.launcher.options.GenericRunOption;
+import com.weiwan.support.launcher.options.JobRunOption;
 import com.weiwan.support.utils.hadoop.HadoopUtil;
 import com.weiwan.support.utils.hadoop.HdfsUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -31,6 +32,7 @@ public class InitProcesser extends ApplicationEnv {
 
     public InitProcesser(String[] args) {
         super(args);
+        super.genericRunOption = optionParser.parse(JobRunOption.class);
     }
 
     private FileSystem fileSystem;

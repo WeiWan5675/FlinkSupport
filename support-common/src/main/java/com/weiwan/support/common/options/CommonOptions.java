@@ -18,6 +18,7 @@ package com.weiwan.support.common.options;
 import com.beust.jcommander.DynamicParameter;
 import com.beust.jcommander.Parameter;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +29,7 @@ import java.util.Map;
  * @ClassName: CommonOptions
  * @Description:
  **/
-public class CommonOptions {
+public class CommonOptions implements Serializable {
 
     @DynamicParameter(names = "-D", description = "Dynamic parameters go here")
     private Map<String, String> params = new HashMap<>();

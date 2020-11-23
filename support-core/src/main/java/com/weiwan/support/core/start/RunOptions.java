@@ -18,6 +18,8 @@ package com.weiwan.support.core.start;
 import com.beust.jcommander.Parameter;
 import com.weiwan.support.common.options.CommonOptions;
 
+import java.io.Serializable;
+
 /**
  * @Author: xiaozhennan
  * @Date: 2020/9/28 17:20
@@ -25,7 +27,7 @@ import com.weiwan.support.common.options.CommonOptions;
  * @ClassName: RunOptions
  * @Description:
  **/
-public class RunOptions extends CommonOptions {
+public class RunOptions extends CommonOptions implements Serializable {
 
 
     @Parameter(names = {"-x", "-stream"}, description = "stream mode")
