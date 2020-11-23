@@ -118,6 +118,9 @@ public abstract class ApplicationEnv implements EnvProcess {
         supportCoreConf = new SupportCoreConf(YamlUtils.getYamlByFileName(coreConfFile));
         supportETLConf = new SupportETLConf(YamlUtils.getYamlByFileName(etlConfFile));
         supportSqlConf = new SupportSqlConf(YamlUtils.getYamlByFileName(sqlConfFile));
+
+        //option优先级最高,覆盖supportCoreConf
+        supportCoreConf.setStringVal(SupportConstants.KEY_SUPPORT_HOME,option.getMyHome());
     }
 
     private void setEnvironmentVariables(GenericRunOption option) throws IOException {

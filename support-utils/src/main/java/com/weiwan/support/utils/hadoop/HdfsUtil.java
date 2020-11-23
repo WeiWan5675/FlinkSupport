@@ -16,7 +16,6 @@
 package com.weiwan.support.utils.hadoop;
 
 
-import com.weiwan.support.common.utils.FileUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.fs.*;
 
@@ -126,6 +125,22 @@ public class HdfsUtil {
         //存在就直接上传
         fileSystem.copyFromLocalFile(false, true, paths, dstDir);
     }
+
+
+    public static void uploadFiles(FileSystem fileSystem, Path dstDir, File ... files) throws IOException {
+        //判断文件夹是否存在,不存在需要创建
+        Path[] paths = new Path[files.length];
+        for (int i = 0; i < files.length; i++) {
+            paths[i] = new Path(files[i].toURI());
+        }
+        if (!fileSystem.exists(dstDir)) {
+            fileSystem.mkdirs(dstDir);
+        }
+        //存在就直接上传
+        fileSystem.copyFromLocalFile(false, true, paths, dstDir);
+    }
+
+
 
     public static List<Path> find(FileSystem fileSystem, Path path, String suffix) {
         List<Path> paths = new ArrayList<>();

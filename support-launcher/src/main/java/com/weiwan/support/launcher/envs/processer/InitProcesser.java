@@ -33,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 
 /**
@@ -87,7 +88,14 @@ public class InitProcesser extends ApplicationEnv {
             if (localLibDir.exists() && localLibDir.isDirectory()) {
                 //获取下边所有的jar, 然后做过滤 , 然后上传
                 Path remoteLibDir = new Path(SupportConstants.SUPPORT_HDFS_LIB_DIR);
-                HdfsUtil.uploadFiles(fileSystem, localLibDir.getAbsolutePath(), remoteLibDir);
+                File[] files = localLibDir.listFiles(new FilenameFilter() {
+                    @Override
+                    public boolean accept(File dir, String name) {
+                        //过滤flink依赖以及log4j依赖 TODO
+                        return (!name.startsWith("flink") && !name.startsWith("log4j"));
+                    }
+                });
+                HdfsUtil.uploadFiles(fileSystem, remoteLibDir, files);
                 logger.info("Upload Flink Support local dependencies to remote Support Lib directory: {}", remoteLibDir.toUri());
             }
 
@@ -167,12 +175,12 @@ public class InitProcesser extends ApplicationEnv {
      */
     @Override
     public void emptyParameterCheck(GenericRunOption genericRunOption) {
-        String flinkHomeDir = supportCoreConf.getStringVal(SupportConstants.KEY_FLINK_HOME);
+        String flinkHomeDir = genericRunOption.getFlinkHome();
         if (StringUtils.isEmpty(flinkHomeDir) && FileUtil.existsDir(flinkHomeDir)) {
             throw new SupportException("Please check if the FLINK_HOME environment variable exists");
         }
 
-        String hadoopHomeDir = supportCoreConf.getStringVal(SupportConstants.KEY_HADOOP_HOME);
+        String hadoopHomeDir = genericRunOption.getHadoopHome();
         if (StringUtils.isEmpty(hadoopHomeDir) && FileUtil.existsDir(hadoopHomeDir)) {
             throw new SupportException("Please check if the HADOOP_HOME environment variable exists");
         }

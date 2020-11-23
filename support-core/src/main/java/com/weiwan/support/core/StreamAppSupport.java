@@ -17,6 +17,9 @@ package com.weiwan.support.core;
 
 import com.weiwan.support.core.annotation.Support;
 import com.weiwan.support.core.api.*;
+import com.weiwan.support.core.config.JobConfig;
+import com.weiwan.support.core.constant.SupportConstants;
+import com.weiwan.support.core.constant.SupportKey;
 import com.weiwan.support.core.coprocessor.*;
 import com.weiwan.support.core.start.RunOptions;
 import org.apache.flink.api.common.JobExecutionResult;
@@ -102,7 +105,8 @@ public abstract class StreamAppSupport<I_OUT, P_OUT> implements
     }
 
     public TaskResult executeTask() throws Exception {
-        JobExecutionResult execute = env.execute("TestApp");
+        JobConfig jobConfig = context.getJobConfig();
+        JobExecutionResult execute = env.execute(jobConfig.getStringVal(SupportKey.APP_NAME, "Support Application"));
         JobID jobID = execute.getJobID();
         _LOGGER.info("the job has been submitted and the job id is {}", jobID.toString());
         TaskResult taskResult = new TaskResult(jobID);
