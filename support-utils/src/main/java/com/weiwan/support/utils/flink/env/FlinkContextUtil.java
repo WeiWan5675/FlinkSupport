@@ -114,4 +114,11 @@ public class FlinkContextUtil {
         javaEnvIniter.initStream(flinkContext);
         return flinkContext;
     }
+
+    public static FlinkContext<ExecutionEnvironment> getBatchContext(FlinkEnvConfig flinkEnvConfig) {
+        ExecutionEnvironment executionEnvironment = ExecutionEnvironment.getExecutionEnvironment();
+        FlinkContext<ExecutionEnvironment> flinkContext = new FlinkContext(executionEnvironment, flinkEnvConfig);
+        javaEnvIniter.initBatch(flinkContext);
+        return flinkContext;
+    }
 }

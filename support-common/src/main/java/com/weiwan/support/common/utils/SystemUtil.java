@@ -15,6 +15,7 @@
  */
 package com.weiwan.support.common.utils;
 
+import com.weiwan.support.common.enums.EPlatform;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -49,6 +50,16 @@ public class SystemUtil {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static String getSystemUserName() {
+        String sysUserName = "unknown";
+        if(OSinfo.getOSname() == EPlatform.Windows){
+            sysUserName = System.getProperty("user.name");
+        }else if(OSinfo.getOSname() == EPlatform.Linux){
+            sysUserName = System.getProperty("USER");
+        }
+        return sysUserName;
     }
 
     public static List<URL> findJarsInDir(File dir) throws MalformedURLException {

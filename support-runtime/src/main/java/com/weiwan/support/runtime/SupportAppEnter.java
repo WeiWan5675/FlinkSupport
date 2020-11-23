@@ -55,13 +55,8 @@ public class SupportAppEnter {
 
     private static final Logger logger = LoggerFactory.getLogger(SupportAppEnter.class);
 
-
     public static void main(String[] args) throws Exception {
-
         try {
-
-            //输出重定向到日志文件
-//            StdoutRedirect.redirectSystemOutAndErrToLog();
             OptionParser optionParser = new OptionParser(args);
             RunOptions options = optionParser.parse(RunOptions.class);
             CommonUtil.useCommandLogLevel(options.getLogLevel());
@@ -70,15 +65,10 @@ public class SupportAppEnter {
             String jobContent = Base64Util.decode(options.getJobDescJson());
             Map<String, String> jobMap = JSONObject.parseObject(jobContent, Map.class);
             printEnvInfo(optionToMap, jobMap);
-            if (jobMap != null) {
-                logger.info(jobMap.toString());
-            }
-            System.out.println(jobMap);
-            printEnvInfo(optionToMap, jobMap);
-            Map<String, Object> tmpObj = new HashMap<>();
-            tmpObj.putAll(jobMap);
-            tmpObj.putAll(optionToMap);
-            SupportAppContext context = convertOptionsToContext(options, tmpObj);
+            Map<String, Object> parameters = new HashMap<>();
+            parameters.putAll(jobMap);
+            parameters.putAll(optionToMap);
+            SupportAppContext context = convertOptionsToContext(options, parameters);
             FlinkSupport flinkSupport = null;
             Object env = null;
             if (options.isStream()) {
@@ -108,25 +98,15 @@ public class SupportAppEnter {
                 throw new SupportException("Unsupported application mode, please check the operating parameters");
             }
 
-
-            Class<? extends FlinkSupport> aClass = flinkSupport.getClass();
-            Support annotation = aClass.getDeclaredAnnotation(Support.class);
-            if(annotation != null){
-                options.setEnableAnnotation(true);
-            }
             flinkSupport.initEnv(env, context, options);
             Method submit = ReflectUtil.getDeclaredMethod(flinkSupport, "submit");
             TaskResult taskResult = (TaskResult) submit.invoke(flinkSupport);
-            System.out.println("Job: " + taskResult.getJobID() + " run!!!!!!!!!!!!!!!!!!!!!!!");
+            logger.info("Job: " + taskResult.getJobID() + " run!!!!!!!!!!!!!!!!!!!!!!!");
         } catch (Exception e) {
-            System.err.println("报错拉+++++++++++++++++++++++");
+            logger.error("Error executing Flink Support task!", e);
             e.printStackTrace();
+            throw e;
         }
-
-
-        //设置属性去
-
-
     }
 
     private static void printEnvInfo(Map<String, Object> optionToMap, Map<String, String> jobMap) {
@@ -145,15 +125,9 @@ public class SupportAppEnter {
 
     private static SupportAppContext convertOptionsToContext(RunOptions options, Map<String, Object> taskObj) {
         SupportAppContext supportAppContext = new SupportAppContext(options);
-        FlinkEnvConfig flinkEnvConfig = new FlinkEnvConfig(new HashMap<>());
+        FlinkEnvConfig flinkEnvConfig = new FlinkEnvConfig();
+        flinkEnvConfig.addFlinkTaskConfig(taskObj);
         JobConfig jobConfig = new JobConfig(taskObj);
-
-        for (String taskKey : taskObj.keySet()) {
-            if (taskKey.startsWith("flink.task")) {
-                //flink的配置
-                flinkEnvConfig.setVal(taskKey, taskObj.get(taskKey));
-            }
-        }
         supportAppContext.setFlinkEnvConfig(flinkEnvConfig);
         supportAppContext.setJobConfig(jobConfig);
         return supportAppContext;

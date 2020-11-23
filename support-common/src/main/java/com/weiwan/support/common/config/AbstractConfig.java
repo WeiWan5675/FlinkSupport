@@ -36,7 +36,7 @@ public abstract class AbstractConfig implements Serializable {
     }
 
     public AbstractConfig() {
-
+        this(new HashMap<String, Object>());
     }
 
 

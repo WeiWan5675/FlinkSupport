@@ -17,6 +17,7 @@ package com.weiwan.support.common.utils;
 
 import com.weiwan.support.common.exception.SupportException;
 import org.apache.commons.codec.Charsets;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -69,6 +70,17 @@ public class FileUtil {
         if (fileName != null) {
             File file = new File(fileName);
             return file.exists() && file.isDirectory();
+        }
+        return false;
+    }
+
+    public static boolean checkFileSuffix(String path, String... fileSuffix) {
+        if (StringUtils.isNotEmpty(path)) {
+            for (String suffix : fileSuffix) {
+                if (path.endsWith(suffix)) {
+                    return true;
+                }
+            }
         }
         return false;
     }

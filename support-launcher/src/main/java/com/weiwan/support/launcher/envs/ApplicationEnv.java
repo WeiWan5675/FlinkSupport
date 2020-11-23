@@ -131,7 +131,7 @@ public abstract class ApplicationEnv implements EnvProcess {
 
     private void setSystemEnvVariables(GenericRunOption option) {
         if (VariableCheckTool.checkNullOrEmpty(supportCoreConf.getStringVal(SupportConstants.HADOOP_USER_NAME))) {
-            supportCoreConf.setVal(SupportConstants.HADOOP_USER_NAME, System.getProperty("USER"));
+            supportCoreConf.setVal(SupportConstants.HADOOP_USER_NAME, SystemUtil.getSystemUserName());
         }
         System.setProperty(SupportConstants.HADOOP_USER_NAME, supportCoreConf.getStringVal(SupportConstants.HADOOP_USER_NAME));
     }
