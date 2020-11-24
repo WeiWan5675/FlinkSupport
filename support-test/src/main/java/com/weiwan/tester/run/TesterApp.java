@@ -44,8 +44,6 @@ public class TesterApp extends StreamAppSupport<DataRecord<String>, DataRecord<S
     private static final Logger logger = LoggerFactory.getLogger(TesterApp.class);
 
     @Override
-    @SupportKafkaSource
-    @SupportMysqlSource
     @SupportSourceParallelism
     public DataStream<DataRecord<String>> open(StreamExecutionEnvironment env, SupportAppContext context) {
         return env.addSource(new SourceFunction<DataRecord<String>>() {

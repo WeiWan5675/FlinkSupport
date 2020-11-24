@@ -17,6 +17,7 @@ package com.weiwan.tester.run;
 
 import com.weiwan.support.core.StreamAppSupport;
 import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.annotation.*;
 import com.weiwan.support.core.junit.SupportTest;
 import com.weiwan.support.core.junit.SupportTestConsole;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -30,8 +31,20 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  * @ClassName: TesterAppV2
  * @Description:
  **/
-@SupportTest(jobFile = "G:\\Project\\FlinkSupport\\support-test\\src\\main\\resources\\app.yaml")
+@SupportTest(jobFile = "F:\\Project\\FlinkSupport\\support-test\\src\\main\\resources\\app.yaml")
+@Support
+@Parallelism
+@PrintToLog
+@Checkpoint
 public class TestConsoleTester extends StreamAppSupport<String, String> {
+
+
+    public static void main(String[] args) throws Exception {
+        SupportTestConsole build = SupportTestConsole.newBuilder().waitTestClass(TestConsoleTester.class).build();
+        build.run();
+    }
+
+
     @Override
     public DataStream<String> open(StreamExecutionEnvironment env, SupportAppContext context) {
         return null;
@@ -46,10 +59,4 @@ public class TestConsoleTester extends StreamAppSupport<String, String> {
     public DataStreamSink output(DataStream<String> stream, SupportAppContext context) {
         return null;
     }
-
-    public static void main(String[] args) throws Exception {
-        SupportTestConsole build = SupportTestConsole.newBuilder().waitTestClass(TestConsoleTester.class).build();
-        build.run();
-    }
-
 }
