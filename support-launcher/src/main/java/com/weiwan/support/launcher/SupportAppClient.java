@@ -18,9 +18,10 @@ package com.weiwan.support.launcher;
 
 import com.weiwan.support.common.exception.SupportException;
 import com.weiwan.support.common.options.OptionParser;
+import com.weiwan.support.core.constant.SupportKey;
 import com.weiwan.support.launcher.envs.ApplicationEnv;
 import com.weiwan.support.launcher.envs.processer.InitProcesser;
-import com.weiwan.support.launcher.envs.processer.JobApplicationProcessor;
+import com.weiwan.support.launcher.envs.processer.YarnJobApplicationProcessor;
 import com.weiwan.support.launcher.envs.processer.LocalApplicationProcesser;
 import com.weiwan.support.launcher.envs.processer.ReplApplicationProcessor;
 import com.weiwan.support.launcher.hook.ShutdownHook;
@@ -60,7 +61,9 @@ public class SupportAppClient {
             RunMode runMode = RunMode.valueOf(_option.getRunMode().toUpperCase());
             switch (runMode) {
                 case JOB:
-                    applicationEnv = new JobApplicationProcessor(args);
+                    boolean enableK8s = Boolean.valueOf(_option.getParams().getOrDefault("enable.kubernetes", "false"));
+                    applicationEnv = enableK8s ?
+                            new K8sJobApplicationProcessor(args) : new YarnJobApplicationProcessor(args);
                     logger.debug("running job env mode");
                     break;
 //                case API: TODO 这里不考虑API模式,单独提供一个API服务,这里只作为应用启动的入口

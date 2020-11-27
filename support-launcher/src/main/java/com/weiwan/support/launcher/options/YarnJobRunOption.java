@@ -21,11 +21,11 @@ import com.weiwan.support.launcher.enums.RunCmd;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/9/30 11:23
- * @Package: com.weiwan.support.launcher.options.JobRunOption
- * @ClassName: JobRunOption
+ * @Package: com.weiwan.support.launcher.options.YarnJobRunOption
+ * @ClassName: YarnJobRunOption
  * @Description:
  **/
-public class JobRunOption extends GenericRunOption {
+public class YarnJobRunOption extends GenericRunOption {
 
     @Parameter(names = {"-cmd"}, converter = RumCmdEnumConverter.class, description = "The command to be executed, the optional commands are [run|stop|canal|info|list]")
     private RunCmd cmd;
@@ -45,8 +45,19 @@ public class JobRunOption extends GenericRunOption {
     @Parameter(names = {"-q", "-queue"}, description = "set the name of the yarn resource queue")
     private String queueName;
 
-    @Parameter(names = "-jid",description = "When you want to execute {stop|canal|info}, you need to use this parameter to specify job Id")
+    @Parameter(names = "-p", description = "Support Job Parallelism")
+    private int parallelism;
+
+    @Parameter(names = "-jid", description = "When you want to execute {stop|canal|info}, you need to use this parameter to specify job Id")
     private String jobId;
+
+    public int getParallelism() {
+        return parallelism;
+    }
+
+    public void setParallelism(int parallelism) {
+        this.parallelism = parallelism;
+    }
 
     public String getJobId() {
         return jobId;

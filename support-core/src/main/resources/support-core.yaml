@@ -30,7 +30,7 @@ flink:
     batch:
       sessionTimeout:     #保存作业的中间结果的超时时间 暂未启用
     stream:
-      timeCharacteristic:    #流处理的事件模式  默认processTime eventTime
+      timeCharacteristic:    #流处理的事件模式  默认ProcessTime EventTime IngestionTime
     checkpoint:
       enable: false       #是否启用检查点
       interval: 60000         #检查点间隔  单位毫秒

@@ -29,13 +29,13 @@ import com.weiwan.support.launcher.cluster.ClusterJobUtil;
 import com.weiwan.support.launcher.enums.RunCmd;
 import com.weiwan.support.launcher.enums.TaskType;
 import com.weiwan.support.launcher.envs.JVMOptions;
+import com.weiwan.support.launcher.options.YarnJobRunOption;
 import com.weiwan.support.launcher.submit.JobSubmitInfo;
 import com.weiwan.support.launcher.submit.JobSubmiter;
 import com.weiwan.support.launcher.submit.JobSubmiterFactory;
 import com.weiwan.support.launcher.enums.ResourceMode;
 import com.weiwan.support.launcher.envs.ApplicationEnv;
 import com.weiwan.support.launcher.options.GenericRunOption;
-import com.weiwan.support.launcher.options.JobRunOption;
 import com.weiwan.support.utils.flink.conf.FlinkContains;
 import com.weiwan.support.utils.hadoop.HadoopUtil;
 import com.weiwan.support.utils.hadoop.HdfsUtil;
@@ -55,15 +55,15 @@ import java.util.*;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/9/30 10:46
- * @Package: com.weiwan.support.launcher.envs.processer.JobApplicationProcessor
- * @ClassName: JobApplicationProcessor
+ * @Package: com.weiwan.support.launcher.envs.processer.YarnJobApplicationProcessor
+ * @ClassName: YarnJobApplicationProcessor
  * @Description:
  **/
-public class JobApplicationProcessor extends ApplicationEnv {
+public class YarnJobApplicationProcessor extends ApplicationEnv {
 
-    private static final Logger logger = LoggerFactory.getLogger(JobApplicationProcessor.class);
+    private static final Logger logger = LoggerFactory.getLogger(YarnJobApplicationProcessor.class);
 
-    private JobRunOption option;
+    private YarnJobRunOption option;
 
 
     private FileSystem fileSystem;
@@ -81,15 +81,15 @@ public class JobApplicationProcessor extends ApplicationEnv {
     private String jobResourceId;
 
 
-    public JobApplicationProcessor(String[] args) {
+    public YarnJobApplicationProcessor(String[] args) {
         super(args);
-        super.genericRunOption = optionParser.parse(JobRunOption.class);
+        super.genericRunOption = optionParser.parse(YarnJobRunOption.class);
     }
 
 
     @Override
     public void init(GenericRunOption genericRunOption) throws IOException {
-        this.option = (JobRunOption) genericRunOption;
+        this.option = (YarnJobRunOption) genericRunOption;
         this.hadoopConfiguration = (Configuration) supportCoreConf.getVal(SupportConstants.KEY_HADOOP_CONFIGURATION);
         this.flinkConfiguration = (org.apache.flink.configuration.Configuration) supportCoreConf.getVal(SupportConstants.KEY_FLINK_CONFIGURATION);
         this.yarnConfiguration = (YarnConfiguration) supportCoreConf.getVal(SupportConstants.KEY_YARN_CONFIGURATION);
@@ -423,10 +423,18 @@ public class JobApplicationProcessor extends ApplicationEnv {
         all.putAll(supportETLConf.getAll());
         all.putAll(supportSqlConf.getAll());
         all.putAll(userJobConf.getAll());
+        //设置并行度,命令行优先级大于配置文件
+        if (option.getParallelism() != 0) {
+            all.put(FlinkContains.FLINK_TASK_COMMON_PARALLELISM_KEY, option.getParallelism());
+        }
+        //设置yarn资源队列
+        if(StringUtils.isNotEmpty(option.getQueueName())){
+            all.put(FlinkContains.FLINK_TASK_COMMON_QUEUE_KEY,option.getQueueName());
+        }
         return all;
     }
 
-    private RunOptions convertCmdToRunOption(JobRunOption option) {
+    private RunOptions convertCmdToRunOption(YarnJobRunOption option) {
         RunOptions runOptions = new RunOptions();
         runOptions.setLogLevel(option.getLogLevel());
         runOptions.setParams(option.getParams());
@@ -441,17 +449,17 @@ public class JobApplicationProcessor extends ApplicationEnv {
      */
     @Override
     public void emptyParameterCheck(GenericRunOption genericRunOption) {
-        JobRunOption jobRunOption = (JobRunOption) genericRunOption;
-        if (jobRunOption.getCmd() == null) {
+        YarnJobRunOption yarnJobRunOption = (YarnJobRunOption) genericRunOption;
+        if (yarnJobRunOption.getCmd() == null) {
             throw new SupportException(String.format("Please specify an operation to be performed, optional operations are: {%s}", RunCmd.print()));
         }
 
-        if (jobRunOption.getCmd() == RunCmd.RUN && VariableCheckTool.checkNullOrEmpty(jobRunOption.getJobConf())) {
+        if (yarnJobRunOption.getCmd() == RunCmd.RUN && VariableCheckTool.checkNullOrEmpty(yarnJobRunOption.getJobConf())) {
             throw new SupportException("The job configuration file cannot be empty, please specify the configuration file!");
         }
 
-        if (jobRunOption.getCmd() == RunCmd.CANAL || jobRunOption.getCmd() == RunCmd.STOP || jobRunOption.getCmd() == RunCmd.INFO || jobRunOption.getCmd() == RunCmd.SAVEPOINT) {
-            if (VariableCheckTool.checkNullOrEmpty(jobRunOption.getJobId())) {
+        if (yarnJobRunOption.getCmd() == RunCmd.CANAL || yarnJobRunOption.getCmd() == RunCmd.STOP || yarnJobRunOption.getCmd() == RunCmd.INFO || yarnJobRunOption.getCmd() == RunCmd.SAVEPOINT) {
+            if (VariableCheckTool.checkNullOrEmpty(yarnJobRunOption.getJobId())) {
                 throw new SupportException("Need to specify a jobid");
             }
         }
@@ -466,26 +474,26 @@ public class JobApplicationProcessor extends ApplicationEnv {
      */
     @Override
     public void illegalParameterCheck(GenericRunOption genericRunOption) {
-        JobRunOption jobRunOption = (JobRunOption) genericRunOption;
+        YarnJobRunOption yarnJobRunOption = (YarnJobRunOption) genericRunOption;
 
         //资源地址校验
-        if (!jobRunOption.getJobConf().startsWith("hdfs:")) {
-            File file = new File(jobRunOption.getJobConf());
+        if (!yarnJobRunOption.getJobConf().startsWith("hdfs:")) {
+            File file = new File(yarnJobRunOption.getJobConf());
             if (!file.exists() && !file.isFile()) {
                 //配置文件在本地,但是本地配置文件未找到,抛出异常
                 throw new SupportException("The configuration file does not exist, please check the path");
-            } else if (VariableCheckTool.checkNullOrEmpty(jobRunOption.getResources())) {
+            } else if (VariableCheckTool.checkNullOrEmpty(yarnJobRunOption.getResources())) {
                 //是本地模式 TODO 此处可以默认配置文件目录为本地资源目录 ,但是没有指定资源地址,抛出异常
                 throw new SupportException("No resource path specified, please use [-resources] to specify local resources");
             }
             resourceMode = ResourceMode.LOCAL;
-        } else if (jobRunOption.getJobConf().startsWith("hdfs:")) {
+        } else if (yarnJobRunOption.getJobConf().startsWith("hdfs:")) {
             resourceMode = ResourceMode.HDFS;
         } else {
             throw new SupportException("Unsupported profile protocol!");
         }
 
-        if (!FileUtil.checkFileSuffix(jobRunOption.getJobConf(),
+        if (!FileUtil.checkFileSuffix(yarnJobRunOption.getJobConf(),
                 Constans.YAML_FILE_SUFFIX,
                 Constans.YML_FILE_SUFFIX,
                 Constans.PROPERTIES_FILE_SUFFIX)) {
