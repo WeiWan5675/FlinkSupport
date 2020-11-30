@@ -1,5 +1,6 @@
 package com.weiwan.support.core.enums;
 
+import com.weiwan.support.core.annotation.SupportSource;
 import com.weiwan.support.core.source.*;
 
 /**
@@ -20,7 +21,10 @@ public enum SourceElement {
     BinlogSource(com.weiwan.support.core.source.BinlogSource.class),
     HiveSource(com.weiwan.support.core.source.HiveSource.class);
 
+    public static final Class<SupportSource> SUPPORT_SOURCE_CLASS = SupportSource.class;
+
     private Class<?> source;
+
 
     SourceElement(Class<?> source) {
         this.source = source;

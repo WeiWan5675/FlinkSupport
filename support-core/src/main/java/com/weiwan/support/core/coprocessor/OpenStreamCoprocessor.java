@@ -15,14 +15,10 @@
  */
 package com.weiwan.support.core.coprocessor;
 
-import com.weiwan.support.core.AnnotationInfo;
-import com.weiwan.support.core.SupportAnnotationScaner;
 import com.weiwan.support.core.SupportAppContext;
 import com.weiwan.support.core.api.SupportDataFlow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Map;
 
 /**
  * @Author: xiaozhennan

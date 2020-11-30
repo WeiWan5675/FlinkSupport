@@ -16,6 +16,7 @@
 package com.weiwan.support.core.api;
 
 import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.coprocessor.Support;
 import com.weiwan.support.core.start.RunOptions;
 
 /**
@@ -25,13 +26,11 @@ import com.weiwan.support.core.start.RunOptions;
  * @ClassName: FlinkSupport
  * @Description:
  **/
-public interface FlinkSupport<T> {
+public interface FlinkSupport<T> extends Support {
 
     void initEnv(T t, SupportAppContext context, RunOptions options);
 
     T getEnv();
-
-    SupportAppContext getContext();
 
     TaskResult executeTask() throws Exception;
 }

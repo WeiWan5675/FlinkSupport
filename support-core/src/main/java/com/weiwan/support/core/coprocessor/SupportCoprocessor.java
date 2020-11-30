@@ -16,12 +16,10 @@
 package com.weiwan.support.core.coprocessor;
 
 
-import com.weiwan.support.core.SupportAnnotationScaner;
 import com.weiwan.support.core.SupportAppContext;
 import com.weiwan.support.core.api.FlinkSupport;
 import com.weiwan.support.core.api.SupportDataFlow;
-
-import java.util.List;
+import com.weiwan.support.core.config.JobConfig;
 
 /**
  * @Author: xiaozhennan
@@ -30,13 +28,23 @@ import java.util.List;
  * @ClassName: SupportCoprocessor
  * @Description:
  **/
-public abstract class SupportCoprocessor {
+public abstract class SupportCoprocessor implements Support {
 
     protected SupportAppContext context;
+    protected JobConfig jobConfig;
 
     protected SupportCoprocessor nextCoprocessor;
 
     public SupportCoprocessor(SupportAppContext context) {
+        this.context = context;
+    }
+
+    @Override
+    public SupportAppContext getContext() {
+        return context;
+    }
+
+    public void setContext(SupportAppContext context) {
         this.context = context;
     }
 

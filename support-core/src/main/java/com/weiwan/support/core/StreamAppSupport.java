@@ -15,10 +15,8 @@
  */
 package com.weiwan.support.core;
 
-import com.weiwan.support.core.annotation.Support;
 import com.weiwan.support.core.api.*;
 import com.weiwan.support.core.config.JobConfig;
-import com.weiwan.support.core.constant.SupportConstants;
 import com.weiwan.support.core.constant.SupportKey;
 import com.weiwan.support.core.coprocessor.*;
 import com.weiwan.support.core.start.RunOptions;
@@ -41,7 +39,7 @@ public abstract class StreamAppSupport<I_OUT, P_OUT> implements
     private static final Logger _LOGGER = LoggerFactory.getLogger(StreamAppSupport.class);
 
     private StreamExecutionEnvironment env;
-    private SupportAppContext context;
+    private SupportAppContext internalContext;
     private RunOptions options;
 
 
@@ -61,26 +59,25 @@ public abstract class StreamAppSupport<I_OUT, P_OUT> implements
     @Override
     public final void initEnv(StreamExecutionEnvironment executionEnvironment, SupportAppContext context, RunOptions options) {
         this.env = executionEnvironment;
-        this.context = context;
+        this.internalContext = context;
         this.options = options;
 
-
-        coprocessors = new FirstPreCoprocessor(this.context);
+        this.coprocessors = new FirstPreCoprocessor(this.internalContext);
         SupportCoprocessor next = coprocessors; //第一个预处理处理器
         if (options.isEtl()) {
             this.isEtl = options.isEtl();
-            next = next.nextCoprocessor(new EtlCoprocessor(this.context));  //etl插件模式处理器
+            next = next.nextCoprocessor(new EtlCoprocessor(this.internalContext));  //etl插件模式处理器
         } else if (options.isTable()) {
             this.isTable = options.isTable();
-            next = next.nextCoprocessor(new TableCoprocessor(this.context));  //table环境处理器
+            next = next.nextCoprocessor(new TableCoprocessor(this.internalContext));  //table环境处理器
         } else {
             next = next
-                    .nextCoprocessor(new ClassAnnotationCoprocessor(context))
+                    .nextCoprocessor(new StreamAnnoCoprocessor(context))
                     .nextCoprocessor(new OpenStreamCoprocessor(context))
                     .nextCoprocessor(new StreamCoprocessor(context))
                     .nextCoprocessor(new OutputStreamCoprocessor(context));
         }
-        next.nextCoprocessor(new LastPreCoprocessor(this.context));  //最后一个预处理处理器
+        next.nextCoprocessor(new LastPreCoprocessor(this.internalContext));  //最后一个预处理处理器
 
     }
 
@@ -89,7 +86,7 @@ public abstract class StreamAppSupport<I_OUT, P_OUT> implements
     }
 
     public final SupportAppContext getContext() {
-        return this.context;
+        return this.internalContext;
     }
 
     /**
@@ -105,7 +102,7 @@ public abstract class StreamAppSupport<I_OUT, P_OUT> implements
     }
 
     public TaskResult executeTask() throws Exception {
-        JobConfig jobConfig = context.getJobConfig();
+        JobConfig jobConfig = internalContext.getJobConfig();
         JobExecutionResult execute = env.execute(jobConfig.getStringVal(SupportKey.APP_NAME, "Support Application"));
         JobID jobID = execute.getJobID();
         _LOGGER.info("the job has been submitted and the job id is {}", jobID.toString());

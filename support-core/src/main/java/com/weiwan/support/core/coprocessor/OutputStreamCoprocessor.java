@@ -15,7 +15,6 @@
  */
 package com.weiwan.support.core.coprocessor;
 
-import com.weiwan.support.core.SupportAnnotationScaner;
 import com.weiwan.support.core.SupportAppContext;
 import com.weiwan.support.core.api.SupportDataFlow;
 import org.apache.flink.streaming.api.datastream.DataStreamSink;
@@ -34,7 +33,7 @@ public class OutputStreamCoprocessor extends SupportCoprocessor {
 
     @Override
     public <E, S1, S2> Object process(E env, SupportDataFlow<E, S1, S2> dataFlow, Object obj) throws Exception {
-        DataStreamSink output = dataFlow.output((S2) obj, context);
+        DataStreamSink output = dataFlow.output((S2) obj);
         return nextProcess(env, dataFlow, output);
     }
 }

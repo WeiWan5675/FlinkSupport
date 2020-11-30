@@ -30,4 +30,6 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Support {
+
+    boolean enable() default false;
 }

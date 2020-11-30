@@ -1,5 +1,6 @@
 package com.weiwan.support.core.enums;
 
+import com.weiwan.support.core.annotation.SupportSource;
 import com.weiwan.support.core.sink.OpLogSink;
 
 /**
@@ -20,6 +21,7 @@ public enum SinkElement {
     BinlogSink(com.weiwan.support.core.sink.BinlogSink.class),
     HiveSink(com.weiwan.support.core.sink.HiveSink.class);
 
+    public static final Class<SupportSource> SUPPORT_SOURCE_CLASS = SupportSource.class;
     private final Class<?> sinkClass;
 
     SinkElement(Class<?> sinkClass) {

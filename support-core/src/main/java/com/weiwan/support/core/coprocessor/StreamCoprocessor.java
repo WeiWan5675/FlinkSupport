@@ -32,7 +32,7 @@ public class StreamCoprocessor extends SupportCoprocessor {
 
     @Override
     public <E, S1, S2> Object process(E env, SupportDataFlow<E, S1, S2> dataFlow, Object obj) throws Exception {
-        S2 process = dataFlow.process((S1) obj, context);
+        S2 process = dataFlow.process((S1) obj);
         return nextProcess(env, dataFlow, process);
     }
 }

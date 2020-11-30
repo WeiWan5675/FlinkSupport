@@ -25,7 +25,8 @@ import java.lang.annotation.*;
  * @Description:
  **/
 @Inherited
-@Target(ElementType.TYPE)
+@Target({ElementType.TYPE, ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Parallelism {
+    int num() default 1;
 }

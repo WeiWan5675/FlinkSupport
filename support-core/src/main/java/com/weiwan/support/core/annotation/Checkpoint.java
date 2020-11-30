@@ -15,6 +15,8 @@
  */
 package com.weiwan.support.core.annotation;
 
+import org.apache.flink.streaming.api.CheckpointingMode;
+
 import java.lang.annotation.*;
 
 /**
@@ -28,4 +30,15 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Checkpoint {
+    boolean enableAutoConfigura() default false;
+
+    long interval() default 60000;
+
+    long timeout() default 60000;
+
+    CheckpointingMode mode() default CheckpointingMode.EXACTLY_ONCE;
+
+    long minInterval() default 1000;
+
+    int maxConcurrent() default 1;
 }

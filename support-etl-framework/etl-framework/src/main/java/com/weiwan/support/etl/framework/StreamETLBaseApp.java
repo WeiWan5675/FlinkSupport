@@ -38,12 +38,12 @@ public class StreamETLBaseApp extends StreamAppSupport<DataRecord, DataRecord> {
     }
 
     @Override
-    public DataStream<DataRecord> process(DataStream<DataRecord> stream, SupportAppContext context) {
+    public DataStream<DataRecord> process(DataStream<DataRecord> stream) {
         return null;
     }
 
     @Override
-    public DataStreamSink output(DataStream<DataRecord> stream, SupportAppContext context) {
+    public DataStreamSink output(DataStream<DataRecord> stream) {
         return null;
     }
 }

@@ -51,12 +51,13 @@ public class TestConsoleTester extends StreamAppSupport<String, String> {
     }
 
     @Override
-    public DataStream<String> process(DataStream<String> stream, SupportAppContext context) {
+    public DataStream<String> process(DataStream<String> stream) {
+
         return null;
     }
 
     @Override
-    public DataStreamSink output(DataStream<String> stream, SupportAppContext context) {
+    public DataStreamSink output(DataStream<String> stream) {
         return null;
     }
 }

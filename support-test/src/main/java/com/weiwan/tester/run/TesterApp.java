@@ -65,7 +65,7 @@ public class TesterApp extends StreamAppSupport<DataRecord<String>, DataRecord<S
     }
 
     @Override
-    public DataStream<DataRecord<String>> process(DataStream<DataRecord<String>> stream, SupportAppContext context) {
+    public DataStream<DataRecord<String>> process(DataStream<DataRecord<String>> stream) {
         return stream.map(new MapFunction<DataRecord<String>, DataRecord<String>>() {
             @Override
             public DataRecord<String> map(DataRecord<String> value) throws Exception {
@@ -76,7 +76,7 @@ public class TesterApp extends StreamAppSupport<DataRecord<String>, DataRecord<S
     }
 
     @Override
-    public DataStreamSink output(DataStream<DataRecord<String>> stream, SupportAppContext context) {
+    public DataStreamSink output(DataStream<DataRecord<String>> stream) {
 
         return stream.addSink(new SinkFunction<DataRecord<String>>() {
 
