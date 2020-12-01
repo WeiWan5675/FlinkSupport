@@ -15,7 +15,7 @@
  */
 package com.weiwan.support.core.api;
 
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.SupportContext;
 import org.apache.flink.streaming.api.datastream.DataStreamSink;
 
 /**
@@ -27,7 +27,7 @@ import org.apache.flink.streaming.api.datastream.DataStreamSink;
  **/
 public interface SupportDataFlow<E, S1, S2> {
 
-    S1 open(E env, SupportAppContext context);
+    S1 open(E env, SupportContext context);
 
     S2 process(S1 stream);
 

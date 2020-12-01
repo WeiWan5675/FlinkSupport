@@ -15,7 +15,7 @@
  */
 package com.weiwan.support.core.coprocessor;
 
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.core.api.SupportDataFlow;
 import org.apache.flink.streaming.api.datastream.DataStreamSink;
 
@@ -27,7 +27,7 @@ import org.apache.flink.streaming.api.datastream.DataStreamSink;
  * @Description:
  **/
 public class OutputStreamCoprocessor extends SupportCoprocessor {
-    public OutputStreamCoprocessor(SupportAppContext context) {
+    public OutputStreamCoprocessor(SupportContext context) {
         super(context);
     }
 

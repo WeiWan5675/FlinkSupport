@@ -26,12 +26,12 @@ flink:
           cleanUp: DELETE_ON_CANCELLATION #DELETE_ON_CANCELLATION  自动删除   RETAIN_ON_CANCELLATION 保留
         onFail: true  #当checkpoint发生错误时,是否认为任务失败 true 失败  false 拒绝checkpoint继续任务
     stateBackend:
-        type: RocksDB #三种 Memory  FileSystem  RocksDB
+        type: Memory #三种 Memory  FileSystem  RocksDB
         async: true #仅在配置为Memory FileSystem 时生效 RocksDB默认为异步
         path:  #支持hdfs路径 或者本地文件路径 hdfs://namenode:40010/flink/checkpoints  file:///data/flink/checkpoints
 
 
 app:
   appName: TestApp
-  appClass: com.weiwan.tester.run.TesterApp
+  appClass: com.weiwan.tester.run.Tester
   appType: stream

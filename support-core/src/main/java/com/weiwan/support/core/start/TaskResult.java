@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.weiwan.support.core.api;
+package com.weiwan.support.core.start;
 
 import org.apache.flink.api.common.JobID;
 
 /**
  * @Author: xiaozhennan
  * @Date: 2020/9/28 16:12
- * @Package: com.weiwan.support.core.api.TaskResult
+ * @Package: com.weiwan.support.core.start.TaskResult
  * @ClassName: TaskResult
  * @Description:
  **/

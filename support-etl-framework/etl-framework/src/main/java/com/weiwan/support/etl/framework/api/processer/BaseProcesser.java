@@ -15,7 +15,7 @@
  */
 package com.weiwan.support.etl.framework.api.processer;
 
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.core.api.Processer;
 import com.weiwan.support.core.config.ProcesserConfig;
 import com.weiwan.support.core.config.JobConfig;
@@ -34,22 +34,22 @@ public abstract class BaseProcesser<IN extends DataRecord, OUT extends DataRecor
     protected JobConfig jobConfig;
     protected StreamExecutionEnvironment env;
     protected String channelName;
-    protected SupportAppContext supportAppContext;
+    protected SupportContext supportContext;
     protected ProcesserConfig processerConfig;
 
-    public BaseProcesser(StreamExecutionEnvironment env, SupportAppContext supportAppContext) {
+    public BaseProcesser(StreamExecutionEnvironment env, SupportContext supportContext) {
         this.env = env;
-        this.supportAppContext = supportAppContext;
-        this.jobConfig = supportAppContext.getJobConfig();
-        this.processerConfig = supportAppContext.getJobConfig().getProcesserConfig();
+        this.supportContext = supportContext;
+        this.jobConfig = supportContext.getJobConfig();
+        this.processerConfig = supportContext.getJobConfig().getProcesserConfig();
         this.channelName = processerConfig.getChannleName();
     }
 
-    public abstract BaseProcessHandler<IN, OUT> getProcessHandler(SupportAppContext context);
+    public abstract BaseProcessHandler<IN, OUT> getProcessHandler(SupportContext context);
 
     @Override
-    public DataStream<OUT> process(DataStream<IN> stream, SupportAppContext context) {
-        BaseProcessHandler channelHandler = getProcessHandler(supportAppContext);
+    public DataStream<OUT> process(DataStream<IN> stream, SupportContext context) {
+        BaseProcessHandler channelHandler = getProcessHandler(supportContext);
         DataStream<OUT> out = stream.map(channelHandler);
         return out;
     }

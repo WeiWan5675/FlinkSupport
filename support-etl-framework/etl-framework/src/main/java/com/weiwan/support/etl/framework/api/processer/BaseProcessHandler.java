@@ -15,7 +15,7 @@
  */
 package com.weiwan.support.etl.framework.api.processer;
 
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.core.config.ProcesserConfig;
 import com.weiwan.support.core.config.JobConfig;
 import com.weiwan.support.core.pojo.DataRecord;
@@ -33,11 +33,11 @@ import org.apache.flink.streaming.api.checkpoint.CheckpointedFunction;
  **/
 public abstract class BaseProcessHandler<T extends DataRecord, O extends DataRecord> extends RichMapFunction<T, O> implements CheckpointedFunction {
 
-    protected SupportAppContext context;
+    protected SupportContext context;
     protected JobConfig jobConfig;
     protected ProcesserConfig processerConfig;
 
-    public BaseProcessHandler(SupportAppContext context) {
+    public BaseProcessHandler(SupportContext context) {
         this.context = context;
         this.jobConfig = context.getJobConfig();
         this.processerConfig = context.getJobConfig().getProcesserConfig();

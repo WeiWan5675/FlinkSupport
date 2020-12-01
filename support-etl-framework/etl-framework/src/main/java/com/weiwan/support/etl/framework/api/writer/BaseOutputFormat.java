@@ -15,7 +15,7 @@
  */
 package com.weiwan.support.etl.framework.api.writer;
 
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.core.config.JobConfig;
 import com.weiwan.support.core.config.WriterConfig;
 import com.weiwan.support.core.pojo.DataRecord;
@@ -40,7 +40,7 @@ public abstract class BaseOutputFormat<T extends DataRecord> extends RichOutputF
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseOutputFormat.class);
-    protected SupportAppContext context;
+    protected SupportContext context;
     protected JobConfig jobConfig;
     protected WriterConfig writerConfig;
     protected JobFormatState formatState;
@@ -65,7 +65,7 @@ public abstract class BaseOutputFormat<T extends DataRecord> extends RichOutputF
      * @param numTasks     task并行度
      * @param SupportContext Support上下文
      */
-    public abstract void openOutput(int taskNumber, int numTasks, SupportAppContext context);
+    public abstract void openOutput(int taskNumber, int numTasks, SupportContext context);
 
 
     /**
@@ -97,7 +97,7 @@ public abstract class BaseOutputFormat<T extends DataRecord> extends RichOutputF
     public abstract void snapshot(JobFormatState formatState) throws IOException;
 
 
-    public BaseOutputFormat(SupportAppContext context) {
+    public BaseOutputFormat(SupportContext context) {
         this.context = context;
         this.jobConfig = context.getJobConfig();
         this.writerConfig = context.getJobConfig().getWriterConfig();

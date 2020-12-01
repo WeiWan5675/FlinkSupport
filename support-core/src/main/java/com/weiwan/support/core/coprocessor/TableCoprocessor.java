@@ -15,7 +15,7 @@
  */
 package com.weiwan.support.core.coprocessor;
 
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.core.api.SupportDataFlow;
 
 /**
@@ -27,7 +27,7 @@ import com.weiwan.support.core.api.SupportDataFlow;
  **/
 public class TableCoprocessor extends SupportCoprocessor {
 
-    public TableCoprocessor(SupportAppContext context) {
+    public TableCoprocessor(SupportContext context) {
         super(context);
     }
 

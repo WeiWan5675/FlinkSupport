@@ -17,28 +17,29 @@ package com.weiwan.support.core;
 
 import com.weiwan.support.core.api.*;
 import com.weiwan.support.core.start.RunOptions;
+import com.weiwan.support.core.start.TaskResult;
 import org.apache.flink.api.java.ExecutionEnvironment;
 
 /**
  * @Author: xiaozhennan
  * @Date: 2020/9/28 16:25
- * @Package: com.weiwan.support.core.BatchAppSupport
- * @ClassName: BatchAppSupport
+ * @Package: com.weiwan.support.core.BatchSupport
+ * @ClassName: BatchSupport
  * @Description:
  **/
-public class BatchAppSupport<IN, OIN> implements FlinkSupport<ExecutionEnvironment> {
+public class BatchSupport<IN, OIN> implements FlinkSupport<ExecutionEnvironment> {
 
 
     private ExecutionEnvironment environment;
-    private SupportAppContext appContext;
+    private SupportContext _context;
 
-    public BatchAppSupport(ExecutionEnvironment environment, SupportAppContext appContext) {
+    public BatchSupport(ExecutionEnvironment environment, SupportContext context) {
         this.environment = environment;
-        this.appContext = appContext;
+        this._context = context;
     }
 
     @Override
-    public void initEnv(ExecutionEnvironment executionEnvironment, SupportAppContext context, RunOptions options) {
+    public void initEnv(ExecutionEnvironment executionEnvironment, SupportContext context, RunOptions options) {
 
     }
 
@@ -48,8 +49,13 @@ public class BatchAppSupport<IN, OIN> implements FlinkSupport<ExecutionEnvironme
     }
 
     @Override
-    public SupportAppContext getContext() {
-        return this.appContext;
+    public SupportContext getContext() {
+        return this._context;
+    }
+
+    @Override
+    public void setContext(SupportContext context) {
+        this._context = context;
     }
 
     @Override

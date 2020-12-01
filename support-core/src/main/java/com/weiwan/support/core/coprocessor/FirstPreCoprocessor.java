@@ -15,7 +15,7 @@
  */
 package com.weiwan.support.core.coprocessor;
 
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.core.api.SupportDataFlow;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -33,7 +33,7 @@ public class FirstPreCoprocessor extends SupportCoprocessor {
     private static final Logger logger = LoggerFactory.getLogger(FirstPreCoprocessor.class);
 
 
-    public FirstPreCoprocessor(SupportAppContext context) {
+    public FirstPreCoprocessor(SupportContext context) {
         super(context);
     }
 

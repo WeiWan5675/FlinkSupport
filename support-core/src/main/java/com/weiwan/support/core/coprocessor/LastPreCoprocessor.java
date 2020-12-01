@@ -15,7 +15,7 @@
  */
 package com.weiwan.support.core.coprocessor;
 
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.core.api.SupportDataFlow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ public class LastPreCoprocessor extends SupportCoprocessor {
 
     private static final Logger logger = LoggerFactory.getLogger(LastPreCoprocessor.class);
 
-    public LastPreCoprocessor(SupportAppContext context) {
+    public LastPreCoprocessor(SupportContext context) {
         super(context);
     }
 

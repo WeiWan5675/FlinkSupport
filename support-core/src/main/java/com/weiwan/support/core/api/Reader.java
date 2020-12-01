@@ -15,7 +15,7 @@
  */
 package com.weiwan.support.core.api;
 
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.SupportContext;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
@@ -29,6 +29,6 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 @FunctionalInterface
 public interface Reader<OUT> {
 
-    public DataStream<OUT> read(StreamExecutionEnvironment env, SupportAppContext context);
+    public DataStream<OUT> read(StreamExecutionEnvironment env, SupportContext context);
 
 }

@@ -17,7 +17,7 @@ package com.weiwan.support.plugins.jdbc.reader;
 
 import com.weiwan.support.common.utils.DateUtils;
 import com.weiwan.support.common.utils.StringUtil;
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.core.enums.ColumnType;
 import com.weiwan.support.core.pojo.DataField;
 import com.weiwan.support.core.pojo.DataRecord;
@@ -93,7 +93,7 @@ public abstract class JdbcInputFormat extends BaseInputFormat<DataRecord<DataRow
     protected String lastOffset;
     protected SqlGenerator sqlGenerator;
 
-    public JdbcInputFormat(SupportAppContext context) {
+    public JdbcInputFormat(SupportContext context) {
         super(context);
     }
 

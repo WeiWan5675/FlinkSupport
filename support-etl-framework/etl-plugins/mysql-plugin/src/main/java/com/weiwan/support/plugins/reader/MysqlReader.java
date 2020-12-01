@@ -15,13 +15,11 @@
  */
 package com.weiwan.support.plugins.reader;
 
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.core.pojo.DataRecord;
 import com.weiwan.support.core.pojo.DataRow;
 import com.weiwan.support.etl.framework.api.reader.BaseInputFormat;
 import com.weiwan.support.etl.framework.api.reader.BaseReader;
-import org.apache.flink.api.common.functions.MapFunction;
-import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 /**
@@ -34,18 +32,18 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 public class MysqlReader extends BaseReader<DataRecord<DataRow>> {
 
 
-    public MysqlReader(StreamExecutionEnvironment env, SupportAppContext context) {
+    public MysqlReader(StreamExecutionEnvironment env, SupportContext context) {
         super(env, context);
     }
 
 
     @Override
-    public void readRequire(SupportAppContext context) {
+    public void readRequire(SupportContext context) {
 
     }
 
     @Override
-    public BaseInputFormat getInputFormat(SupportAppContext context) {
+    public BaseInputFormat getInputFormat(SupportContext context) {
         MysqlInputFormat mysqlInputFormat = new MysqlInputFormat(context);
         return mysqlInputFormat;
     }

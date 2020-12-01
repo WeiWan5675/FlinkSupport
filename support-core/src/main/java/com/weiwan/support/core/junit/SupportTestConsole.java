@@ -18,11 +18,11 @@ package com.weiwan.support.core.junit;
 import com.weiwan.support.common.utils.FileUtil;
 import com.weiwan.support.common.utils.ReflectUtil;
 import com.weiwan.support.common.utils.YamlUtils;
-import com.weiwan.support.core.BatchAppSupport;
-import com.weiwan.support.core.StreamAppSupport;
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.BatchSupport;
+import com.weiwan.support.core.StreamSupport;
+import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.core.api.FlinkSupport;
-import com.weiwan.support.core.api.TaskResult;
+import com.weiwan.support.core.start.TaskResult;
 import com.weiwan.support.core.config.JobConfig;
 import com.weiwan.support.core.start.RunOptions;
 import com.weiwan.support.utils.flink.conf.FlinkEnvConfig;
@@ -45,7 +45,7 @@ public class SupportTestConsole {
 
     private FlinkSupport flinkSupport;
     private RunOptions options;
-    private SupportAppContext context;
+    private SupportContext context;
     private Object env;
     private String jobFile;
     private Class<? extends FlinkSupport> waitTestClass;
@@ -66,8 +66,8 @@ public class SupportTestConsole {
                     options = (RunOptions) arg;
                     continue;
                 }
-                if (aClass == SupportAppContext.class) {
-                    context = (SupportAppContext) arg;
+                if (aClass == SupportContext.class) {
+                    context = (SupportContext) arg;
                     continue;
                 }
                 if (aClass == StreamExecutionEnvironment.class) {
@@ -96,7 +96,7 @@ public class SupportTestConsole {
             Class<?> superclass = flinkSupport.getClass().getSuperclass();
             if (context == null) {
                 //本地读取
-                context = new SupportAppContext(options);
+                context = new SupportContext(options);
                 String configContent = FileUtil.readFileContent(jobFile);
                 Map<String, String> userVarMap = YamlUtils.loadYamlStr(configContent);
                 Map<String, Object> tmpMap = new HashMap<>();
@@ -109,10 +109,10 @@ public class SupportTestConsole {
             }
 
             if (env == null) {
-                if (superclass == StreamAppSupport.class) {
+                if (superclass == StreamSupport.class) {
                     env = FlinkContextUtil.getStreamContext(context.getFlinkEnvConfig()).getEnv();
                 }
-                if (superclass == BatchAppSupport.class) {
+                if (superclass == BatchSupport.class) {
                     env = FlinkContextUtil.getBatchContext(context.getFlinkEnvConfig()).getEnv();
                 }
             }
@@ -140,7 +140,7 @@ public class SupportTestConsole {
 
     public static final class Builder {
         private RunOptions options;
-        private SupportAppContext context;
+        private SupportContext context;
         private Object env;
         private String jobFile;
         private Class<? extends FlinkSupport> waitTestClass;
@@ -153,7 +153,7 @@ public class SupportTestConsole {
             return this;
         }
 
-        public Builder context(SupportAppContext val) {
+        public Builder context(SupportContext val) {
             context = val;
             return this;
         }

@@ -15,7 +15,7 @@
  */
 package com.weiwan.support.core.api;
 
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.SupportContext;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSink;
 
@@ -29,5 +29,5 @@ import org.apache.flink.streaming.api.datastream.DataStreamSink;
 @FunctionalInterface
 public interface Writer<IN> {
 
-    public DataStreamSink write(DataStream<IN> inputStream, SupportAppContext context);
+    public DataStreamSink write(DataStream<IN> inputStream, SupportContext context);
 }

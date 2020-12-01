@@ -15,7 +15,7 @@
  */
 package com.weiwan.support.core.api;
 
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.SupportContext;
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 /**
@@ -28,6 +28,6 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 @FunctionalInterface
 public interface Processer<IN, OUT> {
 
-    public DataStream<OUT> process(DataStream<IN> inputStream, SupportAppContext context);
+    public DataStream<OUT> process(DataStream<IN> inputStream, SupportContext context);
 
 }

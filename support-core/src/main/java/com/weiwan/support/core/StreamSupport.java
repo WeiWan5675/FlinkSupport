@@ -20,6 +20,7 @@ import com.weiwan.support.core.config.JobConfig;
 import com.weiwan.support.core.constant.SupportKey;
 import com.weiwan.support.core.coprocessor.*;
 import com.weiwan.support.core.start.RunOptions;
+import com.weiwan.support.core.start.TaskResult;
 import org.apache.flink.api.common.JobExecutionResult;
 import org.apache.flink.api.common.JobID;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -34,12 +35,12 @@ import org.slf4j.LoggerFactory;
  * @ClassName: FlinkSupportAssembly
  * @Description: 流处理应用支持类
  **/
-public abstract class StreamAppSupport<I_OUT, P_OUT> implements
+public abstract class StreamSupport<I_OUT, P_OUT> implements
         FlinkSupport<StreamExecutionEnvironment>, SupportDataFlow<StreamExecutionEnvironment, DataStream<I_OUT>, DataStream<P_OUT>> {
-    private static final Logger _LOGGER = LoggerFactory.getLogger(StreamAppSupport.class);
+    private static final Logger _LOGGER = LoggerFactory.getLogger(StreamSupport.class);
 
     private StreamExecutionEnvironment env;
-    private SupportAppContext internalContext;
+    private SupportContext internalContext;
     private RunOptions options;
 
 
@@ -57,7 +58,7 @@ public abstract class StreamAppSupport<I_OUT, P_OUT> implements
      * @param options              启动参数
      */
     @Override
-    public final void initEnv(StreamExecutionEnvironment executionEnvironment, SupportAppContext context, RunOptions options) {
+    public final void initEnv(StreamExecutionEnvironment executionEnvironment, SupportContext context, RunOptions options) {
         this.env = executionEnvironment;
         this.internalContext = context;
         this.options = options;
@@ -72,11 +73,20 @@ public abstract class StreamAppSupport<I_OUT, P_OUT> implements
             next = next.nextCoprocessor(new TableCoprocessor(this.internalContext));  //table环境处理器
         } else {
             next = next
-                    .nextCoprocessor(new StreamAnnoCoprocessor(context))
+                    .nextCoprocessor(new SourceCoprocessor(context))
+                    .nextCoprocessor(new StreamClassCoprocessor(context))
                     .nextCoprocessor(new OpenStreamCoprocessor(context))
                     .nextCoprocessor(new StreamCoprocessor(context))
-                    .nextCoprocessor(new OutputStreamCoprocessor(context));
+                    .nextCoprocessor(new OutputStreamCoprocessor(context))
+                    .nextCoprocessor(new StreamFieldCoprocessor(context));
         }
+
+        //扫描注解
+
+        //注解解析
+
+        //根据解析后不同结果,进行不同处理
+
         next.nextCoprocessor(new LastPreCoprocessor(this.internalContext));  //最后一个预处理处理器
 
     }
@@ -85,8 +95,13 @@ public abstract class StreamAppSupport<I_OUT, P_OUT> implements
         return this.env;
     }
 
-    public final SupportAppContext getContext() {
+    public final SupportContext getContext() {
         return this.internalContext;
+    }
+
+    @Override
+    public void setContext(SupportContext context) {
+        this.internalContext = context;
     }
 
     /**

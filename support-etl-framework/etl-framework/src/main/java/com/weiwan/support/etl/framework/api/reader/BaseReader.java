@@ -15,7 +15,7 @@
  */
 package com.weiwan.support.etl.framework.api.reader;
 
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.core.api.Reader;
 import com.weiwan.support.core.config.JobConfig;
 import com.weiwan.support.core.config.ReaderConfig;
@@ -38,7 +38,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 public abstract class BaseReader<OUT extends DataRecord> implements Reader<OUT> {
 
     private StreamExecutionEnvironment env;
-    private SupportAppContext context;
+    private SupportContext context;
     private JobConfig jobConfig;
     private ReaderConfig readerConfig;
 
@@ -52,7 +52,7 @@ public abstract class BaseReader<OUT extends DataRecord> implements Reader<OUT> 
     protected String readerClassName;
     protected Integer readerParallelism;
 
-    public BaseReader(StreamExecutionEnvironment env, SupportAppContext context) {
+    public BaseReader(StreamExecutionEnvironment env, SupportContext context) {
         this.env = env;
         this.context = context;
         this.jobConfig = context.getJobConfig();
@@ -63,12 +63,12 @@ public abstract class BaseReader<OUT extends DataRecord> implements Reader<OUT> 
         this.readerParallelism = readerConfig.getIntVal(KEY_READER_PARALLELISM, 1);
     }
 
-    public abstract BaseInputFormat getInputFormat(SupportAppContext context);
+    public abstract BaseInputFormat getInputFormat(SupportContext context);
 
-    public abstract void readRequire(SupportAppContext context);
+    public abstract void readRequire(SupportContext context);
 
     @Override
-    public DataStream<OUT> read(StreamExecutionEnvironment env, SupportAppContext context) {
+    public DataStream<OUT> read(StreamExecutionEnvironment env, SupportContext context) {
         BaseInputFormat<OUT, BaseInputSpliter> inputFormat = getInputFormat(context);
         TypeInformation<OUT> inputFormatTypes = TypeExtractor.getInputFormatTypes(inputFormat);
         SupportInputFormatSource<OUT> supportInputFormatSource = new SupportInputFormatSource<>(inputFormat, inputFormatTypes);
@@ -87,7 +87,7 @@ public abstract class BaseReader<OUT extends DataRecord> implements Reader<OUT> 
      * @param stream 输入是 {@link DataStream<DataRecord>}
      * @return 输出也是 {@link DataStream<DataRecord>}
      */
-    protected DataStream<OUT> afterReading(DataStream<OUT> stream, SupportAppContext context) {
+    protected DataStream<OUT> afterReading(DataStream<OUT> stream, SupportContext context) {
         //do nothing
         return stream;
     }

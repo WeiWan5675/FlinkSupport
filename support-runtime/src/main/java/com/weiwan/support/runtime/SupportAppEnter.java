@@ -22,9 +22,8 @@ import com.weiwan.support.common.utils.Base64Util;
 import com.weiwan.support.common.utils.CommonUtil;
 import com.weiwan.support.common.utils.ReflectUtil;
 import com.weiwan.support.core.*;
-import com.weiwan.support.core.annotation.Support;
 import com.weiwan.support.core.api.FlinkSupport;
-import com.weiwan.support.core.api.TaskResult;
+import com.weiwan.support.core.start.TaskResult;
 import com.weiwan.support.core.config.JobConfig;
 import com.weiwan.support.core.constant.SupportConstants;
 import com.weiwan.support.core.constant.SupportKey;
@@ -36,12 +35,9 @@ import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.reflect.annotation.AnnotationParser;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -68,7 +64,8 @@ public class SupportAppEnter {
             Map<String, Object> parameters = new HashMap<>();
             parameters.putAll(jobMap);
             parameters.putAll(optionToMap);
-            SupportAppContext context = convertOptionsToContext(options, parameters);
+            SupportContext context = convertOptionsToContext(options, parameters);
+            SupportContextHolder.init(context);
             FlinkSupport flinkSupport = null;
             Object env = null;
             if (options.isStream()) {
@@ -93,7 +90,7 @@ public class SupportAppEnter {
             } else if (options.isBatch()) {
                 //批模式
                 env = ExecutionEnvironment.getExecutionEnvironment();
-                flinkSupport = new BatchAppSupport((ExecutionEnvironment) env, context);
+                flinkSupport = new BatchSupport((ExecutionEnvironment) env, context);
             } else {
                 throw new SupportException("Unsupported application mode, please check the operating parameters");
             }
@@ -123,13 +120,13 @@ public class SupportAppEnter {
     }
 
 
-    private static SupportAppContext convertOptionsToContext(RunOptions options, Map<String, Object> taskObj) {
-        SupportAppContext supportAppContext = new SupportAppContext(options);
+    private static SupportContext convertOptionsToContext(RunOptions options, Map<String, Object> taskObj) {
+        SupportContext supportContext = new SupportContext(options);
         FlinkEnvConfig flinkEnvConfig = new FlinkEnvConfig();
         flinkEnvConfig.addFlinkTaskConfig(taskObj);
         JobConfig jobConfig = new JobConfig(taskObj);
-        supportAppContext.setFlinkEnvConfig(flinkEnvConfig);
-        supportAppContext.setJobConfig(jobConfig);
-        return supportAppContext;
+        supportContext.setFlinkEnvConfig(flinkEnvConfig);
+        supportContext.setJobConfig(jobConfig);
+        return supportContext;
     }
 }

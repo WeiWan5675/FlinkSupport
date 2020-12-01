@@ -15,7 +15,7 @@
  */
 package com.weiwan.support.plugins.reader;
 
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.plugins.jdbc.reader.JdbcInputFormat;
 import com.weiwan.support.plugins.jdbc.reader.JdbcInputSpliter;
 import com.weiwan.support.plugins.jdbc.SqlGenerator;
@@ -30,7 +30,7 @@ import com.weiwan.support.plugins.jdbc.SqlGeneratorForMysql;
  **/
 public class MysqlInputFormat extends JdbcInputFormat {
 
-    public MysqlInputFormat(SupportAppContext context) {
+    public MysqlInputFormat(SupportContext context) {
         super(context);
     }
 

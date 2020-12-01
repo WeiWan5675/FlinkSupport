@@ -15,7 +15,7 @@
  */
 package com.weiwan.support.etl.framework.streaming;
 
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.etl.framework.api.reader.BaseInputFormat;
 import org.apache.flink.api.common.io.InputFormat;
 import org.apache.flink.api.common.io.RichInputFormat;
@@ -65,7 +65,7 @@ public class SupportInputFormatSource<OUT> extends InputFormatSourceFunction<OUT
     private ListState<JobFormatState> listState;
     private Map<Integer, JobFormatState> cacheMapStates;
     private boolean isRestore;
-    private SupportAppContext context;
+    private SupportContext context;
 
     private volatile boolean isRunning = true;
 
@@ -255,11 +255,11 @@ public class SupportInputFormatSource<OUT> extends InputFormatSourceFunction<OUT
     }
 
 
-    public SupportAppContext getSupportContext() {
+    public SupportContext getSupportContext() {
         return context;
     }
 
-    public void setSupportContext(SupportAppContext context) {
+    public void setSupportContext(SupportContext context) {
         this.context = context;
     }
 

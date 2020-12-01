@@ -15,8 +15,8 @@
  */
 package com.weiwan.support.etl.framework;
 
-import com.weiwan.support.core.StreamAppSupport;
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.StreamSupport;
+import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.core.pojo.DataRecord;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSink;
@@ -30,10 +30,10 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  * @Description:
  **/
 
-public class StreamETLBaseApp extends StreamAppSupport<DataRecord, DataRecord> {
+public class StreamETLBase extends StreamSupport<DataRecord, DataRecord> {
 
     @Override
-    public DataStream<DataRecord> open(StreamExecutionEnvironment env, SupportAppContext context) {
+    public DataStream<DataRecord> open(StreamExecutionEnvironment env, SupportContext context) {
         return null;
     }
 

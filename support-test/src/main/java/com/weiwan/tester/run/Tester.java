@@ -15,8 +15,8 @@
  */
 package com.weiwan.tester.run;
 
-import com.weiwan.support.core.StreamAppSupport;
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.StreamSupport;
+import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.core.annotation.*;
 import com.weiwan.support.core.pojo.DataRecord;
 import org.apache.flink.api.common.functions.MapFunction;
@@ -31,21 +31,21 @@ import org.slf4j.LoggerFactory;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/11/5 14:43
- * @Package: com.weiwan.tester.run.TesterApp
- * @ClassName: TesterApp
+ * @Package: com.weiwan.tester.run.Tester
+ * @ClassName: Tester
  * @Description:
  **/
 @PrintToLog
 @Support
 @Checkpoint
 @Parallelism
-public class TesterApp extends StreamAppSupport<DataRecord<String>, DataRecord<String>> {
+public class Tester extends StreamSupport<DataRecord<String>, DataRecord<String>> {
 
-    private static final Logger logger = LoggerFactory.getLogger(TesterApp.class);
+    private static final Logger logger = LoggerFactory.getLogger(Tester.class);
 
     @Override
     @SupportSourceParallelism
-    public DataStream<DataRecord<String>> open(StreamExecutionEnvironment env, SupportAppContext context) {
+    public DataStream<DataRecord<String>> open(StreamExecutionEnvironment env, SupportContext context) {
         return env.addSource(new SourceFunction<DataRecord<String>>() {
             @Override
             public void run(SourceContext<DataRecord<String>> ctx) throws Exception {

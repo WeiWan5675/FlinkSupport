@@ -15,34 +15,31 @@
  */
 package com.weiwan.support.core.coprocessor;
 
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.SupportContext;
+import com.weiwan.support.core.SupportContextHolder;
 import com.weiwan.support.core.annotation.Checkpoint;
 import com.weiwan.support.core.annotation.Parallelism;
 import com.weiwan.support.core.annotation.Support;
 import com.weiwan.support.core.annotation.SupportStateBackend;
 import com.weiwan.support.core.api.SupportDataFlow;
 import org.apache.flink.streaming.api.CheckpointingMode;
-import org.apache.flink.streaming.api.datastream.*;
-import org.apache.flink.streaming.api.environment.CheckpointConfig;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.lang.reflect.Field;
 
 /**
  * @Author: xiaozhennan
  * @Date: 2020/11/12 22:25
  * @Package: com.weiwan.support.core
- * @ClassName: StreamAnnoCoprocessor
+ * @ClassName: StreamClassCoprocessor
  * @Description:
  **/
-public class StreamAnnoCoprocessor extends SupportCoprocessor {
-    public StreamAnnoCoprocessor(SupportAppContext context) {
+public class StreamClassCoprocessor extends SupportCoprocessor {
+    public StreamClassCoprocessor(SupportContext context) {
         super(context);
     }
 
-    private static final Logger logger = LoggerFactory.getLogger(StreamAnnoCoprocessor.class);
+    private static final Logger logger = LoggerFactory.getLogger(StreamClassCoprocessor.class);
     private StreamExecutionEnvironment env;
 
     @Override
@@ -52,6 +49,8 @@ public class StreamAnnoCoprocessor extends SupportCoprocessor {
         if (_env != null && _env instanceof StreamExecutionEnvironment) {
             this.env = (StreamExecutionEnvironment) _env;
         }
+        SupportContext context = SupportContextHolder.getContext();
+
 
 
         /**

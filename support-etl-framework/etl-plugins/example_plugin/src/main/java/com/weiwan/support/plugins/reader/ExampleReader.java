@@ -15,7 +15,7 @@
  */
 package com.weiwan.support.plugins.reader;
 
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.core.pojo.DataRecord;
 import com.weiwan.support.etl.framework.api.reader.BaseInputFormat;
 import com.weiwan.support.etl.framework.api.reader.BaseReader;
@@ -30,17 +30,17 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  **/
 public class ExampleReader extends BaseReader<DataRecord<String>> {
 
-    public ExampleReader(StreamExecutionEnvironment env, SupportAppContext context) {
+    public ExampleReader(StreamExecutionEnvironment env, SupportContext context) {
         super(env, context);
     }
 
     @Override
-    public BaseInputFormat getInputFormat(SupportAppContext context) {
+    public BaseInputFormat getInputFormat(SupportContext context) {
         return new ExampleInputFormat(context);
     }
 
     @Override
-    public void readRequire(SupportAppContext context) {
+    public void readRequire(SupportContext context) {
 
     }
 }

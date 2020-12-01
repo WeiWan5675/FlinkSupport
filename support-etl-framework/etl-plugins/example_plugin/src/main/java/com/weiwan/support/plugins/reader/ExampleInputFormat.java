@@ -15,7 +15,7 @@
  */
 package com.weiwan.support.plugins.reader;
 
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.etl.framework.api.reader.BaseInputFormat;
 import com.weiwan.support.etl.framework.streaming.JobFormatState;
 import org.apache.flink.core.io.InputSplit;
@@ -28,7 +28,7 @@ import org.apache.flink.core.io.InputSplit;
  * @Description:
  **/
 public class ExampleInputFormat extends BaseInputFormat {
-    public ExampleInputFormat(SupportAppContext context) {
+    public ExampleInputFormat(SupportContext context) {
     }
 
     /**

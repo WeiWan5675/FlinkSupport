@@ -1,7 +1,5 @@
 package com.weiwan.support.core.enums;
 
-import com.weiwan.support.core.annotation.SupportSource;
-import com.weiwan.support.core.source.*;
 
 /**
  * @Author: xiaozhennan
@@ -12,21 +10,21 @@ import com.weiwan.support.core.source.*;
  **/
 public enum SourceElement {
 
-    MysqlSource(com.weiwan.support.core.source.MysqlSource.class),
-    FileSource(com.weiwan.support.core.source.FileSource.class),
-    HdfsSource(com.weiwan.support.core.source.HdfsSource.class),
-    KafkaSource(com.weiwan.support.core.source.KafkaSource.class),
-    MongoSource(com.weiwan.support.core.source.MongoSource.class),
-    OplogSource(com.weiwan.support.core.source.OpLogSource.class),
-    BinlogSource(com.weiwan.support.core.source.BinlogSource.class),
-    HiveSource(com.weiwan.support.core.source.HiveSource.class);
-
-    public static final Class<SupportSource> SUPPORT_SOURCE_CLASS = SupportSource.class;
-
-    private Class<?> source;
+    ExampleSource("com.weiwan.support.plugins.reader.ExampleReader");
 
 
-    SourceElement(Class<?> source) {
-        this.source = source;
+    private String sourceType;
+
+
+    SourceElement(String sourceType) {
+        this.sourceType = sourceType;
+    }
+
+    public String getSourceType() {
+        return sourceType;
+    }
+
+    public void setSourceType(String sourceType) {
+        this.sourceType = sourceType;
     }
 }

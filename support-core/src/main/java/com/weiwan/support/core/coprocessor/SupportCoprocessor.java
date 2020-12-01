@@ -16,8 +16,8 @@
 package com.weiwan.support.core.coprocessor;
 
 
-import com.weiwan.support.core.SupportAppContext;
-import com.weiwan.support.core.api.FlinkSupport;
+import com.weiwan.support.core.SupportContext;
+import com.weiwan.support.core.api.Support;
 import com.weiwan.support.core.api.SupportDataFlow;
 import com.weiwan.support.core.config.JobConfig;
 
@@ -30,21 +30,21 @@ import com.weiwan.support.core.config.JobConfig;
  **/
 public abstract class SupportCoprocessor implements Support {
 
-    protected SupportAppContext context;
-    protected JobConfig jobConfig;
+    private SupportContext context;
+    private JobConfig jobConfig;
 
-    protected SupportCoprocessor nextCoprocessor;
+    private SupportCoprocessor nextCoprocessor;
 
-    public SupportCoprocessor(SupportAppContext context) {
+    public SupportCoprocessor(SupportContext context) {
         this.context = context;
     }
 
     @Override
-    public SupportAppContext getContext() {
+    public SupportContext getContext() {
         return context;
     }
 
-    public void setContext(SupportAppContext context) {
+    public void setContext(SupportContext context) {
         this.context = context;
     }
 

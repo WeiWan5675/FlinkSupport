@@ -15,8 +15,8 @@
  */
 package com.weiwan.tester.run;
 
-import com.weiwan.support.core.StreamAppSupport;
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.StreamSupport;
+import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.core.annotation.*;
 import com.weiwan.support.core.junit.SupportTest;
 import com.weiwan.support.core.junit.SupportTestConsole;
@@ -36,7 +36,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 @Parallelism
 @PrintToLog
 @Checkpoint
-public class TestConsoleTester extends StreamAppSupport<String, String> {
+public class TestConsoleTester extends StreamSupport<String, String> {
 
 
     public static void main(String[] args) throws Exception {
@@ -46,7 +46,7 @@ public class TestConsoleTester extends StreamAppSupport<String, String> {
 
 
     @Override
-    public DataStream<String> open(StreamExecutionEnvironment env, SupportAppContext context) {
+    public DataStream<String> open(StreamExecutionEnvironment env, SupportContext context) {
         return null;
     }
 

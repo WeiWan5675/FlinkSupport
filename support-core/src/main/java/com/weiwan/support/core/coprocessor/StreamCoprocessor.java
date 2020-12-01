@@ -15,7 +15,7 @@
  */
 package com.weiwan.support.core.coprocessor;
 
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.core.api.SupportDataFlow;
 
 /**
@@ -26,7 +26,7 @@ import com.weiwan.support.core.api.SupportDataFlow;
  * @Description:
  **/
 public class StreamCoprocessor extends SupportCoprocessor {
-    public StreamCoprocessor(SupportAppContext context) {
+    public StreamCoprocessor(SupportContext context) {
         super(context);
     }
 

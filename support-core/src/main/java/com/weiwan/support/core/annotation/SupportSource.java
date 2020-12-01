@@ -12,10 +12,14 @@ import java.lang.annotation.*;
  * @Description:
  **/
 @Inherited
-@Target(ElementType.TYPE)
+@Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SupportSource {
     SourceElement type();
+
     int parallelism() default 1;
-    String name();
+
+    String name() default "SupportSource";
+
+    String[] vars() default {};
 }

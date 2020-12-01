@@ -15,7 +15,7 @@
  */
 package com.weiwan.support.etl.framework.api.reader;
 
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.core.config.JobConfig;
 import com.weiwan.support.core.config.ReaderConfig;
 import com.weiwan.support.core.pojo.DataRecord;
@@ -45,7 +45,7 @@ public abstract class BaseInputFormat<OT, T extends InputSplit> extends RichInpu
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseInputFormat.class);
 
 
-    protected SupportAppContext context;
+    protected SupportContext context;
     protected JobConfig jobConfig;
     protected ReaderConfig readerConfig;
     protected JobFormatState formatState;
@@ -59,7 +59,7 @@ public abstract class BaseInputFormat<OT, T extends InputSplit> extends RichInpu
     private boolean isRestore;
     private boolean isStream;
 
-    public BaseInputFormat(SupportAppContext context) {
+    public BaseInputFormat(SupportContext context) {
         this.context = context;
         this.jobConfig = context.getJobConfig();
         this.readerConfig = jobConfig.getReaderConfig();
@@ -183,7 +183,7 @@ public abstract class BaseInputFormat<OT, T extends InputSplit> extends RichInpu
         this.formatState = jobFormatState;
     }
 
-    public void setSupportContext(SupportAppContext context) {
+    public void setSupportContext(SupportContext context) {
         this.context = context;
     }
 

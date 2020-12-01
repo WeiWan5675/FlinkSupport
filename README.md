@@ -194,7 +194,7 @@
   
   
   app:
-    class: com.weiwan.tester.run.TesterApp
+    class: com.weiwan.tester.run.Tester
     name: Support Application
     etlMode: false
     sqlMode: false

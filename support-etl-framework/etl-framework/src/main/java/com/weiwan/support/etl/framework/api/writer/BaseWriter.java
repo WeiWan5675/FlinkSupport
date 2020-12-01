@@ -15,7 +15,7 @@
  */
 package com.weiwan.support.etl.framework.api.writer;
 
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.core.api.Writer;
 import com.weiwan.support.core.config.JobConfig;
 import com.weiwan.support.core.config.WriterConfig;
@@ -36,7 +36,7 @@ public abstract class BaseWriter<T extends DataRecord> implements Writer<T> {
 
     protected StreamExecutionEnvironment env;
 
-    protected SupportAppContext context;
+    protected SupportContext context;
     protected JobConfig jobConfig;
     protected WriterConfig writerConfig;
     protected String writerName;
@@ -50,7 +50,7 @@ public abstract class BaseWriter<T extends DataRecord> implements Writer<T> {
     private static final String KEY_WRITER_PARALLELISM = "writer.parallelism";
 
 
-    public BaseWriter(StreamExecutionEnvironment env, SupportAppContext context) {
+    public BaseWriter(StreamExecutionEnvironment env, SupportContext context) {
         this.env = env;
         this.context = context;
         this.jobConfig = context.getJobConfig();
@@ -61,17 +61,17 @@ public abstract class BaseWriter<T extends DataRecord> implements Writer<T> {
         this.writerParallelism = writerConfig.getIntVal(KEY_WRITER_PARALLELISM, 1);
     }
 
-    public abstract BaseOutputFormat<T> getOutputFormat(SupportAppContext context);
+    public abstract BaseOutputFormat<T> getOutputFormat(SupportContext context);
 
     /**
      * 为什么要在这里有这个方法呢,output是并行得,但是有些前置条件要再并行任务执行前处理,所以提供这个方法
      *
      * @param context
      */
-    public abstract void writeRequire(SupportAppContext context);
+    public abstract void writeRequire(SupportContext context);
 
     @Override
-    public DataStreamSink<T> write(DataStream<T> dataStream, SupportAppContext context) {
+    public DataStreamSink<T> write(DataStream<T> dataStream, SupportContext context) {
         DataStream<T> beforeWritingStream = beforeWriting(dataStream);
         BaseOutputFormat<T> outputFormat = getOutputFormat(context);
         SupportOutputFormatSink<T> outputFormatSink = new SupportOutputFormatSink<T>(outputFormat);

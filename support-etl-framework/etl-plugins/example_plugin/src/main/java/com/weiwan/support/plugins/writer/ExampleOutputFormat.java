@@ -15,7 +15,7 @@
  */
 package com.weiwan.support.plugins.writer;
 
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.core.pojo.DataRecord;
 import com.weiwan.support.etl.framework.api.writer.BaseOutputFormat;
 import com.weiwan.support.etl.framework.streaming.JobFormatState;
@@ -39,7 +39,7 @@ public class ExampleOutputFormat extends BaseOutputFormat<DataRecord<String>> {
      * @param context
      */
     @Override
-    public void openOutput(int taskNumber, int numTasks, SupportAppContext context) {
+    public void openOutput(int taskNumber, int numTasks, SupportContext context) {
 
     }
 
@@ -81,7 +81,7 @@ public class ExampleOutputFormat extends BaseOutputFormat<DataRecord<String>> {
 
     }
 
-    public ExampleOutputFormat(SupportAppContext context) {
+    public ExampleOutputFormat(SupportContext context) {
         super(context);
     }
 }

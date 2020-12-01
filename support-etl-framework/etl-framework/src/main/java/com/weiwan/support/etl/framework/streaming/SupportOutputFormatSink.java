@@ -15,7 +15,7 @@
  */
 package com.weiwan.support.etl.framework.streaming;
 
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.etl.framework.api.writer.BaseOutputFormat;
 import org.apache.flink.api.common.ExecutionConfig;
 import org.apache.flink.api.common.functions.RuntimeContext;
@@ -58,7 +58,7 @@ public class SupportOutputFormatSink<T> extends RichSinkFunction<T> implements I
     private ListState<JobFormatState> listState;
     private Map<Integer, JobFormatState> cacheMapStates;
     private boolean isRestore;
-    private SupportAppContext context;
+    private SupportContext context;
     private long currentCheckpointIndex;
 
     public SupportOutputFormatSink(OutputFormat<T> format) {

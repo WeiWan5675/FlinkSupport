@@ -15,7 +15,7 @@
  */
 package com.weiwan.support.plugins.writer;
 
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.core.pojo.DataRecord;
 import com.weiwan.support.etl.framework.api.writer.BaseOutputFormat;
 import com.weiwan.support.etl.framework.api.writer.BaseWriter;
@@ -29,12 +29,12 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  * @Description:
  **/
 public class ExampleWriter extends BaseWriter<DataRecord<String>> {
-    public ExampleWriter(StreamExecutionEnvironment env, SupportAppContext context) {
+    public ExampleWriter(StreamExecutionEnvironment env, SupportContext context) {
         super(env, context);
     }
 
     @Override
-    public BaseOutputFormat<DataRecord<String>> getOutputFormat(SupportAppContext context) {
+    public BaseOutputFormat<DataRecord<String>> getOutputFormat(SupportContext context) {
         return new ExampleOutputFormat(context);
     }
 
@@ -44,7 +44,7 @@ public class ExampleWriter extends BaseWriter<DataRecord<String>> {
      * @param context
      */
     @Override
-    public void writeRequire(SupportAppContext context) {
+    public void writeRequire(SupportContext context) {
 
     }
 }

@@ -51,7 +51,7 @@ public class JobConfig extends AbstractConfig {
                 readerConfig.setVal(key, value);
             } else if (key.startsWith("writer")) {
                 writerConfig.setVal(key, value);
-            } else if (key.startsWith("channel")) {
+            } else if (key.startsWith("processer")) {
                 processerConfig.setVal(key, value);
             } else {
                 this.setVal(key, value);

@@ -20,28 +20,31 @@ import com.weiwan.support.core.start.RunOptions;
 import com.weiwan.support.utils.flink.conf.FlinkEnvConfig;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @Author: xiaozhennan
  * @Date: 2020/9/28 16:38
- * @Package: com.weiwan.support.core.SupportAppContext
- * @ClassName: SupportAppContext
+ * @Package: com.weiwan.support.core.SupportContext
+ * @ClassName: SupportContext
  * @Description:
  **/
-public class SupportAppContext implements Serializable {
+public class SupportContext implements Serializable {
 
     private JobConfig JobConfig;
     private FlinkEnvConfig flinkEnvConfig;
     private RunOptions options;
+    private Map<Object, Object> internalCache = new ConcurrentHashMap<>();
 
-    public SupportAppContext(RunOptions options) {
+    public SupportContext(RunOptions options) {
         this.options = options;
     }
 
-    public SupportAppContext() {
+    public SupportContext() {
 
     }
-
 
     public JobConfig getJobConfig() {
         return JobConfig;
@@ -65,5 +68,19 @@ public class SupportAppContext implements Serializable {
 
     public void setOptions(RunOptions options) {
         this.options = options;
+    }
+
+
+    public void addCache(Object key, Object obj) {
+        internalCache.put(key, obj);
+    }
+
+    public <T> T getCache(Object key, Class<T> clazz) {
+        Object o = internalCache.get(key);
+        T val = null;
+        if (o.getClass() == clazz) {
+            val = (T) o;
+        }
+        return val;
     }
 }

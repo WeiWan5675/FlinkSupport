@@ -15,10 +15,13 @@
  */
 package com.weiwan.support.common.utils;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -180,7 +183,7 @@ public class ReflectUtil {
         for (Class<?> clazz = object.getClass(); clazz != Object.class; clazz = clazz.getSuperclass()) {
             try {
                 method = clazz.getDeclaredMethod(methodName, parameterTypes);
-                if(method != null){
+                if (method != null) {
                     method.setAccessible(true);
                 }
                 return method;
@@ -304,5 +307,18 @@ public class ReflectUtil {
         }
 
         return null;
+    }
+
+
+    public static final List<Field> getFieldByAnno(Class<?> clazz, Class<? extends Annotation> annoClass) {
+        ArrayList fields = new ArrayList();
+        Field[] declaredFields = clazz.getDeclaredFields();
+        for (int i = 0; i < declaredFields.length; i++) {
+            if (declaredFields[i] != null
+                    && declaredFields[i].getAnnotation(annoClass) != null) {
+                fields.add(declaredFields[i]);
+            }
+        }
+        return fields;
     }
 }

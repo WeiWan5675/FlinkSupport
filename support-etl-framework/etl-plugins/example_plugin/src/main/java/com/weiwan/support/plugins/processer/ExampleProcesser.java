@@ -15,7 +15,7 @@
  */
 package com.weiwan.support.plugins.processer;
 
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.core.pojo.DataRecord;
 import com.weiwan.support.etl.framework.api.processer.BaseProcessHandler;
 import com.weiwan.support.etl.framework.api.processer.BaseProcesser;
@@ -29,12 +29,12 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  * @Description:
  **/
 public class ExampleProcesser extends BaseProcesser<DataRecord<String>, DataRecord<String>> {
-    public ExampleProcesser(StreamExecutionEnvironment env, SupportAppContext supportAppContext) {
-        super(env, supportAppContext);
+    public ExampleProcesser(StreamExecutionEnvironment env, SupportContext supportContext) {
+        super(env, supportContext);
     }
 
     @Override
-    public BaseProcessHandler<DataRecord<String>, DataRecord<String>> getProcessHandler(SupportAppContext context) {
+    public BaseProcessHandler<DataRecord<String>, DataRecord<String>> getProcessHandler(SupportContext context) {
 
         return new ExampleProcessHandler(context);
     }

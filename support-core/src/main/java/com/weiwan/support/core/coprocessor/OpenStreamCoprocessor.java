@@ -15,7 +15,7 @@
  */
 package com.weiwan.support.core.coprocessor;
 
-import com.weiwan.support.core.SupportAppContext;
+import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.core.api.SupportDataFlow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ public class OpenStreamCoprocessor extends SupportCoprocessor {
 
     private static final Logger logger = LoggerFactory.getLogger(OpenStreamCoprocessor.class);
 
-    public OpenStreamCoprocessor(SupportAppContext context) {
+    public OpenStreamCoprocessor(SupportContext context) {
         super(context);
     }
 
@@ -39,7 +39,7 @@ public class OpenStreamCoprocessor extends SupportCoprocessor {
     @Override
     public <E, S1, S2> Object process(E env, SupportDataFlow<E, S1, S2> dataFlow, Object obj) throws Exception {
         logger.info("open stream coprocessor process");
-        S1 open = dataFlow.open(env, context);
+        S1 open = dataFlow.open(env, getContext());
         return nextProcess(env, dataFlow, open);
     }
 }
