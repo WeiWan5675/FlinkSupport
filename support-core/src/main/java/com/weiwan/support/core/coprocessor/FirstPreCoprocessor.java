@@ -41,12 +41,10 @@ public class FirstPreCoprocessor extends SupportCoprocessor {
     public <E, S1, S2> Object process(E env, SupportDataFlow<E, S1, S2> dataFlow, Object obj) throws Exception {
         logger.info("env coprocessor execute");
         if (env instanceof StreamExecutionEnvironment) {
-
             return nextProcess(env, dataFlow, obj);
         } else if (env instanceof ExecutionEnvironment) {
             return null;
-        } else {
-            return null;
         }
+        return null;
     }
 }

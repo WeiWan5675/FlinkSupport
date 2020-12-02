@@ -43,10 +43,7 @@ public abstract class StreamSupport<I_OUT, P_OUT> implements
     private SupportContext internalContext;
     private RunOptions options;
 
-
-    private boolean isEtl;
-    private boolean isTable;
-    private SupportCoprocessor coprocessors;
+    private CoprocessorChain<StreamExecutionEnvironment, DataStream<I_OUT>, DataStream<P_OUT>> coprocessorChain;
 
 
     /**
@@ -62,33 +59,7 @@ public abstract class StreamSupport<I_OUT, P_OUT> implements
         this.env = executionEnvironment;
         this.internalContext = context;
         this.options = options;
-
-        this.coprocessors = new FirstPreCoprocessor(this.internalContext);
-        SupportCoprocessor next = coprocessors; //第一个预处理处理器
-        if (options.isEtl()) {
-            this.isEtl = options.isEtl();
-            next = next.nextCoprocessor(new EtlCoprocessor(this.internalContext));  //etl插件模式处理器
-        } else if (options.isTable()) {
-            this.isTable = options.isTable();
-            next = next.nextCoprocessor(new TableCoprocessor(this.internalContext));  //table环境处理器
-        } else {
-            next = next
-                    .nextCoprocessor(new SourceCoprocessor(context))
-                    .nextCoprocessor(new StreamClassCoprocessor(context))
-                    .nextCoprocessor(new OpenStreamCoprocessor(context))
-                    .nextCoprocessor(new StreamCoprocessor(context))
-                    .nextCoprocessor(new OutputStreamCoprocessor(context))
-                    .nextCoprocessor(new StreamFieldCoprocessor(context));
-        }
-
-        //扫描注解
-
-        //注解解析
-
-        //根据解析后不同结果,进行不同处理
-
-        next.nextCoprocessor(new LastPreCoprocessor(this.internalContext));  //最后一个预处理处理器
-
+        this.coprocessorChain = CoprocessorChainFactory.createStreamCoprocessorChain(env, this, options);
     }
 
     public final StreamExecutionEnvironment getEnv() {
@@ -108,7 +79,7 @@ public abstract class StreamSupport<I_OUT, P_OUT> implements
      * 运行类{@link com.weiwan.support.runtime.SupportAppEnter} 中反射该方法进行任务提交
      *
      * @return
-     * @throws Exception
+     * @throws Exception 任务提交出错抛出此异常
      */
     private TaskResult submit() throws Exception {
         FlinkSupport flinkSupport = preProcessing();
@@ -126,8 +97,8 @@ public abstract class StreamSupport<I_OUT, P_OUT> implements
     }
 
     private FlinkSupport preProcessing() throws Exception {
-        if (coprocessors != null) {
-            coprocessors.process(env, this, null);
+        if (coprocessorChain != null) {
+            coprocessorChain.coProcessing();
         }
         return this;
     }

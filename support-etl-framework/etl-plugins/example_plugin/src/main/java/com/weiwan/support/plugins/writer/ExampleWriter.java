@@ -29,9 +29,6 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  * @Description:
  **/
 public class ExampleWriter extends BaseWriter<DataRecord<String>> {
-    public ExampleWriter(StreamExecutionEnvironment env, SupportContext context) {
-        super(env, context);
-    }
 
     @Override
     public BaseOutputFormat<DataRecord<String>> getOutputFormat(SupportContext context) {
@@ -39,12 +36,13 @@ public class ExampleWriter extends BaseWriter<DataRecord<String>> {
     }
 
     /**
-     * 为什么要在这里有这个方法呢,output是并行得,但是有些前置条件要再并行任务执行前处理,所以提供这个方法
+     * 前置条件
      *
      * @param context
      */
     @Override
-    public void writeRequire(SupportContext context) {
+    public void require(SupportContext context) {
 
     }
+
 }

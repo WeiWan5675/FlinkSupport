@@ -43,7 +43,7 @@ public class StreamETLBase extends StreamSupport<DataRecord, DataRecord> {
     }
 
     @Override
-    public DataStreamSink output(DataStream<DataRecord> stream) {
+    public Object output(DataStream<DataRecord> stream) {
         return null;
     }
 }

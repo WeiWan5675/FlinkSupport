@@ -1,6 +1,7 @@
 package com.weiwan.support.core.api;
 
 import com.weiwan.support.core.SupportContext;
+import com.weiwan.support.core.start.RunOptions;
 
 /**
  * @Author: xiaozhennan
@@ -9,9 +10,17 @@ import com.weiwan.support.core.SupportContext;
  * @ClassName: Support
  * @Description:
  **/
-public interface Support {
+public interface Support<T> {
 
-    public SupportContext getContext();
+    SupportContext getContext();
 
-    public void setContext(SupportContext context);
+    void setContext(SupportContext context);
+
+    default void initEnv(T env, SupportContext context, RunOptions options) {
+        throw new RuntimeException("This method must be implemented by the user before it can be called, otherwise it is regarded as illegal access");
+    }
+
+    default T getEnv() {
+        throw new RuntimeException("This method must be implemented by the user before it can be called, otherwise it is regarded as illegal access");
+    }
 }

@@ -26,11 +26,7 @@ import com.weiwan.support.core.start.TaskResult;
  * @ClassName: FlinkSupport
  * @Description:
  **/
-public interface FlinkSupport<T> extends Support {
-
-    void initEnv(T t, SupportContext context, RunOptions options);
-
-    T getEnv();
+public interface FlinkSupport<T> extends Support<T> {
 
     TaskResult executeTask() throws Exception;
 }

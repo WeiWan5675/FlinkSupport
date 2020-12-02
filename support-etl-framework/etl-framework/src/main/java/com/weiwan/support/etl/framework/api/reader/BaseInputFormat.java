@@ -16,9 +16,11 @@
 package com.weiwan.support.etl.framework.api.reader;
 
 import com.weiwan.support.core.SupportContext;
+import com.weiwan.support.core.api.Support;
 import com.weiwan.support.core.config.JobConfig;
 import com.weiwan.support.core.config.ReaderConfig;
 import com.weiwan.support.core.pojo.DataRecord;
+import com.weiwan.support.core.start.RunOptions;
 import com.weiwan.support.etl.framework.streaming.JobFormatState;
 import org.apache.flink.api.common.io.DefaultInputSplitAssigner;
 import org.apache.flink.api.common.io.RichInputFormat;
@@ -40,7 +42,7 @@ import java.util.List;
  * @ClassName: BaseInputFormat
  * @Description:
  **/
-public abstract class BaseInputFormat<OT, T extends InputSplit> extends RichInputFormat<OT, T> {
+public abstract class BaseInputFormat<OT, T extends InputSplit> extends RichInputFormat<OT, T> implements Support {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseInputFormat.class);
 
@@ -211,5 +213,26 @@ public abstract class BaseInputFormat<OT, T extends InputSplit> extends RichInpu
 
     public void notifyCheckpointComplete(long checkpointId) {
         //do noting
+    }
+
+
+    @Override
+    public SupportContext getContext() {
+        return this.context;
+    }
+
+    @Override
+    public void setContext(SupportContext context) {
+        this.context = context;
+    }
+
+    @Override
+    public void initEnv(Object env, SupportContext context, RunOptions options) {
+        throw new RuntimeException("Unauthorized access");
+    }
+
+    @Override
+    public Object getEnv() {
+        throw new RuntimeException("Unauthorized access");
     }
 }

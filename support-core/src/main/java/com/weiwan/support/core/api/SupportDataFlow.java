@@ -31,6 +31,6 @@ public interface SupportDataFlow<E, S1, S2> {
 
     S2 process(S1 stream);
 
-    DataStreamSink output(S2 stream);
+    Object output(S2 stream);
 
 }

@@ -16,7 +16,9 @@
 package com.weiwan.support.core.coprocessor;
 
 import com.weiwan.support.core.SupportContext;
+import com.weiwan.support.core.annotation.SupportSource;
 import com.weiwan.support.core.api.SupportDataFlow;
+import org.apache.flink.streaming.api.datastream.DataStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +42,10 @@ public class OpenStreamCoprocessor extends SupportCoprocessor {
     public <E, S1, S2> Object process(E env, SupportDataFlow<E, S1, S2> dataFlow, Object obj) throws Exception {
         logger.info("open stream coprocessor process");
         S1 open = dataFlow.open(env, getContext());
+        SupportSource annotation = dataFlow.getClass().getAnnotation(SupportSource.class);
+        if (annotation != null && obj != null && obj instanceof DataStream) {
+            return nextProcess(env, dataFlow, (S1) obj);
+        }
         return nextProcess(env, dataFlow, open);
     }
 }

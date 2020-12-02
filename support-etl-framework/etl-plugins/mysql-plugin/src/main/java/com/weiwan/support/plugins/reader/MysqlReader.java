@@ -31,14 +31,8 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  **/
 public class MysqlReader extends BaseReader<DataRecord<DataRow>> {
 
-
-    public MysqlReader(StreamExecutionEnvironment env, SupportContext context) {
-        super(env, context);
-    }
-
-
     @Override
-    public void readRequire(SupportContext context) {
+    public void require(SupportContext context) {
 
     }
 

@@ -20,6 +20,7 @@ import com.weiwan.support.core.api.Processer;
 import com.weiwan.support.core.config.ProcesserConfig;
 import com.weiwan.support.core.config.JobConfig;
 import com.weiwan.support.core.pojo.DataRecord;
+import com.weiwan.support.core.start.RunOptions;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
@@ -31,25 +32,64 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  * @Description:
  **/
 public abstract class BaseProcesser<IN extends DataRecord, OUT extends DataRecord> implements Processer<IN, OUT> {
-    protected JobConfig jobConfig;
-    protected StreamExecutionEnvironment env;
-    protected String channelName;
-    protected SupportContext supportContext;
-    protected ProcesserConfig processerConfig;
 
-    public BaseProcesser(StreamExecutionEnvironment env, SupportContext supportContext) {
+    private static final String KEY_PROCESSER_NAME = "processer.name";
+    private static final String KEY_PROCESSER_TYPE = "processer.type";
+    private static final String KEY_PROCESSER_CLASS_NAME = "processer.class";
+    private static final String KEY_PROCESSER_PARALLELISM = "processer.parallelism";
+
+    private JobConfig jobConfig;
+    private StreamExecutionEnvironment env;
+    private SupportContext context;
+    private RunOptions runOptions;
+
+    protected ProcesserConfig processerConfig;
+    protected String processerName;
+    protected String processerType;
+    protected String processerClassName;
+    protected int processerParallelism;
+
+    public BaseProcesser() {
+    }
+
+    @Override
+    public SupportContext getContext() {
+        return this.context;
+    }
+
+    @Override
+    public void setContext(SupportContext context) {
+        this.context = context;
+    }
+
+    @Override
+    public void initEnv(StreamExecutionEnvironment env, SupportContext context, RunOptions options) {
         this.env = env;
-        this.supportContext = supportContext;
-        this.jobConfig = supportContext.getJobConfig();
-        this.processerConfig = supportContext.getJobConfig().getProcesserConfig();
-        this.channelName = processerConfig.getChannleName();
+        this.context = context;
+        this.runOptions = options;
+        this.jobConfig = context.getJobConfig();
+        this.processerConfig = context.getJobConfig().getProcesserConfig();
+        this.processerName = processerConfig.getStringVal(KEY_PROCESSER_NAME, "SupportProcesser");
+        this.processerClassName = processerConfig.getStringVal(KEY_PROCESSER_CLASS_NAME);
+        this.processerParallelism = processerConfig.getIntVal(KEY_PROCESSER_PARALLELISM, 1);
+        this.processerType = processerConfig.getStringVal(KEY_PROCESSER_TYPE, "Stream");
+
+    }
+
+
+    @Override
+    public StreamExecutionEnvironment getEnv() {
+        return this.env;
     }
 
     public abstract BaseProcessHandler<IN, OUT> getProcessHandler(SupportContext context);
 
+    public abstract void require(SupportContext context);
+
     @Override
-    public DataStream<OUT> process(DataStream<IN> stream, SupportContext context) {
-        BaseProcessHandler channelHandler = getProcessHandler(supportContext);
+    public DataStream<OUT> process(DataStream<IN> stream) {
+        require(context);
+        BaseProcessHandler channelHandler = getProcessHandler(context);
         DataStream<OUT> out = stream.map(channelHandler);
         return out;
     }

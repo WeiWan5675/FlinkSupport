@@ -30,8 +30,4 @@ public class ProcesserConfig extends AbstractConfig {
     public ProcesserConfig(Map<String, Object> map) {
         super(map);
     }
-
-    public String getChannleName() {
-        return null;
-    }
 }

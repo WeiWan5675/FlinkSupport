@@ -53,23 +53,23 @@ public class EtlCoprocessor extends SupportCoprocessor {
 
         String readerClassName = readerConfig.getStringVal("reader.class");
         Class<?> readerClass = Class.forName(readerClassName);
-        Constructor<?> readerConstructor = readerClass.getConstructor(env.getClass(), SupportContext.class);
-        Reader<S1> reader = (Reader<S1>) readerConstructor.newInstance(env, context);
+        Reader<S1> reader = (Reader<S1>) readerClass.newInstance();
+        reader.initEnv((StreamExecutionEnvironment) env, context, null);
         DataStream<S1> s1 = reader.read((StreamExecutionEnvironment) env, context);
 
 
         String processerClassName = processerConfig.getStringVal("processer.class");
         Class<?> processerClass = Class.forName(processerClassName);
-        Constructor<?> processerConstructor = processerClass.getConstructor(env.getClass(), SupportContext.class);
-        Processer<S1, S2> processer = (Processer<S1, S2>) processerConstructor.newInstance(env, context);
-        DataStream<S2> s2 = processer.process(s1, context);
+        Processer<S1, S2> processer = (Processer<S1, S2>) processerClass.newInstance();
+        processer.initEnv((StreamExecutionEnvironment) env, context, null);
+        DataStream<S2> s2 = processer.process(s1);
 
 
         String writerClassName = writerConfig.getStringVal("writer.class");
         Class<?> writerClass = Class.forName(writerClassName);
-        Constructor<?> writerConstructor = writerClass.getConstructor(env.getClass(), SupportContext.class);
-        Writer writer = (Writer) writerConstructor.newInstance(env, context);
-        DataStreamSink sink = writer.write(s2, context);
+        Writer<S2> writer = (Writer) writerClass.newInstance();
+        writer.initEnv((StreamExecutionEnvironment) env, context, null);
+        DataStreamSink sink = writer.write(s2);
         return nextProcess(env, dataFlow, sink);
     }
 }

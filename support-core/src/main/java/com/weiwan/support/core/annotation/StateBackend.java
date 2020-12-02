@@ -9,7 +9,7 @@ import com.weiwan.support.utils.flink.conf.StateBackendEnum;
  * @ClassName: SupportStateBackend
  * @Description:
  **/
-public @interface SupportStateBackend {
+public @interface StateBackend {
 
     StateBackendEnum type() default StateBackendEnum.MEMORY_TYPE;
 

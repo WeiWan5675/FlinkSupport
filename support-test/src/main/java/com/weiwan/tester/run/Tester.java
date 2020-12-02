@@ -44,7 +44,6 @@ public class Tester extends StreamSupport<DataRecord<String>, DataRecord<String>
     private static final Logger logger = LoggerFactory.getLogger(Tester.class);
 
     @Override
-    @SupportSourceParallelism
     public DataStream<DataRecord<String>> open(StreamExecutionEnvironment env, SupportContext context) {
         return env.addSource(new SourceFunction<DataRecord<String>>() {
             @Override

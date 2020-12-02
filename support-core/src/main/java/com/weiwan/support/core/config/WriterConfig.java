@@ -30,8 +30,4 @@ public class WriterConfig extends AbstractConfig {
     public WriterConfig(Map<String, Object> map) {
         super(map);
     }
-
-    public String getWriterName() {
-        return null;
-    }
 }

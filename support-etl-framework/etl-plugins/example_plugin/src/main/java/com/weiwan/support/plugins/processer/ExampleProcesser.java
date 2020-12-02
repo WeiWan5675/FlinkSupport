@@ -29,13 +29,15 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  * @Description:
  **/
 public class ExampleProcesser extends BaseProcesser<DataRecord<String>, DataRecord<String>> {
-    public ExampleProcesser(StreamExecutionEnvironment env, SupportContext supportContext) {
-        super(env, supportContext);
-    }
 
     @Override
     public BaseProcessHandler<DataRecord<String>, DataRecord<String>> getProcessHandler(SupportContext context) {
 
         return new ExampleProcessHandler(context);
+    }
+
+    @Override
+    public void require(SupportContext context) {
+
     }
 }

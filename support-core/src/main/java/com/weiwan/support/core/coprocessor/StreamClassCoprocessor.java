@@ -19,8 +19,8 @@ import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.core.SupportContextHolder;
 import com.weiwan.support.core.annotation.Checkpoint;
 import com.weiwan.support.core.annotation.Parallelism;
+import com.weiwan.support.core.annotation.StateBackend;
 import com.weiwan.support.core.annotation.Support;
-import com.weiwan.support.core.annotation.SupportStateBackend;
 import com.weiwan.support.core.api.SupportDataFlow;
 import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -52,7 +52,6 @@ public class StreamClassCoprocessor extends SupportCoprocessor {
         SupportContext context = SupportContextHolder.getContext();
 
 
-
         /**
          * 如果在类上,就是env的并行度
          * 如果在方法上,就是该方法返回的stream的并行度
@@ -60,13 +59,14 @@ public class StreamClassCoprocessor extends SupportCoprocessor {
          */
         //启用注解支持
         Support enabelSupport = userClass.getAnnotation(Support.class);
-        if (enabelSupport != null && !enabelSupport.enable()) {
+        if (enabelSupport != null && enabelSupport.enable()) {
 
             //检查点支持
             Checkpoint checkpoint = userClass.getAnnotation(Checkpoint.class);
             if (checkpoint != null) {
                 if (checkpoint.enableAutoConfigura()) {
                     //自动配置checkpoin,优先配置文件,入股配置文件没有,使用默认的,加了这个注解,就相当于开启了checkpoint
+                    //不需要做特殊处理,因为env环境在获取时,已经通过配置文件解析设置了
                 } else {
                     //使用用户的注解进行checkpoint设置
                     long interval = checkpoint.interval();
@@ -76,8 +76,8 @@ public class StreamClassCoprocessor extends SupportCoprocessor {
             }
 
             //设置状态后端
-            SupportStateBackend stateBackend = userClass.getAnnotation(SupportStateBackend.class);
-            if(stateBackend != null){
+            StateBackend stateBackend = userClass.getAnnotation(StateBackend.class);
+            if (stateBackend != null) {
 
             }
             //设置并行度

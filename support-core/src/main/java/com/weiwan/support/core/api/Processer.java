@@ -17,6 +17,7 @@ package com.weiwan.support.core.api;
 
 import com.weiwan.support.core.SupportContext;
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 /**
  * @Author: xiaozhennan
@@ -25,9 +26,8 @@ import org.apache.flink.streaming.api.datastream.DataStream;
  * @ClassName: Processer
  * @Description:
  **/
-@FunctionalInterface
-public interface Processer<IN, OUT> {
+public interface Processer<IN, OUT> extends Support<StreamExecutionEnvironment> {
 
-    public DataStream<OUT> process(DataStream<IN> inputStream, SupportContext context);
+    public DataStream<OUT> process(DataStream<IN> inputStream);
 
 }

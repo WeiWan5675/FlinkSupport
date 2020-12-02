@@ -21,6 +21,7 @@ import com.weiwan.support.common.utils.YamlUtils;
 import com.weiwan.support.core.BatchSupport;
 import com.weiwan.support.core.StreamSupport;
 import com.weiwan.support.core.SupportContext;
+import com.weiwan.support.core.SupportContextHolder;
 import com.weiwan.support.core.api.FlinkSupport;
 import com.weiwan.support.core.start.TaskResult;
 import com.weiwan.support.core.config.JobConfig;
@@ -107,7 +108,7 @@ public class SupportTestConsole {
                 context.setFlinkEnvConfig(flinkEnvConfig);
                 context.setJobConfig(jobConfig);
             }
-
+            SupportContextHolder.init(context);
             if (env == null) {
                 if (superclass == StreamSupport.class) {
                     env = FlinkContextUtil.getStreamContext(context.getFlinkEnvConfig()).getEnv();

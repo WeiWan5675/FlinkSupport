@@ -18,6 +18,7 @@ package com.weiwan.support.core.api;
 import com.weiwan.support.core.SupportContext;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSink;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 /**
  * @Author: xiaozhennan
@@ -26,8 +27,7 @@ import org.apache.flink.streaming.api.datastream.DataStreamSink;
  * @ClassName: Writer
  * @Description:
  **/
-@FunctionalInterface
-public interface Writer<IN> {
+public interface Writer<IN> extends Support<StreamExecutionEnvironment> {
 
-    public DataStreamSink write(DataStream<IN> inputStream, SupportContext context);
+    public DataStreamSink write(DataStream<IN> inputStream);
 }

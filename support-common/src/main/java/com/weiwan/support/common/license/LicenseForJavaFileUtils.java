@@ -44,7 +44,6 @@ public class LicenseForJavaFileUtils {
                 " * See the License for the specific language governing permissions and\n" +
                 " * limitations under the License.\n" +
                 " */";
-        String licensePath = "/Users/jiangwenzhong/android/workspace/github/JLicenseForJavaFileUtil/app/src/main/java/com/jwz/jlicenseforjavafileutil/file/license";
 
         iterativeHandleFiles(javaFilesDir, FILE_SUFFIX, new AddLicenseWithStrFileAction(licenseStr));
 //        iterativeHandleFiles(javaFilesDir, FILE_SUFFIX, new AddLicenseWithFileFileAction(licensePath));

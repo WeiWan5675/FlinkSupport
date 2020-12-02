@@ -30,17 +30,14 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  **/
 public class ExampleReader extends BaseReader<DataRecord<String>> {
 
-    public ExampleReader(StreamExecutionEnvironment env, SupportContext context) {
-        super(env, context);
-    }
 
     @Override
     public BaseInputFormat getInputFormat(SupportContext context) {
-        return new ExampleInputFormat(context);
+        return new ExampleInputFormat();
     }
 
     @Override
-    public void readRequire(SupportContext context) {
+    public void require(SupportContext context) {
 
     }
 }

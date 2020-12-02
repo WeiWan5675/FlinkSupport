@@ -18,6 +18,7 @@ package com.weiwan.support.plugins.reader;
 import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.etl.framework.api.reader.BaseInputFormat;
 import com.weiwan.support.etl.framework.streaming.JobFormatState;
+import org.apache.flink.core.io.GenericInputSplit;
 import org.apache.flink.core.io.InputSplit;
 
 /**
@@ -27,9 +28,7 @@ import org.apache.flink.core.io.InputSplit;
  * @ClassName: ExampleInputFormat
  * @Description:
  **/
-public class ExampleInputFormat extends BaseInputFormat {
-    public ExampleInputFormat(SupportContext context) {
-    }
+public class ExampleInputFormat extends BaseInputFormat<String, GenericInputSplit> {
 
     /**
      * 打开InputFormat,根据split读取数据
@@ -37,7 +36,7 @@ public class ExampleInputFormat extends BaseInputFormat {
      * @param split 当前处理的分区InputSplit
      */
     @Override
-    public void openInput(InputSplit split) {
+    public void openInput(GenericInputSplit split) {
 
     }
 
@@ -48,20 +47,20 @@ public class ExampleInputFormat extends BaseInputFormat {
      * @return 分区数组
      */
     @Override
-    public InputSplit[] getInputSpliter(int minNumSplits) {
-        return new InputSplit[0];
+    public GenericInputSplit[] getInputSpliter(int minNumSplits) {
+        return new GenericInputSplit[0];
     }
 
     /**
      * 返回一条记录
-     * 当数据处理结束后,需要手动调用{@link BaseRichInputFormat#isComplete} }
-     * 如果不想使用isComplete 需要重写{@link BaseRichInputFormat#reachedEnd()}
+     * 当数据处理结束后,需要手动调用{@link BaseInputFormat#isComplete} }
+     * 如果不想使用isComplete 需要重写{@link BaseInputFormat#reachedEnd()}
      *
      * @param reuse
      * @return 数据
      */
     @Override
-    public Object nextRecordInternal(Object reuse) {
+    public String nextRecordInternal(String reuse) {
         return null;
     }
 

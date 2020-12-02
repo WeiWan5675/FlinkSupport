@@ -20,6 +20,7 @@ import com.weiwan.support.core.api.Writer;
 import com.weiwan.support.core.config.JobConfig;
 import com.weiwan.support.core.config.WriterConfig;
 import com.weiwan.support.core.pojo.DataRecord;
+import com.weiwan.support.core.start.RunOptions;
 import com.weiwan.support.etl.framework.streaming.SupportOutputFormatSink;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSink;
@@ -34,44 +35,68 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  **/
 public abstract class BaseWriter<T extends DataRecord> implements Writer<T> {
 
-    protected StreamExecutionEnvironment env;
-
-    protected SupportContext context;
-    protected JobConfig jobConfig;
-    protected WriterConfig writerConfig;
-    protected String writerName;
-    protected String writerType;
-    protected String writerClassName;
-    protected Integer writerParallelism;
 
     private static final String KEY_WRITER_NAME = "writer.name";
     private static final String KEY_WRITER_TYPE = "writer.type";
     private static final String KEY_WRITER_CLASS_NAME = "writer.class";
     private static final String KEY_WRITER_PARALLELISM = "writer.parallelism";
 
+    private StreamExecutionEnvironment env;
+    private SupportContext context;
+    private JobConfig jobConfig;
+    private RunOptions runOptions;
 
-    public BaseWriter(StreamExecutionEnvironment env, SupportContext context) {
+    protected WriterConfig writerConfig;
+    protected String writerName;
+    protected String writerType;
+    protected String writerClassName;
+    protected Integer writerParallelism;
+
+
+    public BaseWriter() {
+    }
+
+
+    @Override
+    public SupportContext getContext() {
+        return this.context;
+    }
+
+    @Override
+    public void setContext(SupportContext context) {
+        this.context = context;
+    }
+
+    @Override
+    public void initEnv(StreamExecutionEnvironment env, SupportContext context, RunOptions options) {
         this.env = env;
         this.context = context;
+        this.runOptions = options;
         this.jobConfig = context.getJobConfig();
         this.writerConfig = context.getJobConfig().getWriterConfig();
         this.writerName = writerConfig.getStringVal(KEY_WRITER_NAME, "SupportWriter");
         this.writerClassName = writerConfig.getStringVal(KEY_WRITER_CLASS_NAME);
-        this.writerType = writerConfig.getStringVal(KEY_WRITER_TYPE);
+        this.writerType = writerConfig.getStringVal(KEY_WRITER_TYPE, "Stream");
         this.writerParallelism = writerConfig.getIntVal(KEY_WRITER_PARALLELISM, 1);
+    }
+
+    @Override
+    public StreamExecutionEnvironment getEnv() {
+        return this.env;
     }
 
     public abstract BaseOutputFormat<T> getOutputFormat(SupportContext context);
 
     /**
-     * 为什么要在这里有这个方法呢,output是并行得,但是有些前置条件要再并行任务执行前处理,所以提供这个方法
+     * 前置条件
      *
      * @param context
      */
-    public abstract void writeRequire(SupportContext context);
+    public abstract void require(SupportContext context);
 
     @Override
-    public DataStreamSink<T> write(DataStream<T> dataStream, SupportContext context) {
+    public DataStreamSink<T> write(DataStream<T> dataStream) {
+        require(context);
         DataStream<T> beforeWritingStream = beforeWriting(dataStream);
         BaseOutputFormat<T> outputFormat = getOutputFormat(context);
         SupportOutputFormatSink<T> outputFormatSink = new SupportOutputFormatSink<T>(outputFormat);
@@ -82,6 +107,7 @@ public abstract class BaseWriter<T extends DataRecord> implements Writer<T> {
     }
 
     protected DataStream<T> beforeWriting(DataStream<T> dataStream) {
+        //do nothing
         return dataStream;
     }
 }
