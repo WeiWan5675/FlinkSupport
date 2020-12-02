@@ -23,7 +23,7 @@ import java.io.File;
  */
 public class LicenseForJavaFileUtils {
 
-    public static final String FILE_SUFFIX = "";
+    public static final String FILE_SUFFIX = "java";
 
     public static void main(String[] args) {
 

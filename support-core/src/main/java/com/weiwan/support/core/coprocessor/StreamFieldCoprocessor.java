@@ -1,24 +1,29 @@
+/*
+ *      Copyright [2020] [xiaozhennan1995@gmail.com]
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.weiwan.support.core.coprocessor;
 
 import com.weiwan.support.core.SupportContext;
-import com.weiwan.support.core.annotation.Parallelism;
-import com.weiwan.support.core.annotation.SupportSource;
-import com.weiwan.support.core.api.Reader;
+import com.weiwan.support.core.annotation.PrintStream;
 import com.weiwan.support.core.api.SupportDataFlow;
-import com.weiwan.support.core.enums.FieldAnnoEnum;
-import com.weiwan.support.core.enums.SourceElement;
 import org.apache.flink.api.dag.Transformation;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.functions.source.SourceFunction;
-
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedHashMap;
-
-import static com.weiwan.support.core.enums.FieldAnnoEnum.Parallelism;
 
 /**
  * @Author: xiaozhennan
@@ -54,7 +59,6 @@ public class StreamFieldCoprocessor extends SupportCoprocessor {
             Field field = fields.get(key);
             fieldAnnotationsResolve(field, dataFlow);
         }
-
         return nextProcess(env, dataFlow, obj);
     }
 
@@ -63,18 +67,20 @@ public class StreamFieldCoprocessor extends SupportCoprocessor {
             field.setAccessible(true);
             Annotation[] annotations = field.getAnnotations();
             DataStream stream = (DataStream) field.get(dataFlow);
-            for (Annotation anno : annotations) {
-                Class<? extends Annotation> annoType = anno.annotationType();
-                if (FieldAnnoEnum.Parallelism.clazz.equals(annoType)) {
-                    //流并行度
-                    Transformation transformation = stream.getTransformation();
-                    transformation.setParallelism(((com.weiwan.support.core.annotation.Parallelism) anno).num());
-                }
-                if (FieldAnnoEnum.PrintStream.clazz.equals(annoType)) {
-                    //打印流
-                    stream.print();
-                }
+            if (stream != null) {
+                for (Annotation anno : annotations) {
+                    Class<? extends Annotation> annoType = anno.annotationType();
+                    if (com.weiwan.support.core.annotation.Parallelism.class.equals(annoType)) {
+                        //流并行度
+                        Transformation transformation = stream.getTransformation();
+                        transformation.setParallelism(((com.weiwan.support.core.annotation.Parallelism) anno).num());
+                    }
+                    if (PrintStream.class.equals(annoType)) {
+                        //打印流
+                        stream.print();
+                    }
 
+                }
             }
         } catch (Exception e) {
 

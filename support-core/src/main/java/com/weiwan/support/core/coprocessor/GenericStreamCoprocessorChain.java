@@ -1,3 +1,18 @@
+/*
+ *      Copyright [2020] [xiaozhennan1995@gmail.com]
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.weiwan.support.core.coprocessor;
 
 import com.weiwan.support.core.SupportContext;
@@ -36,6 +51,7 @@ public class GenericStreamCoprocessorChain<E, S1, S2> implements CoprocessorChai
 
         //开启注解支持,添加类的注解处理器,和Source的注解处理器
         if (supportAnno.enable()) {
+            //添加Source注解处理器
             next = next.nextCoprocessor(new StreamClassCoprocessor(context)).nextCoprocessor(new SourceStreamCoprocessor(context));
         }
         //数据处理
@@ -44,7 +60,10 @@ public class GenericStreamCoprocessorChain<E, S1, S2> implements CoprocessorChai
                 .nextCoprocessor(new OutputStreamCoprocessor(context));
         //开启注解支持,在output前添加Sink处理器
         if (supportAnno.enable()) {
+            //添加Sink注解处理器
             next = next.nextCoprocessor(new SinkStreamCoprocessor(context));
+            //添加字段注解处理器
+            next = next.nextCoprocessor(new StreamFieldCoprocessor(context));
         }
         next = next.nextCoprocessor(new LastPreCoprocessor(context));
     }
@@ -52,7 +71,7 @@ public class GenericStreamCoprocessorChain<E, S1, S2> implements CoprocessorChai
     public Object coProcessing() throws Exception {
         if (head != null) {
             return head.process(env, dataFlow, obj);
-        }else{
+        } else {
             throw new RuntimeException("The coprocessor has not been initialized");
         }
     }

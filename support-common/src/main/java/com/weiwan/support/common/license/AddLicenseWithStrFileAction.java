@@ -52,7 +52,9 @@ public class AddLicenseWithStrFileAction implements FileAction {
             byte[] contentBytes = new byte[(int) targetRandomAccessFile.length()];
             targetRandomAccessFile.readFully(contentBytes);
             String contentStr = new String(contentBytes);
-
+            if(contentStr.contains("http://www.apache.org/licenses/LICENSE-2.0")){
+                return;
+            }
             int indexOfPackage = contentStr.indexOf("package");
             // 拼接最终的文件内容
             contentStr = mLicenseStr + "\n" + contentStr.substring(indexOfPackage);

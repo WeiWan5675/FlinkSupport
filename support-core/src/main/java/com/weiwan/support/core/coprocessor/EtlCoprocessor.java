@@ -28,8 +28,6 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSink;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-import java.lang.reflect.Constructor;
-
 /**
  * @Author: xiaozhennan
  * @Date: 2020/11/11 15:44
