@@ -20,6 +20,9 @@
             <groupId>com.weiwan</groupId>
             <artifactId>jdbc-plugin</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>com.weiwan</groupId>
+            <artifactId>example-plugin</artifactId>
+        </dependency>
     </dependencies>
 </project>
