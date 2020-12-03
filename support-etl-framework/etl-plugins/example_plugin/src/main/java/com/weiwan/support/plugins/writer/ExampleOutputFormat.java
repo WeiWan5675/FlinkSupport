@@ -19,6 +19,8 @@ import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.core.pojo.DataRecord;
 import com.weiwan.support.etl.framework.api.writer.BaseOutputFormat;
 import com.weiwan.support.etl.framework.streaming.JobFormatState;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,7 +32,10 @@ import java.util.List;
  * @ClassName: ExampleOutputFormat
  * @Description:
  **/
-public class ExampleOutputFormat extends BaseOutputFormat<DataRecord<String>> {
+public class ExampleOutputFormat extends BaseOutputFormat<String> {
+    public static final Logger logger = LoggerFactory.getLogger(ExampleOutputFormat.class);
+    private String exampleVar;
+
     /**
      * 打开数据源
      *
@@ -40,7 +45,8 @@ public class ExampleOutputFormat extends BaseOutputFormat<DataRecord<String>> {
      */
     @Override
     public void openOutput(int taskNumber, int numTasks, SupportContext context) {
-
+        exampleVar = writerConfig.getStringVal("writer.example.writerVar");
+        logger.info("example output format open");
     }
 
     /**
@@ -49,8 +55,9 @@ public class ExampleOutputFormat extends BaseOutputFormat<DataRecord<String>> {
      * @param record
      */
     @Override
-    public void writerRecordInternal(DataRecord<String> record) {
-
+    public void writerRecordInternal(String record) {
+        logger.info("writer record internal run");
+        System.out.println(record.toString());
     }
 
     /**
@@ -59,7 +66,7 @@ public class ExampleOutputFormat extends BaseOutputFormat<DataRecord<String>> {
      * @param batchRecords
      */
     @Override
-    public void batchWriteRecordsInternal(List<DataRecord<String>> batchRecords) throws IOException {
+    public void batchWriteRecordsInternal(List<String> batchRecords) throws IOException {
 
     }
 
@@ -68,7 +75,7 @@ public class ExampleOutputFormat extends BaseOutputFormat<DataRecord<String>> {
      */
     @Override
     public void closeOutput() throws IOException {
-
+        logger.info("close example output format");
     }
 
     /**
@@ -78,7 +85,7 @@ public class ExampleOutputFormat extends BaseOutputFormat<DataRecord<String>> {
      */
     @Override
     public void snapshot(JobFormatState formatState) throws IOException {
-
+        logger.info("snapshot run!");
     }
 
     public ExampleOutputFormat(SupportContext context) {

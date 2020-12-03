@@ -31,7 +31,7 @@ import org.apache.flink.streaming.api.checkpoint.CheckpointedFunction;
  * @ClassName: BaseProcessHandler
  * @Description:
  **/
-public abstract class BaseProcessHandler<T extends DataRecord, O extends DataRecord> extends RichMapFunction<T, O> implements CheckpointedFunction {
+public abstract class BaseProcessHandler<IN, OUT> extends RichMapFunction<IN, OUT> implements CheckpointedFunction {
 
     protected SupportContext context;
     protected JobConfig jobConfig;
@@ -47,7 +47,7 @@ public abstract class BaseProcessHandler<T extends DataRecord, O extends DataRec
     }
 
     @Override
-    public O map(T value) throws Exception {
+    public OUT map(IN value) throws Exception {
         return process(value);
     }
 
@@ -63,5 +63,5 @@ public abstract class BaseProcessHandler<T extends DataRecord, O extends DataRec
     }
 
 
-    public abstract O process(T value);
+    public abstract OUT process(IN value);
 }

@@ -47,11 +47,11 @@ public class JobConfig extends AbstractConfig {
         this.processerConfig = new ProcesserConfig(new HashMap<>());
         for (String key : map.keySet()) {
             Object value = map.get(key);
-            if (key.startsWith("reader")) {
+            if (key.startsWith("etl.reader")) {
                 readerConfig.setVal(key, value);
-            } else if (key.startsWith("writer")) {
+            } else if (key.startsWith("etl.writer")) {
                 writerConfig.setVal(key, value);
-            } else if (key.startsWith("processer")) {
+            } else if (key.startsWith("etl.processer")) {
                 processerConfig.setVal(key, value);
             } else {
                 this.setVal(key, value);

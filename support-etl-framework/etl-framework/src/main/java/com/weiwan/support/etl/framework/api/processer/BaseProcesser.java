@@ -31,12 +31,12 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  * @ClassName: BaseChannel
  * @Description:
  **/
-public abstract class BaseProcesser<IN extends DataRecord, OUT extends DataRecord> implements Processer<IN, OUT> {
+public abstract class BaseProcesser<IN, OUT> implements Processer<IN, OUT> {
 
-    private static final String KEY_PROCESSER_NAME = "processer.name";
-    private static final String KEY_PROCESSER_TYPE = "processer.type";
-    private static final String KEY_PROCESSER_CLASS_NAME = "processer.class";
-    private static final String KEY_PROCESSER_PARALLELISM = "processer.parallelism";
+    private static final String KEY_PROCESSER_NAME = "etl.processer.name";
+    private static final String KEY_PROCESSER_TYPE = "etl.processer.type";
+    private static final String KEY_PROCESSER_CLASS_NAME = "etl.processer.class";
+    private static final String KEY_PROCESSER_PARALLELISM = "etl.processer.parallelism";
 
     private JobConfig jobConfig;
     private StreamExecutionEnvironment env;

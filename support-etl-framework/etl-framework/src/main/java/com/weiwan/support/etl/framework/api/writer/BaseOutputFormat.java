@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +37,7 @@ import java.util.List;
  * @ClassName: BaseRichOutputFormat
  * @Description: BaseRichOutputFormat 负责处理数据,维护状态,调用子类处理数据的方法, 提供Sink调用的方法
  **/
-public abstract class BaseOutputFormat<T extends DataRecord> extends RichOutputFormat<T> {
+public abstract class BaseOutputFormat<T> extends RichOutputFormat<T> {
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseOutputFormat.class);

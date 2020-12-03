@@ -33,7 +33,7 @@ public class ExampleReader extends BaseReader<DataRecord<String>> {
 
     @Override
     public BaseInputFormat getInputFormat(SupportContext context) {
-        return new ExampleInputFormat();
+        return new ExampleInputFormat(context);
     }
 
     @Override

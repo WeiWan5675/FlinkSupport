@@ -24,6 +24,8 @@ import com.weiwan.support.plugins.reader.ExampleReader;
 import com.weiwan.support.plugins.writer.ExampleWriter;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @Author: xiaozhennan
@@ -37,31 +39,26 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 @SupportTest(jobFile = "F:\\Project\\FlinkSupport\\support-test\\src\\main\\resources\\app.yaml")
 public class TestAnnoSupport extends StreamSupport<String, String> {
 
-    @Parallelism(num = 1)
-    @PrintStream
-    DataStream<String> dataStream1;
+    private static final Logger logger = LoggerFactory.getLogger(TestAnnoSupport.class);
 
-
-    @SupportSource(type = ExampleReader.class, vars = {"etl.reader.example.readereVar=easylife_order"})
+    @SupportSource(type = ExampleReader.class, vars = {""})
     @SupportSink(type = ExampleWriter.class)
     DataStream<String> dataStream2;
 
 
-    @Override
-    @Parallelism(num = 1)
-    @SupportSource(type = ExampleReader.class, vars = {})
     public DataStream<String> open(StreamExecutionEnvironment env, SupportContext context) {
+        logger.info("user app open function run");
         return null;
     }
 
-    @Override
+
     public DataStream<String> process(DataStream<String> stream) {
+        logger.info("user app process function run");
         return stream;
     }
 
-    @Override
-    @SupportSink(type = ExampleWriter.class)
     public Object output(DataStream<String> stream) {
+        logger.info("user app output function run");
         return null;
     }
 

@@ -28,10 +28,10 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  * @ClassName: ExampleWriter
  * @Description:
  **/
-public class ExampleWriter extends BaseWriter<DataRecord<String>> {
+public class ExampleWriter extends BaseWriter<String> {
 
     @Override
-    public BaseOutputFormat<DataRecord<String>> getOutputFormat(SupportContext context) {
+    public BaseOutputFormat<String> getOutputFormat(SupportContext context) {
         return new ExampleOutputFormat(context);
     }
 

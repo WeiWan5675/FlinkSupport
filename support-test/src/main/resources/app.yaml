@@ -5,7 +5,7 @@ flink:
     name: TestApp
     common:
       queue: root.users.easylife
-      parallelism: 2 #并行度
+      parallelism: 1 #并行度
       restartMode: none #fixed-delay | failure-rate | none  默认fixed-delay
       restartNum: 3  #重启次数  默认3
       restartInterval: 30000  #重启延迟  默认30S
@@ -35,3 +35,24 @@ app:
   appName: TestApp
   appClass: com.weiwan.tester.run.Tester
   appType: stream
+
+
+etl:
+  reader:
+    name: ExampleReader #Reader插件
+    class: com.weiwan.support.plugins.reader.ExampleReader
+    parallelism: 1
+    example:
+      readereVar: 10
+  processer:
+    name: ExampleProcesser #Processer插件
+    class: com.weiwan.support.plugins.processer.ExampleProcesser
+    parallelism: 1
+    example:
+      channelVar: channel_var
+  writer:
+    name: ExampleWriter #Writer插件
+    class: com.weiwan.support.plugins.writer.ExampleWriter
+    parallelism: 1
+    example:
+      writerVar: writer_var

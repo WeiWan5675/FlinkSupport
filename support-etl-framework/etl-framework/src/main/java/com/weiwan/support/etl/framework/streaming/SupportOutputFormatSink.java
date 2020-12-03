@@ -47,11 +47,11 @@ import java.util.Map;
  * @ClassName: SupportOutputFormatSink
  * @Description:
  **/
-public class SupportOutputFormatSink<T> extends RichSinkFunction<T> implements InputTypeConfigurable, CheckpointedFunction, CheckpointListener {
+public class SupportOutputFormatSink<IN> extends RichSinkFunction<IN> implements InputTypeConfigurable, CheckpointedFunction, CheckpointListener {
 
     private static final long serialVersionUID = 1L;
     private static final Logger LOG = LoggerFactory.getLogger(SupportOutputFormatSink.class);
-    private OutputFormat<T> format;
+    private OutputFormat<IN> format;
     private boolean cleanupCalled = false;
 
 
@@ -61,7 +61,7 @@ public class SupportOutputFormatSink<T> extends RichSinkFunction<T> implements I
     private SupportContext context;
     private long currentCheckpointIndex;
 
-    public SupportOutputFormatSink(OutputFormat<T> format) {
+    public SupportOutputFormatSink(OutputFormat<IN> format) {
         this.format = format;
     }
 
@@ -103,7 +103,7 @@ public class SupportOutputFormatSink<T> extends RichSinkFunction<T> implements I
 
 
     @Override
-    public void invoke(T value, Context context) throws Exception {
+    public void invoke(IN value, Context context) throws Exception {
         try {
             format.writeRecord(value);
         } catch (Exception e) {
@@ -133,7 +133,7 @@ public class SupportOutputFormatSink<T> extends RichSinkFunction<T> implements I
         }
     }
 
-    public OutputFormat<T> getFormat() {
+    public OutputFormat<IN> getFormat() {
         return format;
     }
 

@@ -36,13 +36,13 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  * @ClassName: ReaderBase
  * @Description:
  **/
-public abstract class BaseReader<OUT extends DataRecord> implements Reader<OUT> {
+public abstract class BaseReader<OUT> implements Reader<OUT> {
 
 
-    private static final String KEY_READER_NAME = "reader.name";
-    private static final String KEY_READER_TYPE = "reader.type";
-    private static final String KEY_READER_CLASS_NAME = "reader.class";
-    private static final String KEY_READER_PARALLELISM = "reader.parallelism";
+    private static final String KEY_READER_NAME = "etl.reader.name";
+    private static final String KEY_READER_TYPE = "etl.reader.type";
+    private static final String KEY_READER_CLASS_NAME = "etl.reader.class";
+    private static final String KEY_READER_PARALLELISM = "etl.reader.parallelism";
 
     private StreamExecutionEnvironment env;
     private SupportContext context;
@@ -63,7 +63,7 @@ public abstract class BaseReader<OUT extends DataRecord> implements Reader<OUT> 
         this.runOptions = options;
         this.jobConfig = context.getJobConfig();
         this.readerConfig = context.getJobConfig().getReaderConfig();
-        this.readerName = readerConfig.getStringVal(KEY_READER_NAME, "ArugsReader");
+        this.readerName = readerConfig.getStringVal(KEY_READER_NAME, "SupportReader");
         this.readerType = readerConfig.getStringVal(KEY_READER_TYPE);
         this.readerClassName = readerConfig.getStringVal(KEY_READER_CLASS_NAME);
         this.readerParallelism = readerConfig.getIntVal(KEY_READER_PARALLELISM, 1);

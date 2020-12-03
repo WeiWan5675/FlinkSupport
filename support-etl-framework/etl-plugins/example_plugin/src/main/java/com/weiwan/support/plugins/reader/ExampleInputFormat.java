@@ -15,11 +15,20 @@
  */
 package com.weiwan.support.plugins.reader;
 
+import com.weiwan.support.common.utils.DateUtils;
 import com.weiwan.support.core.SupportContext;
+import com.weiwan.support.core.enums.ColumnType;
+import com.weiwan.support.core.pojo.DataField;
+import com.weiwan.support.core.pojo.DataRecord;
+import com.weiwan.support.core.pojo.DataRow;
 import com.weiwan.support.etl.framework.api.reader.BaseInputFormat;
 import com.weiwan.support.etl.framework.streaming.JobFormatState;
 import org.apache.flink.core.io.GenericInputSplit;
 import org.apache.flink.core.io.InputSplit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Date;
 
 /**
  * @Author: xiaozhennan
@@ -29,6 +38,13 @@ import org.apache.flink.core.io.InputSplit;
  * @Description:
  **/
 public class ExampleInputFormat extends BaseInputFormat<String, GenericInputSplit> {
+    public static final Logger logger = LoggerFactory.getLogger(ExampleInputFormat.class);
+    int endIndex = 1000;
+    private int currentIndex;
+
+    public ExampleInputFormat(SupportContext context) {
+        super(context);
+    }
 
     /**
      * 打开InputFormat,根据split读取数据
@@ -37,7 +53,8 @@ public class ExampleInputFormat extends BaseInputFormat<String, GenericInputSpli
      */
     @Override
     public void openInput(GenericInputSplit split) {
-
+        this.endIndex = readerConfig.getIntVal("etl.reader.example.readerVar", 1000);
+        logger.info("open input run");
     }
 
     /**
@@ -48,7 +65,13 @@ public class ExampleInputFormat extends BaseInputFormat<String, GenericInputSpli
      */
     @Override
     public GenericInputSplit[] getInputSpliter(int minNumSplits) {
-        return new GenericInputSplit[0];
+        logger.info("get input spliter run");
+        GenericInputSplit[] splits = new GenericInputSplit[minNumSplits];
+        for (int i = 0; i < minNumSplits; i++) {
+            GenericInputSplit exampleInputSplit = new GenericInputSplit(i, minNumSplits);
+            splits[i] = exampleInputSplit;
+        }
+        return splits;
     }
 
     /**
@@ -61,7 +84,23 @@ public class ExampleInputFormat extends BaseInputFormat<String, GenericInputSpli
      */
     @Override
     public String nextRecordInternal(String reuse) {
-        return null;
+        logger.info("next record internal execution");
+        DataRecord<DataRow<DataField>> dataRecord = new DataRecord<>();
+        DataRow<DataField> dataFieldDataRow = new DataRow(DataField.class, 1);
+        DataField<Object> dataField = new DataField<>();
+        dataField.setFieldType(ColumnType.STRING);
+        dataField.setValue(String.format("exampleValue:%s", currentIndex));
+        dataField.setFieldKey("exampleKey");
+        dataFieldDataRow.setField(0, dataField);
+        dataRecord.setData(dataFieldDataRow);
+        dataRecord.setTableName("ExampleTableName");
+        dataRecord.setSchemaName("ExampleSchema");
+        dataRecord.setTimestamp(DateUtils.getDateStr(new Date()));
+//        if (currentIndex++ == endIndex) {
+//            isComplete(true);
+//        }
+//        System.out.println("ExampleInputFormat处理数据:" + dataRecord.toString());
+        return dataRecord.toString();
     }
 
     /**
@@ -69,7 +108,7 @@ public class ExampleInputFormat extends BaseInputFormat<String, GenericInputSpli
      */
     @Override
     public void closeInput() {
-
+        logger.info("close this InputFormat");
     }
 
     /**
@@ -79,6 +118,9 @@ public class ExampleInputFormat extends BaseInputFormat<String, GenericInputSpli
      */
     @Override
     public void snapshot(JobFormatState formatState) {
-
+        if (isRestore()) {
+            logger.info("snapshot run! this Startup Is Restore");
+        }
+        logger.info("snapshot run!");
     }
 }

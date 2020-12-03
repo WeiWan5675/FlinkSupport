@@ -33,13 +33,13 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  * @ClassName: BaseWriter
  * @Description:
  **/
-public abstract class BaseWriter<T extends DataRecord> implements Writer<T> {
+public abstract class BaseWriter<IN> implements Writer<IN> {
 
 
-    private static final String KEY_WRITER_NAME = "writer.name";
-    private static final String KEY_WRITER_TYPE = "writer.type";
-    private static final String KEY_WRITER_CLASS_NAME = "writer.class";
-    private static final String KEY_WRITER_PARALLELISM = "writer.parallelism";
+    private static final String KEY_WRITER_NAME = "etl.writer.name";
+    private static final String KEY_WRITER_TYPE = "etl.writer.type";
+    private static final String KEY_WRITER_CLASS_NAME = "etl.writer.class";
+    private static final String KEY_WRITER_PARALLELISM = "etl.writer.parallelism";
 
     private StreamExecutionEnvironment env;
     private SupportContext context;
@@ -85,7 +85,7 @@ public abstract class BaseWriter<T extends DataRecord> implements Writer<T> {
         return this.env;
     }
 
-    public abstract BaseOutputFormat<T> getOutputFormat(SupportContext context);
+    public abstract BaseOutputFormat<IN> getOutputFormat(SupportContext context);
 
     /**
      * 前置条件
@@ -95,18 +95,18 @@ public abstract class BaseWriter<T extends DataRecord> implements Writer<T> {
     public abstract void require(SupportContext context);
 
     @Override
-    public DataStreamSink<T> write(DataStream<T> dataStream) {
+    public DataStreamSink<IN> write(DataStream<IN> dataStream) {
         require(context);
-        DataStream<T> beforeWritingStream = beforeWriting(dataStream);
-        BaseOutputFormat<T> outputFormat = getOutputFormat(context);
-        SupportOutputFormatSink<T> outputFormatSink = new SupportOutputFormatSink<T>(outputFormat);
-        DataStreamSink<T> sink = beforeWritingStream.addSink(outputFormatSink);
+        DataStream<IN> beforeWritingStream = beforeWriting(dataStream);
+        BaseOutputFormat<IN> outputFormat = getOutputFormat(context);
+        SupportOutputFormatSink<IN> outputFormatSink = new SupportOutputFormatSink<IN>(outputFormat);
+        DataStreamSink<IN> sink = beforeWritingStream.addSink(outputFormatSink);
         sink.name(writerName);
         sink.setParallelism(writerParallelism);
         return sink;
     }
 
-    protected DataStream<T> beforeWriting(DataStream<T> dataStream) {
+    protected DataStream<IN> beforeWriting(DataStream<IN> dataStream) {
         //do nothing
         return dataStream;
     }
