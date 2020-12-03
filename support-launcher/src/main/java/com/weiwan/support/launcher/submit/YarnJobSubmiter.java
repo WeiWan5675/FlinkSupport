@@ -77,6 +77,9 @@ public class YarnJobSubmiter implements JobSubmiter {
                 JOBOptions.JARS,
                 jobInfo.getUserJars());
 
+        //设置类加载模式
+        flinkConfiguration.setString("classloader.resolve-order", "parent-first");
+
         flinkConfiguration.set(
                 JOBOptions.PROVIDED_LIB_DIRS,
                 jobInfo.getUserClasspath());
@@ -102,6 +105,8 @@ public class YarnJobSubmiter implements JobSubmiter {
                     JOBOptions.APPLICATION_QUEUE,
                     jobInfo.getYarnQueue());
         }
+
+
 
         StringBuffer jmVmDynamic = new StringBuffer();
         StringBuffer tmVmDynamic = new StringBuffer();
