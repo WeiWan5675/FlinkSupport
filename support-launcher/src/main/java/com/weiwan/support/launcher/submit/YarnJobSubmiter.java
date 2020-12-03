@@ -160,31 +160,30 @@ public class YarnJobSubmiter implements JobSubmiter {
     public static void printJobSubmitInfo(JobSubmitInfo info) {
         logger.info("Support Job Submission Information:");
         logger.info("============================INFO============================");
-        logger.info("Job Name: \n{}", info.getAppName());
+        logger.info("Job Name: {}", info.getAppName());
         logger.info("-------------------------------------------------------------");
-        logger.info("Job Args: \n{}", info.getAppArgs());
+        logger.info("Job Args: {}", info.getAppArgs());
         logger.info("-------------------------------------------------------------");
-        logger.info("Job Class: \n{}", info.getAppClassName());
+        logger.info("Job Class: {}", info.getAppClassName());
         logger.info("-------------------------------------------------------------");
-        logger.info("Job Type: \n{}", info.getAppType());
+        logger.info("Job Type: {}", info.getAppType());
         logger.info("-------------------------------------------------------------");
-        logger.info("Job Queue: \n{}", info.getYarnQueue());
+        logger.info("Job Queue: {}", info.getYarnQueue());
         logger.info("-------------------------------------------------------------");
-        logger.info("Job ClusterInfo: \n{}", info.getClusterSpecification());
+        logger.info("Job ClusterInfo: {}", info.getClusterSpecification());
         logger.info("-------------------------------------------------------------");
-        logger.info("Job Jar: \n{}", info.getUserJars());
+        logger.info("Job Jar: {}", info.getUserJars());
         logger.info("-------------------------------------------------------------");
-        logger.info("Job Classpath: \n{}", info.getUserClasspath());
+        logger.info("Job Classpath: {}", info.getUserClasspath());
         logger.info("-------------------------------------------------------------");
-        logger.info("Job Id: \n{}", info.getJobResourceId());
+        logger.info("Job Id: {}", info.getJobResourceId());
         logger.info("-------------------------------------------------------------");
-        logger.info("Job SavePoint: \n{}", info.getSavePointPath() == null ? info.getSavePointPath() : "不适用");
+        logger.info("Job SavePoint: {}", StringUtils.isEmpty(info.getSavePointPath()) ? info.getSavePointPath() : "不适用");
         logger.info("-------------------------------------------------------------");
-        logger.info("Flink DistJar: \n{}", info.getFlinkDistJar());
+        logger.info("Flink DistJar: {}", info.getFlinkDistJar());
         logger.info("-------------------------------------------------------------");
-        logger.info("Job Dynamic Parameters: \n{}", info.getDynamicParameters());
-        logger.info("============================================================");
-
+        logger.info("Job Dynamic Parameters: {}", info.getDynamicParameters());
+        logger.info("============================================================\n\n");
     }
 
     @Override
