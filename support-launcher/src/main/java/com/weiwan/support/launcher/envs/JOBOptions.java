@@ -15,10 +15,7 @@
  */
 package com.weiwan.support.launcher.envs;
 
-import org.apache.flink.configuration.CheckpointingOptions;
-import org.apache.flink.configuration.ConfigOption;
-import org.apache.flink.configuration.DeploymentOptions;
-import org.apache.flink.configuration.PipelineOptions;
+import org.apache.flink.configuration.*;
 import org.apache.flink.runtime.jobgraph.SavepointConfigOptions;
 import org.apache.flink.yarn.configuration.YarnConfigOptions;
 
@@ -55,4 +52,7 @@ public class JOBOptions {
     public static final ConfigOption<Boolean> ATTACHED = DeploymentOptions.ATTACHED;
     //依附模式下ctrl+c后最大努力stop任务
     public static final ConfigOption<Boolean> SHUTDOWN_IF_ATTACHED = DeploymentOptions.SHUTDOWN_IF_ATTACHED;
+
+    //类加载模式
+    public static final ConfigOption<String> CLASSLOADER_RESOLVE_ORDER = CoreOptions.CLASSLOADER_RESOLVE_ORDER;
 }

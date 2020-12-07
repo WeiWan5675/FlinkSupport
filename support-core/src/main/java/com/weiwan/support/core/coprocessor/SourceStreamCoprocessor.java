@@ -57,19 +57,6 @@ public class SourceStreamCoprocessor extends SupportCoprocessor {
 
         //处理字段上的source
         List<Field> fields = new ArrayList();
-//        Class<?> aClass1 = Class.forName("com.weiwan.support.plugins.reader.ExampleReader");
-
-//        Object o = aClass1.newInstance();
-        ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-
-        ClassLoader parent = contextClassLoader.getParent();
-
-        if (parent != null) {
-            Class<?> aClass2 = parent.loadClass("com.weiwan.support.plugins.reader.ExampleReader");
-            if (aClass2 != null){
-                throw new RuntimeException("找到类了");
-            }
-        }
         Field[] declaredFields = aClass.getDeclaredFields();
         for (int i = 0; i < declaredFields.length; i++) {
             if (declaredFields[i] != null

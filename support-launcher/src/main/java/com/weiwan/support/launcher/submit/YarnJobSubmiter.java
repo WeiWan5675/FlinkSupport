@@ -68,7 +68,7 @@ public class YarnJobSubmiter implements JobSubmiter {
                     JOBOptions.SAVEPOINT_PATH,
                     jobInfo.getSavePointPath());
         }
-
+        //增量checkpoint
         flinkConfiguration.set(
                 JOBOptions.INCREMENTAL_CHECKPOINTS,
                 true);
@@ -76,15 +76,12 @@ public class YarnJobSubmiter implements JobSubmiter {
         flinkConfiguration.set(
                 JOBOptions.JARS,
                 jobInfo.getUserJars());
-
-        //设置类加载模式
-//        flinkConfiguration.setString("classloader.resolve-order", "parent-first");
-
-
+        //依赖provided_lib_dir
         flinkConfiguration.set(
                 JOBOptions.PROVIDED_LIB_DIRS,
                 jobInfo.getUserClasspath());
 
+        //flink核心jar
         flinkConfiguration.set(
                 JOBOptions.FLINK_DIST_JAR,
                 jobInfo.getFlinkDistJar());
@@ -96,19 +93,18 @@ public class YarnJobSubmiter implements JobSubmiter {
         flinkConfiguration.set(
                 JOBOptions.APPLICATION_NAME,
                 jobInfo.getAppName());
-
+        //yarn application type
         flinkConfiguration.set(
                 JOBOptions.APPLICATION_TYPE,
                 jobInfo.getAppType());
-
+        //yarn application queue
         if (StringUtils.isNotEmpty(jobInfo.getYarnQueue())) {
             flinkConfiguration.set(
                     JOBOptions.APPLICATION_QUEUE,
                     jobInfo.getYarnQueue());
         }
 
-
-
+        //jm tm 的jvm参数
         StringBuffer jmVmDynamic = new StringBuffer();
         StringBuffer tmVmDynamic = new StringBuffer();
         if (jobInfo.getDynamicParameters() != null && jobInfo.getDynamicParameters().size() > 0) {
@@ -129,20 +125,26 @@ public class YarnJobSubmiter implements JobSubmiter {
             tmVmDynamic.append(" -D" + JVMOptions.LOG_FILE + "=" + jobInfo.getLocalLogDir()
                     + File.separator + dynamicParameters.get(SupportKey.JOB_RESOURCES_ID)
                     + File.separator + SupportConstants.TM_LOG_FILE_NAME);
-//            flinkConfiguration.setString("classloader.resolve-order", "parent-first");
             flinkConfiguration.set(JVMOptions.FLINK_LOG_DIR, jobInfo.getLocalLogDir()
                     + File.separator + dynamicParameters.get(SupportKey.JOB_RESOURCES_ID));
         }
 
+
         flinkConfiguration.set(JVMOptions.FLINK_TM_JVM_OPTIONS, tmVmDynamic.toString());
         flinkConfiguration.set(JVMOptions.FLINK_JM_JVM_OPTIONS, jmVmDynamic.toString());
+
+        //手动指定job id 再web-ui checkpoint目录等都使用同一个id ,包括FlinkSupport的资源目录
         flinkConfiguration.set(PipelineOptionsInternal.PIPELINE_FIXED_JOB_ID, jobInfo.getJobResourceId());
 
-        //		设置用户jar的参数和主类
+        //设置类加载模式为父加载器优先,flink默认为用户加载器优先
+        flinkConfiguration.set(JOBOptions.CLASSLOADER_RESOLVE_ORDER,"parent-first");
+        //设置用户jar的参数和主类
         ApplicationConfiguration appConfig = new ApplicationConfiguration(jobInfo.getAppArgs(), jobInfo.getAppClassName());
 
-
+        //获得集群信息查询器
         YarnClusterInformationRetriever informationRetriever = YarnClientYarnClusterInformationRetriever.create(yarnClient);
+
+        //定义yarn集群
         YarnClusterDescriptor yarnClusterDescriptor = new YarnClusterDescriptor(
                 flinkConfiguration,
                 jobInfo.getYarnConfiguration(),
@@ -150,9 +152,7 @@ public class YarnJobSubmiter implements JobSubmiter {
                 informationRetriever,
                 true);
         ClusterClientProvider<ApplicationId> clusterClientProvider = null;
-
         printJobSubmitInfo(jobInfo);
-
         try {
             clusterClientProvider = yarnClusterDescriptor.deployApplicationCluster(jobInfo.getClusterSpecification(), appConfig);
         } catch (ClusterDeploymentException e) {
@@ -186,7 +186,7 @@ public class YarnJobSubmiter implements JobSubmiter {
         logger.info("-------------------------------------------------------------");
         logger.info("Job Id: {}", info.getJobResourceId());
         logger.info("-------------------------------------------------------------");
-        logger.info("Job SavePoint: {}", StringUtils.isEmpty(info.getSavePointPath()) ? info.getSavePointPath() : "不适用");
+        logger.info("Job SavePoint: {}", StringUtils.isNotEmpty(info.getSavePointPath()) ? info.getSavePointPath() : "not applicable");
         logger.info("-------------------------------------------------------------");
         logger.info("Flink DistJar: {}", info.getFlinkDistJar());
         logger.info("-------------------------------------------------------------");

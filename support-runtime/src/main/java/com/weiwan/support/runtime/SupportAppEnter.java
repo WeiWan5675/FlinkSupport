@@ -96,10 +96,9 @@ public class SupportAppEnter {
             }
 
             Class<?> aClass = Class.forName("com.weiwan.support.plugins.reader.ExampleReader");
-
             Object o = aClass.newInstance();
-
             System.out.println(o.getClass().getName());
+
             flinkSupport.initEnv(env, context, options);
             Method submit = ReflectUtil.getDeclaredMethod(flinkSupport, "submit");
             TaskResult taskResult = (TaskResult) submit.invoke(flinkSupport);
