@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.weiwan.support.launcher;
+package com.weiwan.support.launcher.envs.processer;
 
 import com.weiwan.support.launcher.envs.ApplicationEnv;
 import com.weiwan.support.launcher.options.GenericRunOption;
@@ -23,7 +23,7 @@ import java.io.IOException;
 /**
  * @Author: xiaozhennan
  * @Date: 2020/11/27 10:42
- * @Package: com.weiwan.support.launcher.K8sJobApplicationProcessor
+ * @Package: com.weiwan.support.launcher.envs.processer.K8sJobApplicationProcessor
  * @ClassName: K8sJobApplicationProcessor
  * @Description:
  **/

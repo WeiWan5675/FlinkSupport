@@ -24,6 +24,7 @@ import com.weiwan.support.core.config.ReaderConfig;
 import org.apache.flink.api.dag.Transformation;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.util.ReflectionUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -101,7 +102,7 @@ public class SourceStreamCoprocessor extends SupportCoprocessor {
         Class<? extends Reader> type = anno.type();
         Reader reader = type.newInstance();
         reader.initEnv(env, getContext(), null);
-        stream = reader.read((StreamExecutionEnvironment) environment, getContext());
+        stream = reader.read(environment, getContext());
         return stream;
     }
 

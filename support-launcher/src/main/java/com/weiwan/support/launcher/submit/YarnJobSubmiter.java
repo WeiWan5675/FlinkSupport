@@ -78,7 +78,7 @@ public class YarnJobSubmiter implements JobSubmiter {
                 jobInfo.getUserJars());
 
         //设置类加载模式
-        flinkConfiguration.setString("classloader.resolve-order", "parent-first");
+//        flinkConfiguration.setString("classloader.resolve-order", "parent-first");
 
         flinkConfiguration.set(
                 JOBOptions.PROVIDED_LIB_DIRS,
