@@ -59,9 +59,15 @@ public class SourceStreamCoprocessor extends SupportCoprocessor {
         List<Field> fields = new ArrayList();
         Field[] declaredFields = aClass.getDeclaredFields();
         for (int i = 0; i < declaredFields.length; i++) {
-            if (declaredFields[i] != null
-                    && declaredFields[i].getAnnotation(SupportSource.class) != null) {
-                fields.add(declaredFields[i]);
+            try {
+                declaredFields[i].setAccessible(true);
+                SupportSource annotation = declaredFields[i].getAnnotation(SupportSource.class);
+                if (declaredFields[i] != null
+                        && declaredFields[i].getAnnotation(SupportSource.class) != null) {
+                    fields.add(declaredFields[i]);
+                }
+            } finally {
+                declaredFields[i].setAccessible(false);
             }
         }
 

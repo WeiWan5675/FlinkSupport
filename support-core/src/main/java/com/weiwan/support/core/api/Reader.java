@@ -19,6 +19,8 @@ import com.weiwan.support.core.SupportContext;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
+import java.io.Serializable;
+
 /**
  * @Author: xiaozhennan
  * @Date: 2020/9/28 15:56
@@ -26,7 +28,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  * @ClassName: Reader
  * @Description:
  **/
-public interface Reader<OUT> extends Support<StreamExecutionEnvironment> {
+public interface Reader<OUT> extends Support<StreamExecutionEnvironment>, Serializable {
 
     public DataStream<OUT> read(StreamExecutionEnvironment env, SupportContext context);
 

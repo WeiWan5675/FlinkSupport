@@ -18,6 +18,8 @@ package com.weiwan.support.core.api;
 import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.core.start.RunOptions;
 
+import java.io.Serializable;
+
 /**
  * @Author: xiaozhennan
  * @Date: 2020/11/30 11:36
@@ -25,7 +27,7 @@ import com.weiwan.support.core.start.RunOptions;
  * @ClassName: Support
  * @Description:
  **/
-public interface Support<T> {
+public interface Support<T> extends Serializable {
 
     SupportContext getContext();
 
