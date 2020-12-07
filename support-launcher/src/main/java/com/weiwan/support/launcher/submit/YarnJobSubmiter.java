@@ -80,6 +80,7 @@ public class YarnJobSubmiter implements JobSubmiter {
         //设置类加载模式
 //        flinkConfiguration.setString("classloader.resolve-order", "parent-first");
 
+
         flinkConfiguration.set(
                 JOBOptions.PROVIDED_LIB_DIRS,
                 jobInfo.getUserClasspath());
@@ -120,6 +121,7 @@ public class YarnJobSubmiter implements JobSubmiter {
                 tmVmDynamic.append(dynamicStr);
                 flinkConfiguration.setString(parameterKey, dynamicParameters.get(parameterKey));
             }
+
             //处理日志配置文件路径动态地址
             jmVmDynamic.append(" -D" + JVMOptions.LOG_FILE + "=" + jobInfo.getLocalLogDir()
                     + File.separator + dynamicParameters.get(SupportKey.JOB_RESOURCES_ID)
@@ -127,6 +129,7 @@ public class YarnJobSubmiter implements JobSubmiter {
             tmVmDynamic.append(" -D" + JVMOptions.LOG_FILE + "=" + jobInfo.getLocalLogDir()
                     + File.separator + dynamicParameters.get(SupportKey.JOB_RESOURCES_ID)
                     + File.separator + SupportConstants.TM_LOG_FILE_NAME);
+            flinkConfiguration.setString("classloader.resolve-order", "parent-first");
             flinkConfiguration.set(JVMOptions.FLINK_LOG_DIR, jobInfo.getLocalLogDir()
                     + File.separator + dynamicParameters.get(SupportKey.JOB_RESOURCES_ID));
         }

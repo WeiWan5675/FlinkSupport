@@ -28,6 +28,7 @@ import org.apache.flink.util.ReflectionUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,7 +56,28 @@ public class SourceStreamCoprocessor extends SupportCoprocessor {
         }
 
         //处理字段上的source
-        List<Field> fields = ReflectUtil.getFieldByAnno(aClass, SupportSource.class);
+        List<Field> fields = new ArrayList();
+//        Class<?> aClass1 = Class.forName("com.weiwan.support.plugins.reader.ExampleReader");
+
+//        Object o = aClass1.newInstance();
+        ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+
+        ClassLoader parent = contextClassLoader.getParent();
+
+        if (parent != null) {
+            Class<?> aClass2 = parent.loadClass("com.weiwan.support.plugins.reader.ExampleReader");
+            if (aClass2 != null){
+                throw new RuntimeException("找到类了");
+            }
+        }
+        Field[] declaredFields = aClass.getDeclaredFields();
+        for (int i = 0; i < declaredFields.length; i++) {
+            if (declaredFields[i] != null
+                    && declaredFields[i].getAnnotation(SupportSource.class) != null) {
+                fields.add(declaredFields[i]);
+            }
+        }
+
         for (Field field : fields) {
             try {
                 field.setAccessible(true);
@@ -80,7 +102,7 @@ public class SourceStreamCoprocessor extends SupportCoprocessor {
                 Transformation transformation = stream.getTransformation();
                 transformation.setParallelism(anno.parallelism());
                 transformation.setName(anno.name());
-                field.set(dataFlow,stream);
+                field.set(dataFlow, stream);
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {

@@ -95,6 +95,7 @@ public class SupportAppEnter {
                 throw new SupportException("Unsupported application mode, please check the operating parameters");
             }
 
+            Class.forName("com.weiwan.support.plugins.reader.ExampleReader");
             flinkSupport.initEnv(env, context, options);
             Method submit = ReflectUtil.getDeclaredMethod(flinkSupport, "submit");
             TaskResult taskResult = (TaskResult) submit.invoke(flinkSupport);
