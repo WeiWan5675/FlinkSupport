@@ -88,7 +88,6 @@ public class SupportAppEnter {
                     flinkSupport = (FlinkSupport) userAppClass.newInstance();
                 }
 
-
             } else if (options.isBatch()) {
                 //批模式
                 env = ExecutionEnvironment.getExecutionEnvironment();
@@ -97,7 +96,8 @@ public class SupportAppEnter {
                 throw new SupportException("Unsupported application mode, please check the operating parameters");
             }
 
-//            Class.forName("com.weiwan.support.plugins.reader.ExampleReader");
+            //这里会找不到类
+            Class.forName("com.weiwan.support.plugins.reader.ExampleReader");
 
             flinkSupport.initEnv(env, context, options);
             Method submit = ReflectUtil.getDeclaredMethod(flinkSupport, "submit");
