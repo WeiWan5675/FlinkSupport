@@ -129,7 +129,7 @@ public class YarnJobSubmiter implements JobSubmiter {
             tmVmDynamic.append(" -D" + JVMOptions.LOG_FILE + "=" + jobInfo.getLocalLogDir()
                     + File.separator + dynamicParameters.get(SupportKey.JOB_RESOURCES_ID)
                     + File.separator + SupportConstants.TM_LOG_FILE_NAME);
-            flinkConfiguration.setString("classloader.resolve-order", "parent-first");
+//            flinkConfiguration.setString("classloader.resolve-order", "parent-first");
             flinkConfiguration.set(JVMOptions.FLINK_LOG_DIR, jobInfo.getLocalLogDir()
                     + File.separator + dynamicParameters.get(SupportKey.JOB_RESOURCES_ID));
         }
