@@ -382,9 +382,10 @@ public class YarnJobApplicationProcessor extends ApplicationEnv {
         Set<String> flinkClassPaths = new HashSet<>();
         flinkClassPaths.add(flinkLibDir);
         flinkClassPaths.add(flinkPluginDir);
+        flinkClassPaths.add(userResourceRemoteDir);
         flinkClassPaths.add(SupportConstants.SUPPORT_HDFS_LIB_DIR);
         flinkClassPaths.add(SupportConstants.SUPPORT_HDFS_PLUGINS_DIR);
-        flinkClassPaths.add(userResourceRemoteDir);
+
         URL.setURLStreamHandlerFactory(new FsUrlStreamHandlerFactory());
         //组装了任务信息
         Map<String, String> params = option.getParams();

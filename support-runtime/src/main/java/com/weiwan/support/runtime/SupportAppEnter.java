@@ -33,10 +33,12 @@ import com.weiwan.support.utils.flink.env.FlinkContext;
 import com.weiwan.support.utils.flink.env.FlinkContextUtil;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.util.FlinkRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
+import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -95,9 +97,7 @@ public class SupportAppEnter {
                 throw new SupportException("Unsupported application mode, please check the operating parameters");
             }
 
-            Class<?> aClass = Class.forName("com.weiwan.support.plugins.reader.ExampleReader");
-            Object o = aClass.newInstance();
-            System.out.println(o.getClass().getName());
+//            Class.forName("com.weiwan.support.plugins.reader.ExampleReader");
 
             flinkSupport.initEnv(env, context, options);
             Method submit = ReflectUtil.getDeclaredMethod(flinkSupport, "submit");

@@ -48,6 +48,8 @@ public class TestAnnoSupport extends StreamSupport<String, String> {
 
     public DataStream<String> open(StreamExecutionEnvironment env, SupportContext context) {
         logger.info("user app open function run");
+        StreamExecutionEnvironment env1 = getEnv();
+        SupportContext context1 = getContext();
         return null;
     }
 

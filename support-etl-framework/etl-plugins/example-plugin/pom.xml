@@ -16,7 +16,6 @@
         <dependency>
             <groupId>com.weiwan</groupId>
             <artifactId>etl-framework</artifactId>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 

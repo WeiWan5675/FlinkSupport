@@ -17,8 +17,9 @@
         </dependency>
         <dependency>
             <groupId>com.weiwan</groupId>
-            <artifactId>example_plugin</artifactId>
+            <artifactId>example-plugin</artifactId>
             <version>1.0</version>
+            <scope>provided</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.reflections/reflections -->
         <dependency>
