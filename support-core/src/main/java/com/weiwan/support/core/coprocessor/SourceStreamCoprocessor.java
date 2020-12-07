@@ -70,7 +70,9 @@ public class SourceStreamCoprocessor extends SupportCoprocessor {
                 declaredFields[i].setAccessible(false);
             }
         }
-
+        if(0 == 0){
+            return nextProcess(env, dataFlow, obj);
+        }
         for (Field field : fields) {
             try {
                 field.setAccessible(true);
