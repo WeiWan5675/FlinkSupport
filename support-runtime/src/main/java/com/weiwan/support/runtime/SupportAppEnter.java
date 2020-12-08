@@ -96,6 +96,11 @@ public class SupportAppEnter {
                 throw new SupportException("Unsupported application mode, please check the operating parameters");
             }
 
+
+            Class<?> aClass = Class.forName("com.weiwan.support.etl.framework.streaming.SupportOutputFormatSink");
+            Object o = aClass.newInstance();
+
+            
             //这里会找不到类
             Class.forName("com.weiwan.support.plugins.reader.ExampleReader");
 
