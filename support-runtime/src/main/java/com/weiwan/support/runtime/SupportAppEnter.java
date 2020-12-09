@@ -103,6 +103,7 @@ public class SupportAppEnter {
             //这里会找不到类
             Class<?> aClass1 = Class.forName("com.weiwan.support.plugins.reader.ExampleReader");
 
+            Class<?> aClass2 = Class.forName("com.weiwan.support.plugins.reader.ExampleInputFormat");
             Object o = aClass1.newInstance();
 
             logger.info(o.getClass().toGenericString());

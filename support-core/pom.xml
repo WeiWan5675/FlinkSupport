@@ -32,6 +32,11 @@
         </dependency>
 
         <dependency>
+            <groupId>com.weiwan</groupId>
+            <artifactId>etl-plugins</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-java</artifactId>
         </dependency>
