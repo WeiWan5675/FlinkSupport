@@ -43,7 +43,7 @@ public class SupportConstants {
     public static final String FLINK_VERSION_PLACEHOLDER = "${" + FLINK_VERSION + "}";
     public static final String SCALA_VERSION_PLACEHOLDER = "${" + SCALA_VERSION + "}";
     //SUPPORT HDFS SPACE
-    public static final String SUPPORT_HDFS_WORKSPACE = "hdfs://nameservice1/flink_support";
+    public static final String SUPPORT_HDFS_WORKSPACE = "hdfs:///nameservice1/flink_support";
     public static final String SUPPORT_HDFS_LIB_DIR = SUPPORT_HDFS_WORKSPACE + Constans.SIGN_SLASH + "lib";
     public static final String SUPPORT_HDFS_PLUGINS_DIR = SUPPORT_HDFS_WORKSPACE + Constans.SIGN_SLASH + "plugins";
     public static final String SUPPORT_HDFS_RESOURCES_DIR = SUPPORT_HDFS_WORKSPACE + Constans.SIGN_SLASH + "resources";

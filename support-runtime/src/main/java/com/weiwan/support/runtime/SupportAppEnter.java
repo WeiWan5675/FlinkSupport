@@ -97,11 +97,15 @@ public class SupportAppEnter {
 
 
             Class<?> aClass = Class.forName("com.weiwan.support.etl.framework.streaming.SupportOutputFormatSink");
-            Object o = aClass.newInstance();
-
+//            Object o = aClass.newInstance();
+            logger.info("aClass: " + aClass.toGenericString());
 
             //这里会找不到类
-            Class.forName("com.weiwan.support.plugins.reader.ExampleReader");
+            Class<?> aClass1 = Class.forName("com.weiwan.support.plugins.reader.ExampleReader");
+
+            Object o = aClass1.newInstance();
+
+            logger.info(o.getClass().toGenericString());
 
             flinkSupport.initEnv(env, context, options);
             Method submit = ReflectUtil.getDeclaredMethod(flinkSupport, "submit");
