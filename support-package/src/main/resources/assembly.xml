@@ -38,10 +38,6 @@
             <includes>
                 <include>com.weiwan:*plugin*:jar:</include>
             </includes>
-            <excludes>
-                <!-- groupId:artifactId:type:classifier -->
-                <exclude>com.weiwan:etl-plugins:jar:</exclude>
-            </excludes>
             <outputDirectory>plugins</outputDirectory>
         </dependencySet>
     </dependencySets>

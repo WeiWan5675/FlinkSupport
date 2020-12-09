@@ -15,10 +15,9 @@
  */
 package com.weiwan.support.etl.framework.api.processer;
 
-import com.weiwan.support.core.SupportContext;
-import com.weiwan.support.core.config.ProcesserConfig;
-import com.weiwan.support.core.config.JobConfig;
-import com.weiwan.support.core.pojo.DataRecord;
+import com.weiwan.support.api.config.JobConfig;
+import com.weiwan.support.api.config.ProcesserConfig;
+import com.weiwan.support.api.config.SupportContext;
 import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.runtime.state.FunctionInitializationContext;
 import org.apache.flink.runtime.state.FunctionSnapshotContext;

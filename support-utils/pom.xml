@@ -35,6 +35,10 @@
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-statebackend-rocksdb_${scala.binary.version}</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.weiwan</groupId>
+            <artifactId>support-api</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

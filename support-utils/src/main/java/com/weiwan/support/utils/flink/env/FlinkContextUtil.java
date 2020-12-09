@@ -16,8 +16,8 @@
 package com.weiwan.support.utils.flink.env;
 
 
+import com.weiwan.support.api.config.FlinkEnvConfig;
 import com.weiwan.support.utils.flink.conf.FlinkContains;
-import com.weiwan.support.utils.flink.conf.FlinkEnvConfig;
 import com.weiwan.support.utils.flink.loging.FlinkLogger;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;

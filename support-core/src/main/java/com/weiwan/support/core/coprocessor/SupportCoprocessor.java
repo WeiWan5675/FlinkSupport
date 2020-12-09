@@ -16,10 +16,10 @@
 package com.weiwan.support.core.coprocessor;
 
 
-import com.weiwan.support.core.SupportContext;
-import com.weiwan.support.core.api.Support;
-import com.weiwan.support.core.api.SupportDataFlow;
-import com.weiwan.support.core.config.JobConfig;
+import com.weiwan.support.api.Support;
+import com.weiwan.support.api.SupportDataFlow;
+import com.weiwan.support.api.config.JobConfig;
+import com.weiwan.support.api.config.SupportContext;
 
 /**
  * @Author: xiaozhennan

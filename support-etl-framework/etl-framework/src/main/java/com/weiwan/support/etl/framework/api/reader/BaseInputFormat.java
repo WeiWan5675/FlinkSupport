@@ -15,10 +15,10 @@
  */
 package com.weiwan.support.etl.framework.api.reader;
 
-import com.weiwan.support.core.SupportContext;
-import com.weiwan.support.core.config.JobConfig;
-import com.weiwan.support.core.config.ReaderConfig;
-import com.weiwan.support.etl.framework.streaming.JobFormatState;
+import com.weiwan.support.api.config.JobConfig;
+import com.weiwan.support.api.config.ReaderConfig;
+import com.weiwan.support.api.config.SupportContext;
+import com.weiwan.support.api.pojo.JobFormatState;
 import org.apache.flink.api.common.io.DefaultInputSplitAssigner;
 import org.apache.flink.api.common.io.RichInputFormat;
 import org.apache.flink.api.common.io.statistics.BaseStatistics;

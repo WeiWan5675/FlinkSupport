@@ -15,10 +15,9 @@
  */
 package com.weiwan.support.plugins.writer;
 
-import com.weiwan.support.core.SupportContext;
-import com.weiwan.support.core.pojo.DataRecord;
+import com.weiwan.support.api.config.SupportContext;
+import com.weiwan.support.api.pojo.JobFormatState;
 import com.weiwan.support.etl.framework.api.writer.BaseOutputFormat;
-import com.weiwan.support.etl.framework.streaming.JobFormatState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

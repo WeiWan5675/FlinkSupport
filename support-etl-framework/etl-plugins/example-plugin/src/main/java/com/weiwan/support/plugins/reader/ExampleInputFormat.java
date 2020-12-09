@@ -15,16 +15,15 @@
  */
 package com.weiwan.support.plugins.reader;
 
+import com.weiwan.support.api.config.SupportContext;
+import com.weiwan.support.api.pojo.DataField;
+import com.weiwan.support.api.pojo.DataRecord;
+import com.weiwan.support.api.pojo.DataRow;
+import com.weiwan.support.api.pojo.JobFormatState;
 import com.weiwan.support.common.utils.DateUtils;
-import com.weiwan.support.core.SupportContext;
-import com.weiwan.support.core.enums.ColumnType;
-import com.weiwan.support.core.pojo.DataField;
-import com.weiwan.support.core.pojo.DataRecord;
-import com.weiwan.support.core.pojo.DataRow;
+import com.weiwan.support.api.enums.SupportType;
 import com.weiwan.support.etl.framework.api.reader.BaseInputFormat;
-import com.weiwan.support.etl.framework.streaming.JobFormatState;
 import org.apache.flink.core.io.GenericInputSplit;
-import org.apache.flink.core.io.InputSplit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,7 +87,7 @@ public class ExampleInputFormat extends BaseInputFormat<String, GenericInputSpli
         DataRecord<DataRow<DataField>> dataRecord = new DataRecord<>();
         DataRow<DataField> dataFieldDataRow = new DataRow(DataField.class, 1);
         DataField<Object> dataField = new DataField<>();
-        dataField.setFieldType(ColumnType.STRING);
+        dataField.setFieldType(SupportType.STRING);
         dataField.setValue(String.format("exampleValue:%s", currentIndex));
         dataField.setFieldKey("exampleKey");
         dataFieldDataRow.setField(0, dataField);

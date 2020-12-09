@@ -16,12 +16,12 @@
 package com.weiwan.support.utils.flink.env;
 
 
+import com.weiwan.support.api.config.FlinkEnvConfig;
 import com.weiwan.support.common.enums.SupportExceptionEnum;
 import com.weiwan.support.common.exception.SupportException;
 import com.weiwan.support.common.utils.DateUtils;
 import com.weiwan.support.utils.flink.conf.FlinkConfig;
 import com.weiwan.support.utils.flink.conf.FlinkContains;
-import com.weiwan.support.utils.flink.conf.FlinkEnvConfig;
 import com.weiwan.support.utils.flink.loging.FlinkLogger;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.api.common.JobExecutionResult;

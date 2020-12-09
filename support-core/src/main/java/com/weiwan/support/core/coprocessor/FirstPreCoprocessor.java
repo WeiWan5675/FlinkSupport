@@ -15,8 +15,8 @@
  */
 package com.weiwan.support.core.coprocessor;
 
-import com.weiwan.support.core.SupportContext;
-import com.weiwan.support.core.api.SupportDataFlow;
+import com.weiwan.support.api.SupportDataFlow;
+import com.weiwan.support.api.config.SupportContext;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.slf4j.Logger;

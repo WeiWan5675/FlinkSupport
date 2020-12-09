@@ -19,6 +19,7 @@
         <module>support-test</module>
         <module>support-package</module>
         <module>support-runtime</module>
+        <module>support-api</module>
     </modules>
     <properties>
         <package.name>FlinkSupport-${project.version}</package.name>
@@ -58,6 +59,7 @@
         <support-etl-framework.version>1.0</support-etl-framework.version>
         <support-sql-framework.version>1.0</support-sql-framework.version>
         <support-runtime.version>1.0</support-runtime.version>
+        <support-api.version>1.0</support-api.version>
     </properties>
 
 
@@ -75,6 +77,11 @@
                 <version>${support-core.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.weiwan</groupId>
+                <artifactId>support-api</artifactId>
+                <version>${support-api.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.weiwan</groupId>
                 <artifactId>support-runtime</artifactId>

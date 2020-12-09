@@ -15,7 +15,8 @@
  */
 package com.weiwan.support.core.annotation;
 
-import com.weiwan.support.core.api.Reader;
+
+import com.weiwan.support.api.etl.Reader;
 
 import java.lang.annotation.*;
 

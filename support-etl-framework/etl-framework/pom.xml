@@ -14,8 +14,13 @@
 <dependencies>
     <dependency>
         <groupId>com.weiwan</groupId>
-        <artifactId>support-core</artifactId>
+        <artifactId>support-common</artifactId>
     </dependency>
+    <dependency>
+        <groupId>com.weiwan</groupId>
+        <artifactId>support-api</artifactId>
+    </dependency>
+
 </dependencies>
 
 

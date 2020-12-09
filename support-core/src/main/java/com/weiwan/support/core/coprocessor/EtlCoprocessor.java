@@ -14,19 +14,14 @@
  * limitations under the License.
  */
 package com.weiwan.support.core.coprocessor;
-
-import com.weiwan.support.core.SupportContext;
-import com.weiwan.support.core.api.Processer;
-import com.weiwan.support.core.api.Reader;
-import com.weiwan.support.core.api.SupportDataFlow;
-import com.weiwan.support.core.api.Writer;
-import com.weiwan.support.core.config.ProcesserConfig;
-import com.weiwan.support.core.config.JobConfig;
-import com.weiwan.support.core.config.ReaderConfig;
-import com.weiwan.support.core.config.WriterConfig;
+import com.weiwan.support.api.config.*;
+import com.weiwan.support.api.etl.Processer;
+import com.weiwan.support.api.etl.Reader;
+import com.weiwan.support.api.etl.Writer;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSink;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import com.weiwan.support.api.SupportDataFlow;
 
 /**
  * @Author: xiaozhennan

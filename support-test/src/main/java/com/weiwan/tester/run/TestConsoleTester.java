@@ -15,8 +15,8 @@
  */
 package com.weiwan.tester.run;
 
+import com.weiwan.support.api.config.SupportContext;
 import com.weiwan.support.core.StreamSupport;
-import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.core.annotation.*;
 import com.weiwan.support.core.junit.SupportTest;
 import com.weiwan.support.core.junit.SupportTestConsole;

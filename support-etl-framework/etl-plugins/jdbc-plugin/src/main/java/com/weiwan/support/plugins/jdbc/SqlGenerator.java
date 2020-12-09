@@ -16,7 +16,7 @@
 package com.weiwan.support.plugins.jdbc;
 
 
-import com.weiwan.support.core.pojo.SqlInfo;
+import com.weiwan.support.plugins.jdbc.reader.SqlInfo;
 
 /**
  * @Author: xiaozhennan

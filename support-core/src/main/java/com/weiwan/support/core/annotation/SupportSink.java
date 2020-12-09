@@ -15,7 +15,8 @@
  */
 package com.weiwan.support.core.annotation;
 
-import com.weiwan.support.core.api.Writer;
+
+import com.weiwan.support.api.etl.Writer;
 
 import java.lang.annotation.*;
 

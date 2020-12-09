@@ -15,7 +15,7 @@
  */
 package com.weiwan.support.plugins.reader;
 
-import com.weiwan.support.core.SupportContext;
+import com.weiwan.support.api.config.SupportContext;
 import com.weiwan.support.plugins.jdbc.reader.JdbcInputFormat;
 import com.weiwan.support.plugins.jdbc.reader.JdbcInputSpliter;
 import com.weiwan.support.plugins.jdbc.SqlGenerator;

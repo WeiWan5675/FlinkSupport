@@ -15,11 +15,13 @@
  */
 package com.weiwan.support.core;
 
-import com.weiwan.support.core.api.*;
-import com.weiwan.support.core.config.JobConfig;
+import com.weiwan.support.api.FlinkSupport;
+import com.weiwan.support.api.SupportDataFlow;
+import com.weiwan.support.api.config.JobConfig;
+import com.weiwan.support.api.config.SupportContext;
+import com.weiwan.support.api.options.RunOptions;
 import com.weiwan.support.core.constant.SupportKey;
 import com.weiwan.support.core.coprocessor.*;
-import com.weiwan.support.core.start.RunOptions;
 import com.weiwan.support.core.start.TaskResult;
 import org.apache.flink.api.common.JobExecutionResult;
 import org.apache.flink.api.common.JobID;
@@ -83,8 +85,8 @@ public abstract class StreamSupport<I_OUT, P_OUT> implements
      */
     private TaskResult submit() throws Exception {
         FlinkSupport flinkSupport = preProcessing();
-        TaskResult taskResult = flinkSupport.executeTask();
-        return taskResult;
+        Object taskResult = flinkSupport.executeTask();
+        return (TaskResult) taskResult;
     }
 
     public TaskResult executeTask() throws Exception {

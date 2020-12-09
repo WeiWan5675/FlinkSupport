@@ -15,9 +15,9 @@
  */
 package com.weiwan.support.core.coprocessor;
 
-import com.weiwan.support.core.SupportContext;
-import com.weiwan.support.core.api.SupportDataFlow;
-import org.apache.flink.streaming.api.datastream.DataStreamSink;
+
+import com.weiwan.support.api.SupportDataFlow;
+import com.weiwan.support.api.config.SupportContext;
 
 /**
  * @Author: xiaozhennan

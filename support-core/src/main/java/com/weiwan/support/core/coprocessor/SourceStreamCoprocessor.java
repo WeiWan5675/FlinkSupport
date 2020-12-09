@@ -15,16 +15,14 @@
  */
 package com.weiwan.support.core.coprocessor;
 
-import com.weiwan.support.common.utils.ReflectUtil;
-import com.weiwan.support.core.SupportContext;
+import com.weiwan.support.api.SupportDataFlow;
+import com.weiwan.support.api.config.ReaderConfig;
+import com.weiwan.support.api.config.SupportContext;
+import com.weiwan.support.api.etl.Reader;
 import com.weiwan.support.core.annotation.SupportSource;
-import com.weiwan.support.core.api.Reader;
-import com.weiwan.support.core.api.SupportDataFlow;
-import com.weiwan.support.core.config.ReaderConfig;
 import org.apache.flink.api.dag.Transformation;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.util.ReflectionUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

@@ -15,12 +15,11 @@
  */
 package com.weiwan.support.plugins.reader;
 
-import com.weiwan.support.core.SupportContext;
-import com.weiwan.support.core.pojo.DataRecord;
-import com.weiwan.support.core.pojo.DataRow;
+import com.weiwan.support.api.config.SupportContext;
+import com.weiwan.support.api.pojo.DataRecord;
+import com.weiwan.support.api.pojo.DataRow;
 import com.weiwan.support.etl.framework.api.reader.BaseInputFormat;
 import com.weiwan.support.etl.framework.api.reader.BaseReader;
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 /**
  * @Author: xiaozhennan

@@ -15,9 +15,9 @@
  */
 package com.weiwan.support.core.coprocessor;
 
-import com.weiwan.support.core.SupportContext;
+import com.weiwan.support.api.SupportDataFlow;
+import com.weiwan.support.api.config.SupportContext;
 import com.weiwan.support.core.annotation.SupportSource;
-import com.weiwan.support.core.api.SupportDataFlow;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

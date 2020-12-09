@@ -15,12 +15,11 @@
  */
 package com.weiwan.support.etl.framework.api.reader;
 
-import com.weiwan.support.core.SupportContext;
-import com.weiwan.support.core.api.Reader;
-import com.weiwan.support.core.config.JobConfig;
-import com.weiwan.support.core.config.ReaderConfig;
-import com.weiwan.support.core.pojo.DataRecord;
-import com.weiwan.support.core.start.RunOptions;
+import com.weiwan.support.api.config.JobConfig;
+import com.weiwan.support.api.config.ReaderConfig;
+import com.weiwan.support.api.config.SupportContext;
+import com.weiwan.support.api.etl.Reader;
+import com.weiwan.support.api.options.RunOptions;
 import com.weiwan.support.etl.framework.streaming.SupportInputFormatSource;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.typeutils.TypeExtractor;

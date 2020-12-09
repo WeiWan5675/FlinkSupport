@@ -15,16 +15,15 @@
  */
 package com.weiwan.support.plugins.jdbc.reader;
 
+import com.weiwan.support.api.config.SupportContext;
+import com.weiwan.support.api.enums.SupportType;
+import com.weiwan.support.api.pojo.DataField;
+import com.weiwan.support.api.pojo.DataRecord;
+import com.weiwan.support.api.pojo.DataRow;
+import com.weiwan.support.api.pojo.JobFormatState;
 import com.weiwan.support.common.utils.DateUtils;
 import com.weiwan.support.common.utils.StringUtil;
-import com.weiwan.support.core.SupportContext;
-import com.weiwan.support.core.enums.ColumnType;
-import com.weiwan.support.core.pojo.DataField;
-import com.weiwan.support.core.pojo.DataRecord;
-import com.weiwan.support.core.pojo.DataRow;
-import com.weiwan.support.core.pojo.SqlInfo;
 import com.weiwan.support.etl.framework.api.reader.BaseInputFormat;
-import com.weiwan.support.etl.framework.streaming.JobFormatState;
 import com.weiwan.support.plugins.jdbc.SqlGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.configuration.Configuration;
@@ -266,7 +265,7 @@ public abstract class JdbcInputFormat extends BaseInputFormat<DataRecord<DataRow
                     dataField.setFieldKey(columnName);
                     if (object == null) {
                         dataField.setValue(null);
-                        dataField.setFieldType(ColumnType.NULL);
+                        dataField.setFieldType(SupportType.NULL);
                     } else {
                         if (object instanceof String) {
                             String s = String.valueOf(object);
@@ -275,7 +274,7 @@ public abstract class JdbcInputFormat extends BaseInputFormat<DataRecord<DataRow
                             }
                         }
                         dataField.setValue(object);
-                        ColumnType columnType = ColumnType.getType(object.getClass().getTypeName());
+                        SupportType columnType = SupportType.getType(object.getClass().getTypeName());
                         dataField.setFieldType(columnType);
                     }
                     currentRow.setField(i, dataField);

@@ -15,7 +15,8 @@
  */
 package com.weiwan.support.etl.framework.streaming;
 
-import com.weiwan.support.core.SupportContext;
+import com.weiwan.support.api.config.SupportContext;
+import com.weiwan.support.api.pojo.JobFormatState;
 import com.weiwan.support.etl.framework.api.reader.BaseInputFormat;
 import org.apache.flink.api.common.io.InputFormat;
 import org.apache.flink.api.common.io.RichInputFormat;

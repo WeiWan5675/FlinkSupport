@@ -15,12 +15,12 @@
  */
 package com.weiwan.support.core.coprocessor;
 
+import com.weiwan.support.api.SupportDataFlow;
+import com.weiwan.support.api.config.SupportContext;
+import com.weiwan.support.api.config.WriterConfig;
+import com.weiwan.support.api.etl.Writer;
 import com.weiwan.support.common.utils.ReflectUtil;
-import com.weiwan.support.core.SupportContext;
 import com.weiwan.support.core.annotation.SupportSink;
-import com.weiwan.support.core.api.SupportDataFlow;
-import com.weiwan.support.core.api.Writer;
-import com.weiwan.support.core.config.WriterConfig;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSink;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
