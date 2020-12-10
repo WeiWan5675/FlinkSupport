@@ -15,6 +15,13 @@
  */
 package com.weiwan.support.plugins.jdbc.reader;
 
+import com.weiwan.support.api.config.SupportContext;
+import com.weiwan.support.api.pojo.DataRecord;
+import com.weiwan.support.api.pojo.DataRow;
+import com.weiwan.support.etl.framework.api.reader.BaseInputFormat;
+import com.weiwan.support.etl.framework.api.reader.BaseReader;
+import org.apache.flink.core.io.InputSplit;
+
 /**
  * @Author: xiaozhennan
  * @Date: 2020/11/18 16:29
@@ -22,5 +29,16 @@ package com.weiwan.support.plugins.jdbc.reader;
  * @ClassName: JdbcReader
  * @Description:
  **/
-public class JdbcReader {
+public class JdbcReader extends BaseReader<DataRecord<DataRow>> {
+    @Override
+    public void require(SupportContext context) {
+
+    }
+
+    @Override
+    public <IS extends InputSplit> BaseInputFormat<DataRecord<DataRow>, IS> getInputFormat(SupportContext context) {
+        JdbcInputFormat jdbcInputFormat = new JdbcInputFormat();
+        jdbcInputFormat.setContext(context);
+        return (BaseInputFormat<DataRecord<DataRow>, IS>) jdbcInputFormat;
+    }
 }

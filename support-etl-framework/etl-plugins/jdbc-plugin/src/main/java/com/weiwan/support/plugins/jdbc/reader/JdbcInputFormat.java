@@ -43,7 +43,7 @@ import java.util.Map;
  * @ClassName: JdbcInputFormat
  * @Description:
  **/
-public abstract class JdbcInputFormat extends BaseInputFormat<DataRecord<DataRow>, JdbcInputSpliter> {
+public class JdbcInputFormat extends BaseInputFormat<DataRecord<DataRow>, JdbcInputSpliter> {
 
     Logger logger = LoggerFactory.getLogger(JdbcInputFormat.class);
 
@@ -92,9 +92,6 @@ public abstract class JdbcInputFormat extends BaseInputFormat<DataRecord<DataRow
     protected String lastOffset;
     protected SqlGenerator sqlGenerator;
 
-    public JdbcInputFormat(SupportContext context) {
-        super(context);
-    }
 
     @Override
     public void configure(Configuration parameters) {
@@ -118,7 +115,9 @@ public abstract class JdbcInputFormat extends BaseInputFormat<DataRecord<DataRow
     }
 
 
-    public abstract SqlGenerator getSqlGenerator(JdbcInputSpliter split);
+    public SqlGenerator getSqlGenerator(JdbcInputSpliter split){
+        return null;
+    }
 
 
     /**
