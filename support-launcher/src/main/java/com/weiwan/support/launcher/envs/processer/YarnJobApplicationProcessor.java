@@ -379,7 +379,7 @@ public class YarnJobApplicationProcessor extends ApplicationEnv {
         }
 
 
-        Set<String> flinkClassPaths = new HashSet<>();
+        List<String> flinkClassPaths = new ArrayList<>();
         flinkClassPaths.add(flinkLibDir);
         flinkClassPaths.add(flinkPluginDir);
         flinkClassPaths.add(userResourceRemoteDir);
@@ -404,7 +404,7 @@ public class YarnJobApplicationProcessor extends ApplicationEnv {
                 .flinkLibs(Collections.singletonList(flinkLibDir))
                 .savePointPath(option.getSavePointPath())
                 .userJars(Collections.singletonList(SupportConstants.SUPPORT_RUMTIME_JAR))
-                .userClasspath(new ArrayList<>(flinkClassPaths))
+                .userClasspath(flinkClassPaths)
                 .localLogDir(supportCoreConf.getStringVal(SupportKey.SUPPORT_TASK_LOGDIR, SupportConstants.DEFAULT_SUPPORT_TASK_LOGDIR))
                 .dynamicParameters(params)
                 .build();

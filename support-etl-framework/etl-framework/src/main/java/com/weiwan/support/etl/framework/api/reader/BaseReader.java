@@ -74,10 +74,6 @@ public abstract class BaseReader<OUT> implements Reader<OUT> {
         return env;
     }
 
-    public BaseReader() {
-
-    }
-
     public abstract void require(SupportContext context);
 
     public abstract <IS extends InputSplit> BaseInputFormat<OUT, IS> getInputFormat(SupportContext context);
