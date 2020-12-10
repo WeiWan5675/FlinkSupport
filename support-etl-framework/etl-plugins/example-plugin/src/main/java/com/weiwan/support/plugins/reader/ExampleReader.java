@@ -37,6 +37,8 @@ public class ExampleReader extends BaseReader<String> {
 
     @Override
     public <IS extends InputSplit> BaseInputFormat<String, IS> getInputFormat(SupportContext context) {
-        return (BaseInputFormat<String, IS>) new ExampleInputFormat(context);
+        BaseInputFormat<String, IS> baseInputFormat = (BaseInputFormat<String, IS>) new ExampleInputFormat();
+        baseInputFormat.setContext(context);
+        return baseInputFormat;
     }
 }

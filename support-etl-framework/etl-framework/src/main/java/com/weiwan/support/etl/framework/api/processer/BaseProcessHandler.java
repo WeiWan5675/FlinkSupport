@@ -15,6 +15,7 @@
  */
 package com.weiwan.support.etl.framework.api.processer;
 
+import com.weiwan.support.api.Support;
 import com.weiwan.support.api.config.JobConfig;
 import com.weiwan.support.api.config.ProcesserConfig;
 import com.weiwan.support.api.config.SupportContext;
@@ -22,6 +23,7 @@ import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.runtime.state.FunctionInitializationContext;
 import org.apache.flink.runtime.state.FunctionSnapshotContext;
 import org.apache.flink.streaming.api.checkpoint.CheckpointedFunction;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 /**
  * @Author: xiaozhennan
@@ -30,19 +32,23 @@ import org.apache.flink.streaming.api.checkpoint.CheckpointedFunction;
  * @ClassName: BaseProcessHandler
  * @Description:
  **/
-public abstract class BaseProcessHandler<IN, OUT> extends RichMapFunction<IN, OUT> implements CheckpointedFunction {
+public abstract class BaseProcessHandler<IN, OUT> extends RichMapFunction<IN, OUT> implements CheckpointedFunction, Support<StreamExecutionEnvironment> {
 
     protected SupportContext context;
     protected JobConfig jobConfig;
     protected ProcesserConfig processerConfig;
 
-    public BaseProcessHandler(SupportContext context) {
-        this.context = context;
-        this.jobConfig = context.getJobConfig();
-        this.processerConfig = context.getJobConfig().getProcesserConfig();
+
+    @Override
+    public SupportContext getContext() {
+        return this.context;
     }
 
-    public BaseProcessHandler() {
+    @Override
+    public void setContext(SupportContext context) {
+        this.context= context;
+        this.jobConfig = context.getJobConfig();
+        this.processerConfig = jobConfig.getProcesserConfig();
     }
 
     @Override

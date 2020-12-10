@@ -48,9 +48,6 @@ public abstract class BaseProcesser<IN, OUT> implements Processer<IN, OUT> {
     protected String processerClassName;
     protected int processerParallelism;
 
-    public BaseProcesser() {
-    }
-
     @Override
     public SupportContext getContext() {
         return this.context;

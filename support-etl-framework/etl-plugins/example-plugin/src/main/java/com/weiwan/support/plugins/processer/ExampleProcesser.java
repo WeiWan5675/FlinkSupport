@@ -32,8 +32,9 @@ public class ExampleProcesser extends BaseProcesser<DataRecord<String>, DataReco
 
     @Override
     public BaseProcessHandler<DataRecord<String>, DataRecord<String>> getProcessHandler(SupportContext context) {
-
-        return new ExampleProcessHandler(context);
+        ExampleProcessHandler exampleProcessHandler = new ExampleProcessHandler();
+        exampleProcessHandler.setContext(context);
+        return exampleProcessHandler;
     }
 
     @Override

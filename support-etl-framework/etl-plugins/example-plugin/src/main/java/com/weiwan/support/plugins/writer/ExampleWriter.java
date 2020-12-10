@@ -30,7 +30,9 @@ public class ExampleWriter extends BaseWriter<String> {
 
     @Override
     public BaseOutputFormat<String> getOutputFormat(SupportContext context) {
-        return new ExampleOutputFormat(context);
+        ExampleOutputFormat exampleOutputFormat = new ExampleOutputFormat();
+        exampleOutputFormat.setContext(context);
+        return exampleOutputFormat;
     }
 
     /**

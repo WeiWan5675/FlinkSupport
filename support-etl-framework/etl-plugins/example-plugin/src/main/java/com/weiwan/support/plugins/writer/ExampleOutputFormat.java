@@ -87,7 +87,4 @@ public class ExampleOutputFormat extends BaseOutputFormat<String> {
         logger.info("snapshot run!");
     }
 
-    public ExampleOutputFormat(SupportContext context) {
-        super(context);
-    }
 }

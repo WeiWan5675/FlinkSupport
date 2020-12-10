@@ -15,9 +15,11 @@
  */
 package com.weiwan.support.etl.framework.api.reader;
 
+import com.weiwan.support.api.Support;
 import com.weiwan.support.api.config.JobConfig;
 import com.weiwan.support.api.config.ReaderConfig;
 import com.weiwan.support.api.config.SupportContext;
+import com.weiwan.support.api.options.RunOptions;
 import com.weiwan.support.api.pojo.JobFormatState;
 import org.apache.flink.api.common.io.DefaultInputSplitAssigner;
 import org.apache.flink.api.common.io.RichInputFormat;
@@ -25,6 +27,7 @@ import org.apache.flink.api.common.io.statistics.BaseStatistics;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.core.io.InputSplit;
 import org.apache.flink.core.io.InputSplitAssigner;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +40,7 @@ import java.io.IOException;
  * @ClassName: BaseInputFormat
  * @Description:
  **/
-public abstract class BaseInputFormat<OUT, T extends InputSplit> extends RichInputFormat<OUT, T> {
+public abstract class BaseInputFormat<OUT, T extends InputSplit> extends RichInputFormat<OUT, T> implements Support<StreamExecutionEnvironment> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseInputFormat.class);
 
@@ -53,14 +56,19 @@ public abstract class BaseInputFormat<OUT, T extends InputSplit> extends RichInp
     private boolean isRestore;
     private boolean isStream;
 
-    public BaseInputFormat(SupportContext context) {
+
+    @Override
+    public SupportContext getContext() {
+        return this.context;
+    }
+
+    @Override
+    public void setContext(SupportContext context) {
         this.context = context;
         this.jobConfig = context.getJobConfig();
         this.readerConfig = jobConfig.getReaderConfig();
     }
 
-    public BaseInputFormat() {
-    }
 
     /**
      * 打开InputFormat,根据split读取数据
@@ -196,7 +204,7 @@ public abstract class BaseInputFormat<OUT, T extends InputSplit> extends RichInp
         return this.isRestore;
     }
 
-    public boolean isStream(boolean ... flags){
+    public boolean isStream(boolean... flags) {
         if (flags.length == 1) {
             this.isStream = flags[0];
         }

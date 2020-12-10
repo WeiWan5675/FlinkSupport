@@ -15,12 +15,14 @@
  */
 package com.weiwan.support.etl.framework.api.writer;
 
+import com.weiwan.support.api.Support;
 import com.weiwan.support.api.config.JobConfig;
 import com.weiwan.support.api.config.SupportContext;
 import com.weiwan.support.api.config.WriterConfig;
 import com.weiwan.support.api.pojo.JobFormatState;
 import org.apache.flink.api.common.io.RichOutputFormat;
 import org.apache.flink.configuration.Configuration;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +38,7 @@ import java.util.List;
  * @ClassName: BaseRichOutputFormat
  * @Description: BaseRichOutputFormat 负责处理数据,维护状态,调用子类处理数据的方法, 提供Sink调用的方法
  **/
-public abstract class BaseOutputFormat<T> extends RichOutputFormat<T> {
+public abstract class BaseOutputFormat<T> extends RichOutputFormat<T>implements Support<StreamExecutionEnvironment> {
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseOutputFormat.class);
@@ -57,6 +59,19 @@ public abstract class BaseOutputFormat<T> extends RichOutputFormat<T> {
 
     private boolean isRestore;
     private boolean isStream;
+
+
+    @Override
+    public SupportContext getContext() {
+        return this.context;
+    }
+
+    @Override
+    public void setContext(SupportContext context) {
+        this.context = context;
+        this.jobConfig = context.getJobConfig();
+        this.writerConfig = jobConfig.getWriterConfig();
+    }
 
     /**
      * 打开数据源
@@ -95,13 +110,6 @@ public abstract class BaseOutputFormat<T> extends RichOutputFormat<T> {
      * @param formatState
      */
     public abstract void snapshot(JobFormatState formatState) throws IOException;
-
-
-    public BaseOutputFormat(SupportContext context) {
-        this.context = context;
-        this.jobConfig = context.getJobConfig();
-        this.writerConfig = context.getJobConfig().getWriterConfig();
-    }
 
 
     @Override

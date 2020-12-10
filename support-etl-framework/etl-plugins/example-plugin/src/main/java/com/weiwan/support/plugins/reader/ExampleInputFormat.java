@@ -41,10 +41,6 @@ public class ExampleInputFormat extends BaseInputFormat<String, GenericInputSpli
     int endIndex = 1000;
     private int currentIndex;
 
-    public ExampleInputFormat(SupportContext context) {
-        super(context);
-    }
-
     /**
      * 打开InputFormat,根据split读取数据
      *

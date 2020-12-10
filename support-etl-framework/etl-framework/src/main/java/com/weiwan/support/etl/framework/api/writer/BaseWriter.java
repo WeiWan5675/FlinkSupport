@@ -52,8 +52,6 @@ public abstract class BaseWriter<IN> implements Writer<IN> {
     protected Integer writerParallelism;
 
 
-    public BaseWriter() {
-    }
 
 
     @Override

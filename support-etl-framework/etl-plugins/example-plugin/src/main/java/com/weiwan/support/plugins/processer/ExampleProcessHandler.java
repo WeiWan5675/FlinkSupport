@@ -28,9 +28,6 @@ import com.weiwan.support.etl.framework.api.processer.BaseProcessHandler;
  * @Description:
  **/
 public class ExampleProcessHandler extends BaseProcessHandler<DataRecord<String>, DataRecord<String>> {
-    public ExampleProcessHandler(SupportContext context) {
-        super(context);
-    }
 
     @Override
     public DataRecord<String> process(DataRecord<String> value) {

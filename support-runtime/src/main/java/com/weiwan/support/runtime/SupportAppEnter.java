@@ -100,7 +100,6 @@ public class SupportAppEnter {
 
 
             Class<?> aClass = Class.forName("com.weiwan.support.etl.framework.streaming.SupportOutputFormatSink");
-//            Object o = aClass.newInstance();
             logger.info("aClass: " + aClass.toGenericString());
 
             //这里会找不到类
@@ -112,7 +111,9 @@ public class SupportAppEnter {
             logger.info("aClass3" + aClass3.toGenericString());
 
             Reader o = (Reader) aClass1.newInstance();
+            o.initEnv(env,context,options);
             BaseInputFormat o1 = (BaseInputFormat) aClass2.newInstance();
+            o1.setContext(context);
             SqlGenerator o2 = (SqlGenerator) aClass3.newInstance();
             flinkSupport.initEnv(env, context, options);
             Method submit = ReflectUtil.getDeclaredMethod(flinkSupport, "submit");
