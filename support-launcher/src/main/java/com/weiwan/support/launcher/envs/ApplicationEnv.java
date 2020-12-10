@@ -177,6 +177,9 @@ public abstract class ApplicationEnv implements EnvProcess {
                 supportCoreConf.setStringVal(SupportConstants.KEY_FLINK_HOME, flinkHome);
             }
         }
+        if(StringUtils.isEmpty(flinkHome)){
+            throw new SupportException("Can't find the Flink Home environment variable, please check the configuration");
+        }
         option.setFlinkHome(flinkHome);
         String confDir = flinkHome + File.separator + SupportConstants.FLINK_CONF_DIR;
         String confFile = flinkHome + File.separator + SupportConstants.FLINK_CONF_DIR + File.separator + SupportConstants.FLINK_CONF_FILE;
