@@ -18,6 +18,8 @@ package com.weiwan.support.core.coprocessor;
 import com.weiwan.support.api.SupportDataFlow;
 import com.weiwan.support.api.options.RunOptions;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @Author: xiaozhennan
@@ -29,28 +31,40 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 public class CoprocessorChainFactory {
 
 
+    private static final Logger logger = LoggerFactory.getLogger(CoprocessorChainFactory.class);
+
     /**
      * 创建流应用的协处理器链
-     * @param env 流环境
+     *
+     * @param env      流环境
      * @param dataFlow 数据流对象(JOB对象)
-     * @param options (启动参数)
-     * @param <E> (StreamEnv{@link StreamExecutionEnvironment})
-     * @param <S1> (JOB的open输出类型{@link com.weiwan.support.core.StreamSupport#open})
-     * @param <S2> (Job的output输入类型{@link com.weiwan.support.core.StreamSupport#output})
+     * @param options  (启动参数)
+     * @param <E>      (StreamEnv{@link StreamExecutionEnvironment})
+     * @param <S1>     (JOB的open输出类型{@link com.weiwan.support.core.StreamSupport#open})
+     * @param <S2>     (Job的output输入类型{@link com.weiwan.support.core.StreamSupport#output})
      * @return
      */
     public static final <E, S1, S2> CoprocessorChain<E, S1, S2> createStreamCoprocessorChain(E env, SupportDataFlow<E, S1, S2> dataFlow, RunOptions options) {
         //TODO 这里应该把StreamRunMode单独作为一个枚举
-        if (options.isEtl()) {
-            //插件etl模式
-            return new EtlStreamCoprocessorChain(env, dataFlow, null);
-        } else if (options.isTable()) {
-            //table模式
-            return new TableStreamCoprocessorChain(env, dataFlow, null);
-        } else {
-            //用户程序
-            return new GenericStreamCoprocessorChain(env, dataFlow, null);
+        try {
+            if (options.isEtl()) {
+                //插件etl模式
+                logger.info("create stream etl mode coprocessor chain");
+                return new EtlStreamCoprocessorChain(env, dataFlow, null);
+            } else if (options.isTable()) {
+                //table模式
+                logger.info("create streaming table mode coprocessor chain");
+                return new TableStreamCoprocessorChain(env, dataFlow, null);
+            } else {
+                //用户程序
+                logger.info("create a general stream processor chain");
+                return new GenericStreamCoprocessorChain(env, dataFlow, null);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        logger.warn("unknown flink support operating mode");
+        return new GenericStreamCoprocessorChain<>(env, dataFlow, null);
     }
 
 

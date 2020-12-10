@@ -49,7 +49,7 @@ public class ExampleInputFormat extends BaseInputFormat<String, GenericInputSpli
     @Override
     public void openInput(GenericInputSplit split) {
         this.endIndex = readerConfig.getIntVal("etl.reader.example.readerVar", 1000);
-        logger.info("open input run");
+        logger.info("open the ExampleInputFormat");
     }
 
     /**
@@ -79,7 +79,7 @@ public class ExampleInputFormat extends BaseInputFormat<String, GenericInputSpli
      */
     @Override
     public String nextRecordInternal(String reuse) {
-        logger.info("next record internal execution");
+        logger.info("next record internal execution, currentIndex:{}", currentIndex);
         DataRecord<DataRow<DataField>> dataRecord = new DataRecord<>();
         DataRow<DataField> dataFieldDataRow = new DataRow(DataField.class, 1);
         DataField<Object> dataField = new DataField<>();
@@ -99,7 +99,6 @@ public class ExampleInputFormat extends BaseInputFormat<String, GenericInputSpli
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-//        System.out.println("ExampleInputFormat处理数据:" + dataRecord.toString());
         return dataRecord.toString();
     }
 
@@ -108,7 +107,7 @@ public class ExampleInputFormat extends BaseInputFormat<String, GenericInputSpli
      */
     @Override
     public void closeInput() {
-        logger.info("close this InputFormat");
+        logger.info("close this ExampleInputFormat");
     }
 
     /**

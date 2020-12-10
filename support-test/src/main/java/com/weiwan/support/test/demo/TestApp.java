@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.weiwan.tester.run;
+package com.weiwan.support.test.demo;
 
 import com.weiwan.support.api.config.SupportContext;
 import com.weiwan.support.core.StreamSupport;
@@ -35,13 +35,10 @@ import org.slf4j.LoggerFactory;
  * @ClassName: Tester
  * @Description:
  **/
-@PrintToLog
 @Support
-@Checkpoint
-@Parallelism
-public class Tester extends StreamSupport<DataRecord<String>, DataRecord<String>> {
+public class TestApp extends StreamSupport<DataRecord<String>, DataRecord<String>> {
 
-    private static final Logger logger = LoggerFactory.getLogger(Tester.class);
+    private static final Logger logger = LoggerFactory.getLogger(TestApp.class);
 
     @Override
     public DataStream<DataRecord<String>> open(StreamExecutionEnvironment env, SupportContext context) {

@@ -129,8 +129,6 @@ public class YarnJobSubmiter implements JobSubmiter {
             flinkConfiguration.set(JVMOptions.FLINK_LOG_DIR, jobInfo.getLocalLogDir()
                     + File.separator + dynamicParameters.get(SupportKey.JOB_RESOURCES_ID));
         }
-
-
         flinkConfiguration.set(JVMOptions.FLINK_TM_JVM_OPTIONS, tmVmDynamic.toString());
         flinkConfiguration.set(JVMOptions.FLINK_JM_JVM_OPTIONS, jmVmDynamic.toString());
 
@@ -138,9 +136,10 @@ public class YarnJobSubmiter implements JobSubmiter {
         flinkConfiguration.set(PipelineOptionsInternal.PIPELINE_FIXED_JOB_ID, jobInfo.getJobResourceId());
 
         //设置类加载模式为父加载器优先,flink默认为用户加载器优先
-        flinkConfiguration.set(JOBOptions.CLASSLOADER_RESOLVE_ORDER,"parent-first");
+        flinkConfiguration.set(JOBOptions.CLASSLOADER_RESOLVE_ORDER, "parent-first");
 
-        flinkConfiguration.set(JOBOptions.ALWAYS_PARENT_FIRST_LOADER_PATTERNS_ADDITIONAL,"com.weiwan.");
+        //设置FlinkSupport依赖使用parent-first加载模式
+        flinkConfiguration.set(JOBOptions.ALWAYS_PARENT_FIRST_LOADER_PATTERNS_ADDITIONAL, "com.weiwan.");
         //设置用户jar的参数和主类
         ApplicationConfiguration appConfig = new ApplicationConfiguration(jobInfo.getAppArgs(), jobInfo.getAppClassName());
 
@@ -155,13 +154,16 @@ public class YarnJobSubmiter implements JobSubmiter {
                 informationRetriever,
                 true);
         ClusterClientProvider<ApplicationId> clusterClientProvider = null;
+        //打印Job信息
         printJobSubmitInfo(jobInfo);
         try {
             clusterClientProvider = yarnClusterDescriptor.deployApplicationCluster(jobInfo.getClusterSpecification(), appConfig);
         } catch (ClusterDeploymentException e) {
             e.printStackTrace();
         }
-
+        if (clusterClientProvider == null) {
+            return "Unknown!";
+        }
         ClusterClient<ApplicationId> clusterClient = clusterClientProvider.getClusterClient();
         ApplicationId applicationId = clusterClient.getClusterId();
         return applicationId;
@@ -207,24 +209,24 @@ public class YarnJobSubmiter implements JobSubmiter {
         return null;
     }
 
-    public static void main(String[] args) {
-        ArrayList<String> classPath = new ArrayList<>();
-        classPath.add("/flink_support/resources/1829dw9aijdadkauhdkadu");
-        ArrayList<String> userJars = new ArrayList<>();
-        userJars.add("/flink_support/lib/support-runtime-1.0.jar");
-        JobSubmitInfo build = JobSubmitInfo.newBuilder().appArgs(new String[]{"-logLevel", "Info", "-x", "-jobConf", "waduhawkjdhakiwdjhnwaiudhuiakwuwjhdn"})
-                .appClassName("com.weiwan.Tester")
-                .appName("TestApp")
-                .appType("Support Stream Application")
-                .clusterSpecification(ClusterJobUtil.createClusterSpecification(new HashMap<>()))
-                .dynamicParameters(new HashMap<>())
-                .flinkDistJar("/flink_support/flinks/1.11.1/lib/flink-dist.jar")
-                .jobResourceId("1829dw9aijdadkauhdkadu")
-                .yarnQueue("root.users.easylife")
-                .userClasspath(classPath)
-                .userJars(userJars)
-                .build();
-
-        printJobSubmitInfo(build);
-    }
+//    public static void main(String[] args) {
+//        ArrayList<String> classPath = new ArrayList<>();
+//        classPath.add("/flink_support/resources/1829dw9aijdadkauhdkadu");
+//        ArrayList<String> userJars = new ArrayList<>();
+//        userJars.add("/flink_support/lib/support-runtime-1.0.jar");
+//        JobSubmitInfo build = JobSubmitInfo.newBuilder().appArgs(new String[]{"-logLevel", "Info", "-x", "-jobConf", "waduhawkjdhakiwdjhnwaiudhuiakwuwjhdn"})
+//                .appClassName("com.weiwan.Tester")
+//                .appName("TestApp")
+//                .appType("Support Stream Application")
+//                .clusterSpecification(ClusterJobUtil.createClusterSpecification(new HashMap<>()))
+//                .dynamicParameters(new HashMap<>())
+//                .flinkDistJar("/flink_support/flinks/1.11.1/lib/flink-dist.jar")
+//                .jobResourceId("1829dw9aijdadkauhdkadu")
+//                .yarnQueue("root.users.easylife")
+//                .userClasspath(classPath)
+//                .userJars(userJars)
+//                .build();
+//
+//        printJobSubmitInfo(build);
+//    }
 }

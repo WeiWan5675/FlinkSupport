@@ -33,7 +33,7 @@ flink:
 
 app:
   appName: TestApp
-  appClass: com.weiwan.tester.run.TestAnnoSupport
+  appClass: com.weiwan.support.test.demo.TestApp
   appType: stream
 
 

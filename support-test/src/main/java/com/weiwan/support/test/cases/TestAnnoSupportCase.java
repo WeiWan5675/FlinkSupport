@@ -13,51 +13,61 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.weiwan.tester.run;
+package com.weiwan.support.test.cases;
 
 import com.weiwan.support.api.config.SupportContext;
 import com.weiwan.support.core.StreamSupport;
 import com.weiwan.support.core.annotation.*;
 import com.weiwan.support.core.junit.SupportTest;
 import com.weiwan.support.core.junit.SupportTestConsole;
+import com.weiwan.support.plugins.reader.ExampleReader;
+import com.weiwan.support.plugins.writer.ExampleWriter;
 import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.streaming.api.datastream.DataStreamSink;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @Author: xiaozhennan
- * @Date: 2020/11/22 14:06
- * @Package: com.weiwan.tester.run
- * @ClassName: TesterAppV2
+ * @Date: 2020/11/30 17:13
+ * @Package: com.weiwan.test.TestAnnoSupport
+ * @ClassName: TestAnnoSupport
  * @Description:
  **/
+@Support(enable = true)
+@Parallelism(num = 1)
 @SupportTest(jobFile = "F:\\Project\\FlinkSupport\\support-test\\src\\main\\resources\\app.yaml")
-@Support
-@Parallelism
-@PrintToLog
-@Checkpoint
-public class TestConsoleTester extends StreamSupport<String, String> {
+public class TestAnnoSupportCase extends StreamSupport<String, String> {
+
+    private static final Logger logger = LoggerFactory.getLogger(TestAnnoSupportCase.class);
+
+    @SupportSource(type = ExampleReader.class, vars = {""})
+    @SupportSink(type = ExampleWriter.class)
+    DataStream<String> dataStream2;
+
+
+    public DataStream<String> open(StreamExecutionEnvironment env, SupportContext context) {
+        logger.info("user app open function run");
+        StreamExecutionEnvironment env1 = getEnv();
+        SupportContext context1 = getContext();
+        return null;
+    }
+
+
+    public DataStream<String> process(DataStream<String> stream) {
+        logger.info("user app process function run");
+        return stream;
+    }
+
+    public Object output(DataStream<String> stream) {
+        logger.info("user app output function run");
+        return null;
+    }
 
 
     public static void main(String[] args) throws Exception {
-        SupportTestConsole build = SupportTestConsole.newBuilder().waitTestClass(TestConsoleTester.class).build();
+        SupportTestConsole.Builder builder = SupportTestConsole.newBuilder().waitTestClass(TestAnnoSupportCase.class);
+        SupportTestConsole build = builder.build();
         build.run();
-    }
-
-
-    @Override
-    public DataStream<String> open(StreamExecutionEnvironment env, SupportContext context) {
-        return null;
-    }
-
-    @Override
-    public DataStream<String> process(DataStream<String> stream) {
-
-        return null;
-    }
-
-    @Override
-    public DataStreamSink output(DataStream<String> stream) {
-        return null;
     }
 }

@@ -105,7 +105,6 @@ public class JavaEnvIniter extends BaseEnvIniter implements EnvIniter<FlinkConte
 
     private void initFlinkBatch(FlinkContext<ExecutionEnvironment> context) {
         ExecutionEnvironment env = context.getEnv();
-//        env.setSessionTimeout(1);
     }
 
     private void initFlinkCommon(FlinkContext<?> context) {

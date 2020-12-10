@@ -88,9 +88,9 @@
 
     具体的程序开发相关说明请查看快速开发[说明文档](docs/ApplicationDeveloper.md)
 
-    　　[普通Flink程序Demo](support-test/src/main/java/com/weiwan/tester/run/TesterApp.java)
+    　　[普通Flink程序Demo](support-test/src/main/java/com/weiwan/support/test/demo/TestApp.java)
 
-    　　[ETL插件](support-etl-framework/etl-plugins/example_plugin/src/main/java/com/weiwan/support/plugins/reader/ExampleReader.java)
+    　　[ETL框架插件](support-etl-framework/etl-plugins/example-plugin/src/main/java/com/weiwan/support/plugins/reader/ExampleReader.java)
 
 - 其它
 

@@ -52,7 +52,7 @@
             <directory>${basedir}/../doc</directory>
             <outputDirectory>doc</outputDirectory>
         </fileSet>
-            <fileSet> <!-- 创建一个空的扩展依赖文件夹 -->
+            <fileSet> <!-- 创建一个空的扩展依赖文件夹,暂时未使用,TODO 需要每次提交任务时通过shipfiles文件上传到集群 -->
                 <outputDirectory>extlib</outputDirectory>
                 <excludes><exclude>**/*</exclude></excludes>
             </fileSet>
