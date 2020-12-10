@@ -45,7 +45,7 @@ public class SupportConstants {
     //SUPPORT HDFS SPACE
     public static final String SUPPORT_HDFS_WORKSPACE = "hdfs://nameservice1/flink_support";
     public static final String SUPPORT_HDFS_LIB_DIR = SUPPORT_HDFS_WORKSPACE + Constans.SIGN_SLASH + "lib";
-    public static final String SUPPORT_HDFS_PLUGINS_DIR = SUPPORT_HDFS_WORKSPACE + Constans.SIGN_SLASH + "plugin";
+    public static final String SUPPORT_HDFS_PLUGIN_DIR = SUPPORT_HDFS_WORKSPACE + Constans.SIGN_SLASH + "plugin";
     public static final String SUPPORT_HDFS_RESOURCES_DIR = SUPPORT_HDFS_WORKSPACE + Constans.SIGN_SLASH + "resources";
     public static final String SUPPORT_HDFS_CONF_DIR = SUPPORT_HDFS_WORKSPACE + Constans.SIGN_SLASH + "conf";
     public static final String FLINKS = "flinks";

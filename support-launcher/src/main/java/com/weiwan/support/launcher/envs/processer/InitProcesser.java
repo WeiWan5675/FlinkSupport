@@ -64,22 +64,23 @@ public class InitProcesser extends ApplicationEnv {
         if (!HdfsUtil.existsDir(fileSystem, new Path(SupportConstants.SUPPORT_HDFS_WORKSPACE))) {
             logger.warn("The FlinkSupport workspace directory does not exist");
             HdfsUtil.mkdir(fileSystem, new Path(SupportConstants.SUPPORT_HDFS_WORKSPACE), true);
-            logger.info("Create a Flink Support working directory in [HDFS] : {}", SupportConstants.SUPPORT_HDFS_WORKSPACE);
+            logger.info("Create a flink support working directory in [HDFS] : {}", SupportConstants.SUPPORT_HDFS_WORKSPACE);
         }
 
         //创建 lib flinks conf plugins
-        String[] dirs = new String[]{"lib", "flinks", "conf", "plugins"};
+        String[] dirs = new String[]{"lib", "flinks", "conf", "plugin"};
         for (int i = 0; i < dirs.length; i++) {
             Path remotePath = new Path(SupportConstants.SUPPORT_HDFS_WORKSPACE + Constans.SIGN_SLASH + dirs[i]);
-            logger.info("create a remote directory on hdfs: {}", remotePath.toUri());
+            logger.info("Create a remote directory on hdfs: {}", remotePath.toUri());
             HdfsUtil.mkdir(fileSystem, remotePath, true);
         }
 
-        logger.info("Create Flink Support working directory Successed on HDFS");
+        logger.info("Create flink support working directory successed on hdfs");
     }
 
     @Override
     public boolean process() {
+
 
         try { //上传
             String supportHome = supportCoreConf.getStringVal(SupportConstants.KEY_SUPPORT_HOME);
@@ -95,8 +96,9 @@ public class InitProcesser extends ApplicationEnv {
                         return (!name.startsWith("flink") && !name.startsWith("log4j"));
                     }
                 });
+                logger.info("Start uploading local dependencies files to remote support lib directory");
                 HdfsUtil.uploadFiles(fileSystem, remoteLibDir, files);
-                logger.info("Upload Flink Support local dependencies to remote Support Lib directory: {}", remoteLibDir.toUri());
+                logger.info("Upload flink support local dependencies to remote support lib directory: {}", remoteLibDir.toUri());
             }
 
 
@@ -105,17 +107,19 @@ public class InitProcesser extends ApplicationEnv {
             if (localConfDir.exists() && localConfDir.isDirectory()) {
                 //获取下边所有的jar, 然后做过滤 , 然后上传
                 Path remoteConfDir = new Path(SupportConstants.SUPPORT_HDFS_CONF_DIR);
+                logger.info("Start uploading local configuration directory to remote support conf directory");
                 HdfsUtil.uploadFiles(fileSystem, localConfDir.getAbsolutePath(), remoteConfDir);
-                logger.info("Upload Flink Support local configuration directory to remote Support Conf directory: {}", remoteConfDir.toUri());
+                logger.info("Upload flink support local configuration directory to remote support conf directory: {}", remoteConfDir.toUri());
             }
 
             String _localPluginsDir = supportHome + File.separator + SupportConstants.SUPPORT_LOCAL_PLUGINS_DIR;
             File localPluginsDir = new File(_localPluginsDir);
             if (localPluginsDir.exists() && localPluginsDir.isDirectory()) {
                 //获取下边所有的jar, 然后做过滤 , 然后上传
-                Path remotePluginsDir = new Path(SupportConstants.SUPPORT_HDFS_PLUGINS_DIR);
+                Path remotePluginsDir = new Path(SupportConstants.SUPPORT_HDFS_PLUGIN_DIR);
+                logger.info("Start uploading local plugin directory to remote support plugin directory");
                 HdfsUtil.uploadFiles(fileSystem, localPluginsDir.getAbsolutePath(), remotePluginsDir);
-                logger.info("Upload Flink Support local plugin directory to remote Support Plugins directory: {}", remotePluginsDir.toUri());
+                logger.info("Upload flink support local plugin directory to remote support plugin directory: {}", remotePluginsDir.toUri());
             }
 
 
@@ -131,7 +135,9 @@ public class InitProcesser extends ApplicationEnv {
                 if (!HdfsUtil.existsDir(fileSystem, remoteFlinkLibPath)) {
                     HdfsUtil.mkdir(fileSystem, remoteFlinkLibPath, true);
                 }
+                logger.info("Start uploading local flink lib to remote flink lib directory");
                 HdfsUtil.uploadFiles(fileSystem, localFlinkLibDir.getAbsolutePath(), remoteFlinkLibPath);
+                logger.info("Upload flink support local flink lib directory to remote flink lib directory: {}", remoteFlinkLibPath.toUri());
             } else {
                 throw new SupportException("Please check the lib directory in FLINK_HOME!");
             }
@@ -154,7 +160,7 @@ public class InitProcesser extends ApplicationEnv {
             logger.info("SUPPORT_HDFS_WORKSPACE:{}", SupportConstants.SUPPORT_HDFS_WORKSPACE);
             logger.info("SUPPORT_HDFS_LIB:{}", SupportConstants.SUPPORT_HDFS_LIB_DIR);
             logger.info("SUPPORT_HDFS_CONF:{}", SupportConstants.SUPPORT_HDFS_CONF_DIR);
-            logger.info("SUPPORT_HDFS_PLUGINS:{}", SupportConstants.SUPPORT_HDFS_PLUGINS_DIR);
+            logger.info("SUPPORT_HDFS_PLUGIN:{}", SupportConstants.SUPPORT_HDFS_PLUGIN_DIR);
             logger.info("=======================Apache Flink=========================");
             logger.info("FLINK_HDFS_HOME:{}", flinkRemoteHome);
             logger.info("FLINK_VERSION:{}", "Apache Flink " + flinkVerson);
