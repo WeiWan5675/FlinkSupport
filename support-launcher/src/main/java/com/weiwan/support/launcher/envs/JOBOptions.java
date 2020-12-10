@@ -55,4 +55,7 @@ public class JOBOptions {
 
     //类加载模式
     public static final ConfigOption<String> CLASSLOADER_RESOLVE_ORDER = CoreOptions.CLASSLOADER_RESOLVE_ORDER;
+
+    //指定父加载器优先加载的包
+    public static final ConfigOption<String> ALWAYS_PARENT_FIRST_LOADER_PATTERNS_ADDITIONAL = CoreOptions.ALWAYS_PARENT_FIRST_LOADER_PATTERNS_ADDITIONAL;
 }

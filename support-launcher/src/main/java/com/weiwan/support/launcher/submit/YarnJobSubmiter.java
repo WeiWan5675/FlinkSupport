@@ -139,6 +139,8 @@ public class YarnJobSubmiter implements JobSubmiter {
 
         //设置类加载模式为父加载器优先,flink默认为用户加载器优先
         flinkConfiguration.set(JOBOptions.CLASSLOADER_RESOLVE_ORDER,"parent-first");
+
+        flinkConfiguration.set(JOBOptions.ALWAYS_PARENT_FIRST_LOADER_PATTERNS_ADDITIONAL,"com.weiwan.");
         //设置用户jar的参数和主类
         ApplicationConfiguration appConfig = new ApplicationConfiguration(jobInfo.getAppArgs(), jobInfo.getAppClassName());
 
