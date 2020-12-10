@@ -38,11 +38,6 @@ public class SqlGeneratorForMysql implements SqlGenerator {
     private SqlInfo sqlInfo;
 
 
-    public SqlGeneratorForMysql() {
-
-    }
-
-
     public String generatorSql(SqlInfo info) {
         this.sqlInfo = info;
         StringBuffer filterSb = new StringBuffer(filterSql);

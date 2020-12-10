@@ -59,6 +59,9 @@ public abstract class BaseInputFormat<OUT, T extends InputSplit> extends RichInp
         this.readerConfig = jobConfig.getReaderConfig();
     }
 
+    public BaseInputFormat() {
+    }
+
     /**
      * 打开InputFormat,根据split读取数据
      *
