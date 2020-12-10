@@ -72,7 +72,7 @@ public class GenericStreamCoprocessorChain<E, S1, S2> implements CoprocessorChai
         if (head != null) {
             return head.process(env, dataFlow, obj);
         } else {
-            throw new RuntimeException("The coprocessor has not been initialized");
+            throw new RuntimeException("The coproceopen stream coprocessor processssor has not been initialized");
         }
     }
 }

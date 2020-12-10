@@ -23,6 +23,8 @@ import com.weiwan.support.core.annotation.SupportSource;
 import org.apache.flink.api.dag.Transformation;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -39,7 +41,7 @@ import java.util.List;
 public class SourceStreamCoprocessor extends SupportCoprocessor {
 
     private StreamExecutionEnvironment environment;
-
+    private static final Logger logger = LoggerFactory.getLogger(SourceStreamCoprocessor.class);
     public SourceStreamCoprocessor(SupportContext context) {
         super(context);
     }
@@ -52,7 +54,7 @@ public class SourceStreamCoprocessor extends SupportCoprocessor {
         } else {
             throw new RuntimeException("env is not StreamExecutionEnvironment");
         }
-
+        logger.info("source stream coprocessor run");
         //处理字段上的source
         List<Field> fields = new ArrayList();
         Field[] declaredFields = aClass.getDeclaredFields();
@@ -68,9 +70,7 @@ public class SourceStreamCoprocessor extends SupportCoprocessor {
                 declaredFields[i].setAccessible(false);
             }
         }
-        if(0 == 0){
-            return nextProcess(env, dataFlow, obj);
-        }
+
         for (Field field : fields) {
             try {
                 field.setAccessible(true);
@@ -109,6 +109,7 @@ public class SourceStreamCoprocessor extends SupportCoprocessor {
         if (annotation != null) {
             obj = generateReaderStream(env, annotation);
         }
+        logger.info("source processed");
         return nextProcess(env, dataFlow, obj);
     }
 
