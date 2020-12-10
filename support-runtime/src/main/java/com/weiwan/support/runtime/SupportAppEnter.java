@@ -102,11 +102,15 @@ public class SupportAppEnter {
 
             //这里会找不到类
             Class<?> aClass1 = Class.forName("com.weiwan.support.plugins.reader.ExampleReader");
-            logger.info("aClass1" + aClass1.getClass().getName());
+            logger.info("aClass1" + aClass1.toGenericString());
             Class<?> aClass2 = Class.forName("com.weiwan.support.plugins.reader.ExampleInputFormat");
-            logger.info("aClass2" + aClass2.getClass().getName());
+            logger.info("aClass2" + aClass2.toGenericString());
             Class<?> aClass3 = Class.forName("com.weiwan.support.plugins.jdbc.SqlGeneratorForMysql");
-            logger.info("aClass3" + aClass3.getClass().getName());
+            logger.info("aClass3" + aClass3.toGenericString());
+
+            Object o = aClass1.newInstance();
+            Object o1 = aClass2.newInstance();
+            Object o2 = aClass3.newInstance();
             flinkSupport.initEnv(env, context, options);
             Method submit = ReflectUtil.getDeclaredMethod(flinkSupport, "submit");
             TaskResult taskResult = (TaskResult) submit.invoke(flinkSupport);
