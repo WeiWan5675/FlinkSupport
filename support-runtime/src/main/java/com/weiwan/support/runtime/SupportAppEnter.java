@@ -101,30 +101,12 @@ public class SupportAppEnter {
             logger.info("aClass: " + aClass.toGenericString());
 
             //这里会找不到类
-            Class<?> aClass1 = null;
-            try {
-                aClass1 = Class.forName("com.weiwan.support.plugins.reader.ExampleReader");
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-
-            Object o = null;
-            try {
-                Class<?> aClass2 = Class.forName("com.weiwan.support.plugins.reader.ExampleInputFormat");
-                o = aClass1.newInstance();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-
-            Class<?> aClass2 = Class.forName("com.weiwan.support.plugins.jdbc.SqlGeneratorForMysql");
-
-            System.exit(1);
-            logger.info(o.getClass().toGenericString());
-
+            Class<?> aClass1 = Class.forName("com.weiwan.support.plugins.reader.ExampleReader");
+            logger.info("aClass1" + aClass1.getClass().getName());
+            Class<?> aClass2 = Class.forName("com.weiwan.support.plugins.reader.ExampleInputFormat");
+            logger.info("aClass2" + aClass2.getClass().getName());
+            Class<?> aClass3 = Class.forName("com.weiwan.support.plugins.jdbc.SqlGeneratorForMysql");
+            logger.info("aClass3" + aClass3.getClass().getName());
             flinkSupport.initEnv(env, context, options);
             Method submit = ReflectUtil.getDeclaredMethod(flinkSupport, "submit");
             TaskResult taskResult = (TaskResult) submit.invoke(flinkSupport);
