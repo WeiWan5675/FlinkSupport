@@ -239,9 +239,9 @@ public class YarnJobApplicationProcessor extends ApplicationEnv {
             if (HdfsUtil.existsFile(fileSystem, new Path(log4jFile))) {
                 //这里的log4j.properties路径都是相对路径,flink在处理provider资源时,会使用资源目录一级的相对路径作为类路径
                 params.put(JVMOptions.LOG4J_CONFIG_FILE, userResourceRemoteDir.substring(userResourceRemoteDir.lastIndexOf("/") + 1) + "/log4j.properties");
+            } else {
+                params.put(JVMOptions.LOG4J_CONFIG_FILE, "conf/log4j.properties");
             }
-        } else {
-            params.put(JVMOptions.LOG4J_CONFIG_FILE, "conf/log4j.properties");
         }
         params.put(SupportKey.JOB_RESOURCES_ID, jobResourceId);
     }
@@ -385,6 +385,7 @@ public class YarnJobApplicationProcessor extends ApplicationEnv {
         flinkClassPaths.add(userResourceRemoteDir);
         flinkClassPaths.add(SupportConstants.SUPPORT_HDFS_LIB_DIR);
         flinkClassPaths.add(SupportConstants.SUPPORT_HDFS_PLUGIN_DIR);
+        flinkClassPaths.add(SupportConstants.SUPPORT_HDFS_CONF_DIR);
 
         URL.setURLStreamHandlerFactory(new FsUrlStreamHandlerFactory());
         //组装了任务信息
@@ -429,8 +430,8 @@ public class YarnJobApplicationProcessor extends ApplicationEnv {
             all.put(FlinkContains.FLINK_TASK_COMMON_PARALLELISM_KEY, option.getParallelism());
         }
         //设置yarn资源队列
-        if(StringUtils.isNotEmpty(option.getQueueName())){
-            all.put(FlinkContains.FLINK_TASK_COMMON_QUEUE_KEY,option.getQueueName());
+        if (StringUtils.isNotEmpty(option.getQueueName())) {
+            all.put(FlinkContains.FLINK_TASK_COMMON_QUEUE_KEY, option.getQueueName());
         }
         return all;
     }

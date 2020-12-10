@@ -98,23 +98,6 @@ public class SupportAppEnter {
                 throw new SupportException("Unsupported application mode, please check the operating parameters");
             }
 
-
-            Class<?> aClass = Class.forName("com.weiwan.support.etl.framework.streaming.SupportOutputFormatSink");
-            logger.info("aClass: " + aClass.toGenericString());
-
-            //这里会找不到类
-            Class<?> aClass1 = Class.forName("com.weiwan.support.plugins.reader.ExampleReader");
-            logger.info("aClass1" + aClass1.toGenericString());
-            Class<?> aClass2 = Class.forName("com.weiwan.support.plugins.reader.ExampleInputFormat");
-            logger.info("aClass2" + aClass2.toGenericString());
-            Class<?> aClass3 = Class.forName("com.weiwan.support.plugins.jdbc.SqlGeneratorForMysql");
-            logger.info("aClass3" + aClass3.toGenericString());
-
-            Reader o = (Reader) aClass1.newInstance();
-            o.initEnv(env,context,options);
-            BaseInputFormat o1 = (BaseInputFormat) aClass2.newInstance();
-            o1.setContext(context);
-            SqlGenerator o2 = (SqlGenerator) aClass3.newInstance();
             flinkSupport.initEnv(env, context, options);
             Method submit = ReflectUtil.getDeclaredMethod(flinkSupport, "submit");
             TaskResult taskResult = (TaskResult) submit.invoke(flinkSupport);
