@@ -94,6 +94,11 @@ public class ExampleInputFormat extends BaseInputFormat<String, GenericInputSpli
         if (currentIndex++ == endIndex) {
             isComplete(true);
         }
+        try {
+            Thread.sleep(3000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 //        System.out.println("ExampleInputFormat处理数据:" + dataRecord.toString());
         return dataRecord.toString();
     }
