@@ -45,7 +45,7 @@ public class SupportConstants {
     //SUPPORT HDFS SPACE
     public static final String SUPPORT_HDFS_WORKSPACE = "hdfs://nameservice1/flink_support";
     public static final String SUPPORT_HDFS_LIB_DIR = SUPPORT_HDFS_WORKSPACE + Constans.SIGN_SLASH + "lib";
-    public static final String SUPPORT_HDFS_PLUGINS_DIR = SUPPORT_HDFS_WORKSPACE + Constans.SIGN_SLASH + "plugins";
+    public static final String SUPPORT_HDFS_PLUGINS_DIR = SUPPORT_HDFS_WORKSPACE + Constans.SIGN_SLASH + "plugin";
     public static final String SUPPORT_HDFS_RESOURCES_DIR = SUPPORT_HDFS_WORKSPACE + Constans.SIGN_SLASH + "resources";
     public static final String SUPPORT_HDFS_CONF_DIR = SUPPORT_HDFS_WORKSPACE + Constans.SIGN_SLASH + "conf";
     public static final String FLINKS = "flinks";
@@ -57,7 +57,7 @@ public class SupportConstants {
     //SUPPORT LOCAL
     public static final String SUPPORT_LOCAL_LIB_DIR = "lib";
     public static final String SUPPORT_LOCAL_CONF_DIR = "conf";
-    public static final String SUPPORT_LOCAL_PLUGINS_DIR = "plugins";
+    public static final String SUPPORT_LOCAL_PLUGINS_DIR = "plugin";
     public static final String SUPPORT_LOCAL_EXTLIB_DIR = "extlib";
     public static final String SUPPORT_CORE_CONF_FILE = "support-core.yaml";
     public static final String SUPPORT_ETL_CONF_FILE = "support-etl.yaml";
