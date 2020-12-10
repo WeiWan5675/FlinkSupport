@@ -91,9 +91,9 @@ public class ExampleInputFormat extends BaseInputFormat<String, GenericInputSpli
         dataRecord.setTableName("ExampleTableName");
         dataRecord.setSchemaName("ExampleSchema");
         dataRecord.setTimestamp(DateUtils.getDateStr(new Date()));
-//        if (currentIndex++ == endIndex) {
-//            isComplete(true);
-//        }
+        if (currentIndex++ == endIndex) {
+            isComplete(true);
+        }
 //        System.out.println("ExampleInputFormat处理数据:" + dataRecord.toString());
         return dataRecord.toString();
     }
