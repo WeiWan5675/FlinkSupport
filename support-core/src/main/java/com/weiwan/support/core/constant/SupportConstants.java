@@ -101,6 +101,6 @@ public class SupportConstants {
 
     //DEFAULT LOG
     public static final String DEFAULT_SUPPORT_TASK_LOGDIR = "/tmp/flink_support/logs";
-    public static final String JM_LOG_FILE_NAME = "jobmanager.log";
-    public static final String TM_LOG_FILE_NAME = "taskmanager.log";
+    public static final String JM_LOG_FILE_NAME = "jobmanager";
+    public static final String TM_LOG_FILE_NAME = "taskmanager";
 }
