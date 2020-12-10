@@ -30,10 +30,6 @@ import com.weiwan.support.plugins.jdbc.SqlGeneratorForMysql;
  **/
 public class MysqlInputFormat extends JdbcInputFormat {
 
-    public MysqlInputFormat(SupportContext context) {
-        super(context);
-    }
-
     @Override
     public SqlGenerator getSqlGenerator(JdbcInputSpliter split) {
         //打开数据源

@@ -37,7 +37,8 @@ public class MysqlReader extends BaseReader<DataRecord<DataRow>> {
 
     @Override
     public BaseInputFormat getInputFormat(SupportContext context) {
-        MysqlInputFormat mysqlInputFormat = new MysqlInputFormat(context);
+        MysqlInputFormat mysqlInputFormat = new MysqlInputFormat();
+        mysqlInputFormat.setContext(context);
         return mysqlInputFormat;
     }
 
