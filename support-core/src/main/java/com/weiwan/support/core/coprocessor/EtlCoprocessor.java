@@ -44,21 +44,21 @@ public class EtlCoprocessor extends SupportCoprocessor {
         ProcesserConfig processerConfig = jobConfig.getProcesserConfig();
         WriterConfig writerConfig = jobConfig.getWriterConfig();
 
-        String readerClassName = readerConfig.getStringVal("reader.class");
+        String readerClassName = readerConfig.getStringVal("etl.reader.class");
         Class<?> readerClass = Class.forName(readerClassName);
         Reader<S1> reader = (Reader<S1>) readerClass.newInstance();
         reader.initEnv((StreamExecutionEnvironment) env, context, null);
         DataStream<S1> s1 = reader.read((StreamExecutionEnvironment) env, context);
 
 
-        String processerClassName = processerConfig.getStringVal("processer.class");
+        String processerClassName = processerConfig.getStringVal("etl.processer.class");
         Class<?> processerClass = Class.forName(processerClassName);
         Processer<S1, S2> processer = (Processer<S1, S2>) processerClass.newInstance();
         processer.initEnv((StreamExecutionEnvironment) env, context, null);
         DataStream<S2> s2 = processer.process(s1);
 
 
-        String writerClassName = writerConfig.getStringVal("writer.class");
+        String writerClassName = writerConfig.getStringVal("etl.writer.class");
         Class<?> writerClass = Class.forName(writerClassName);
         Writer<S2> writer = (Writer) writerClass.newInstance();
         writer.initEnv((StreamExecutionEnvironment) env, context, null);

@@ -31,32 +31,33 @@ import org.apache.flink.api.java.ExecutionEnvironment;
 public class BatchSupport<IN, OIN> implements FlinkSupport<ExecutionEnvironment> {
 
 
-    private ExecutionEnvironment environment;
-    private SupportContext _context;
+    private ExecutionEnvironment internalEnv;
+    private SupportContext internalContext;
 
     public BatchSupport(ExecutionEnvironment environment, SupportContext context) {
-        this.environment = environment;
-        this._context = context;
+        this.internalEnv = environment;
+        this.internalContext = context;
     }
 
     @Override
     public void initEnv(ExecutionEnvironment env, SupportContext context, RunOptions options) {
-
+        this.internalEnv = env;
+        this.internalContext = context;
     }
 
     @Override
     public ExecutionEnvironment getEnv() {
-        return this.environment;
+        return this.internalEnv;
     }
 
     @Override
     public SupportContext getContext() {
-        return this._context;
+        return this.internalContext;
     }
 
     @Override
     public void setContext(SupportContext context) {
-        this._context = context;
+        this.internalContext = context;
     }
 
     @Override
